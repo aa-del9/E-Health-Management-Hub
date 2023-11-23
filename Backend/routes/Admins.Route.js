@@ -1,5 +1,9 @@
 const express = require("express");
-const { AdminModel } = require("../models/Admin.model");
+const {
+  AdminModel,
+  AdminCredModel,
+  createTables,
+} = require("../models/Admin.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -12,6 +16,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const admins = await AdminModel.find();
+
     res.status(200).send(admins);
   } catch (error) {
     console.log(error);
@@ -22,6 +27,7 @@ router.get("/", async (req, res) => {
 router.post("/register", async (req, res) => {
   const { email } = req.body;
   try {
+    await createTables();
     const admin = await AdminModel.findOne({ email });
     if (admin) {
       return res.send({

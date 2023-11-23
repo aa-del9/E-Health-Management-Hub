@@ -1,4 +1,19 @@
+const db = require("../configs/db");
 const mongoose = require("mongoose");
+const {
+  createCredTable,
+  findCredQuery,
+  addCred,
+} = require("../configs/queries/patient");
+const knex = require("knex")({
+  client: "pg",
+  connection: {
+    host: process.env.PG_HOST,
+    user: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    database: process.env.PG_DATABASE,
+  },
+});
 
 const adminSchema = mongoose.Schema({
   userType: {
@@ -58,4 +73,21 @@ const adminSchema = mongoose.Schema({
 
 const AdminModel = mongoose.model("admin", adminSchema);
 
-module.exports = { AdminModel };
+const AdminCredModel = {
+  id: 0,
+  password: "",
+};
+
+const createTables = () => {
+  db.query(createCredTable, (err, result) => {
+    if (err) {
+      console.error("Error: ", err);
+      // Handle the error, e.g., by sending a response or calling a callback with the error
+    } else {
+      // Process the query result, e.g., by sending it as a response or calling a callback with the result
+      console.log("Query result:", result.rows);
+    }
+  });
+};
+
+module.exports = { AdminModel, AdminCredModel, createTables };

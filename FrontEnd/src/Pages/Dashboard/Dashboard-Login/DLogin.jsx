@@ -51,6 +51,7 @@ const DLogin = () => {
         };
         
         dispatch(NurseLogin(data)).then((res) => {
+
           if (res.message === "Successful") {
             notify("Login Successful");
             setLoading(false);

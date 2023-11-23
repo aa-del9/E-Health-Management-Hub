@@ -4,6 +4,7 @@ const {
   createTable,
   patientCredModel,
   findById,
+  add,
 } = require("../models/Nurse.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -12,9 +13,10 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const patients = await createTable();
-    const nurses = await NurseModel.find();
-    res.status(200).send(nurses);
+    await createTable();
+    const patients = await findById(100);
+    //const nurses = await NurseModel.find();
+    res.status(200).send(patients);
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
@@ -23,18 +25,34 @@ router.get("/", async (req, res) => {
 
 router.post("/register", async (req, res) => {
   console.log("hi");
-  const { email } = req.body;
+  const data = req.body;
+  console.log(data.id);
   try {
-    const nurse = await NurseModel.findOne({ email });
-    if (nurse) {
+    const patient = findById(data.id);
+    console.log(patient);
+    if (patient) {
       return res.send({
-        message: "Nurse already exists",
+        message: "Patient already exists",
       });
+    } else {
+      console.log("heree");
+      patientCredModel.id = data.id;
+      patientCredModel.password = data.password;
+      console.log("model", patientCredModel);
+      await add(patientCredModel);
+      return res.send({ value, message: "Registered" });
     }
-    let value = new NurseModel(req.body);
-    await value.save();
-    const data = await NurseModel.findOne({ email });
-    return res.send({ data, message: "Registered" });
+
+    // const nurse = await NurseModel.findOne({ email });
+    // if (nurse) {
+    //   return res.send({
+    //     message: "Nurse already exists",
+    //   });
+    // }
+    // let value = new NurseModel(req.body);
+    // await value.save();
+    // const data = await NurseModel.findOne({ email });
+    // return res.send({ data, message: "Registered" });
   } catch (error) {
     res.send({ message: "error" });
   }
@@ -44,11 +62,11 @@ router.post("/login", async (req, res) => {
   const { nurseID, password } = req.body;
   const patientCredModel = req.body;
   try {
-    console.log(patientCredModel);
-    const patient = await findById(patientCredModel);
+    const patient = await findById(nurseID);
+    console.log("model", patientCredModel);
     //const nurse = await NurseModel.findOne({ nurseID, password });
-
-    if (true) {
+    console.log("res", patient.password);
+    if (nurseID == patient.id && password == patient.password) {
       const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });

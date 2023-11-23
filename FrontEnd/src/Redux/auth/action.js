@@ -4,7 +4,7 @@ import axios from "axios";
 //login user
 export const NurseLogin = (data) => async (dispatch) => {
   try {
-    console.log(data);
+    console.log("this is data given by redux", data);
     dispatch({ type: types.LOGIN_NURSE_REQUEST });
     const res = await axios.post("http://127.0.0.1:3001/nurses/login", data);
     dispatch({
