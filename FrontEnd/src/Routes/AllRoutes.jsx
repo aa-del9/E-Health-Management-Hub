@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import DLogin from "../Pages/Dashboard/Dashboard-Login/DLogin";
+import DSignup from "../Pages/Dashboard/Dashboard-Login/Signup/DSignup";
 import AddBeds from "../Pages/Dashboard/Main-Dashboard/AllPages/Admin/AddBeds";
 import Add_Admin from "../Pages/Dashboard/Main-Dashboard/AllPages/Admin/Add_Admin";
 import Add_Ambulance from "../Pages/Dashboard/Main-Dashboard/AllPages/Admin/Add_Ambulance";
@@ -22,6 +23,7 @@ const AllRoutes = () => {
     <>
       <Routes>
         <Route path="/" element={<DLogin />} />
+        <Route path="/signup" element={<DSignup />} />
         <Route path="/dashboard" element={<FrontPage />} />
         <Route path="/addoctor" element={<AddDoctor />} />
         <Route path="/addambulance" element={<Add_Ambulance />} />

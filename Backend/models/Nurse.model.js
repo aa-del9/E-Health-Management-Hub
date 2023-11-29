@@ -83,23 +83,13 @@ const nurseSchema = mongoose.Schema({
 
 const NurseModel = mongoose.model("nurse", nurseSchema);
 
-//const db = require('./your-postgresql-connection-module'); // Import your PostgreSQL connection module
-
-// Define the schema for the nurses table
-// const createTable = {
-//   text: `CREATE TABLE IF NOT EXISTS pat_cred (
-//     id SERIAL PRIMARY KEY,
-//     password VARCHAR(255) NOT NULL,
-//   )`,
-// };
-
 const patientCredModel = {
   id: 0,
   password: "",
 };
 
 const createTable = () => {
-  db.query(createTableQuery, (err, result) => {
+  return dbhelper.query(createTableQuery, 0, (err, result) => {
     if (err) {
       console.error("Error: ", err);
       // Handle the error, e.g., by sending a response or calling a callback with the error

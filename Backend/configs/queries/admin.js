@@ -1,12 +1,14 @@
-const createCredTable = `CREATE TABLE IF NOT EXISTS admin (
+const createCredTable = `CREATE TABLE IF NOT EXISTS admincred (
     id INT PRIMARY KEY,
     password VARCHAR(255) NOT NULL
   )`;
 
-const findCred = `SELECT * FROM admincred WHERE id = 
+let findQuery = `SELECT * FROM admincred WHERE id = $1
   `;
 
-const addCred = `INSERT INTO pat_cred (id) VALUES (${id});
-    INSERT INTO pat_cred (password) VALUES (${password})`;
+const addQuery = () => {
+  `INSERT INTO admincred (id) VALUES (${id})`,
+    `INSERT INTO admincred (password) VALUES (${password})`;
+};
 
-module.exports = { createCredTable, findCredQuery, addCred };
+module.exports = { createCredTable, findQuery, addQuery };

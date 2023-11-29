@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
 router.post("/register", async (req, res) => {
   console.log("hi");
   const data = req.body;
-  console.log(data.id);
+  console.log(data);
   try {
     const patient = findById(data.id);
     console.log(patient);
@@ -60,12 +60,10 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { nurseID, password } = req.body;
-  const patientCredModel = req.body;
   try {
     const patient = await findById(nurseID);
-    console.log("model", patientCredModel);
     //const nurse = await NurseModel.findOne({ nurseID, password });
-    console.log("res", patient.password);
+    //console.log("res", patient.password);
     if (nurseID == patient.id && password == patient.password) {
       const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",

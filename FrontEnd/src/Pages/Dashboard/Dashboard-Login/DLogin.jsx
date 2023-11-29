@@ -23,13 +23,17 @@ const DLogin = () => {
     setOpen(true);
   };
 
+  const toSignUp = () => {
+    return navigate("/signup");
+  };
+
   const onClose = () => {
     setOpen(false);
   };
 
   // ************************************************
   const [Loading, setLoading] = useState(false);
-  const [placement, SetPlacement] = useState("Doctor");
+  const [placement, SetPlacement] = useState("Patient");
   const [formvalue, setFormvalue] = useState({
     ID: "",
     password: "",
@@ -210,6 +214,15 @@ const DLogin = () => {
                   onClick={showDrawer}
                 >
                   Get it on Email !
+                </span>
+              </p>
+              <p style={{}}>
+                New here? {" "}
+                <span
+                  style={{ color: "blue", cursor: "pointer" }}
+                  onClick={toSignUp}
+                >
+                  Sign up!
                 </span>
               </p>
 

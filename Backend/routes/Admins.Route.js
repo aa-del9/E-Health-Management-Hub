@@ -10,7 +10,6 @@ const nodemailer = require("nodemailer");
 const { NurseModel } = require("../models/Nurse.model");
 const { DoctorModel } = require("../models/Doctor.model");
 const { PatientModel } = require("../models/Patient.model");
-
 const router = express.Router();
 
 router.get("/", async (req, res) => {

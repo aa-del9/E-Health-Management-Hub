@@ -26,6 +26,29 @@ export const NurseLogin = (data) => async (dispatch) => {
   }
 };
 
+export const PatientSignup = (data) => async (dispatch) => {
+  try {
+    console.log("data given by redux", data);
+    const res = await axios.post("http://127.0.0.1:3001/patient/signup", data);
+    dispatch({
+      type: types.LOGIN_NURSE_SUCCESS,
+      payload: {
+        message: res.data.message,
+        user: res.data.user,
+        token: res.data.token,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    dispatch({
+      type: types.LOGIN_NURSE_ERROR,
+      payload: {
+        message: error,
+      },
+    });
+  }
+};
+
 //login user
 export const DoctorLogin = (data) => async (dispatch) => {
   try {
@@ -115,10 +138,7 @@ export const DoctorRegister = (data) => async (dispatch) => {
 export const NurseRegister = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.REGISTER_NURSE_REQUEST });
-    const res = await axios.post(
-      "https://zany-gray-clam-gear.cyclic.app/nurses/register",
-      data
-    );
+    const res = await axios.post("http://127.0.0.1:3001/nurses/register", data);
     // console.log(res);
     return res.data;
     // dispatch({
