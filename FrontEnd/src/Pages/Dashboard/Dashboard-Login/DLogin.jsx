@@ -121,6 +121,7 @@ const DLogin = () => {
         });
       }
     }
+
   };
 
   const placementChange = (e) => {
