@@ -58,7 +58,7 @@ const Sidebar = () => {
               </div>
             </Link>
 
-            {user?.userType === "nurse" ? (
+            {user?.userType === "patient" ? ( //nurse changed to patient as changing whole nurse panel to patient
               <Link
                 className="link"
                 activeclassname="active"
@@ -75,7 +75,7 @@ const Sidebar = () => {
                 </div>
               </Link>
             ) : null}
-            {user?.userType === "nurse" ? (
+            {user?.userType === "patient" ? (
               <Link
                 className="link"
                 activeclassname="active"
@@ -93,7 +93,7 @@ const Sidebar = () => {
               </Link>
             ) : null}
 
-            {user?.userType === "nurse" ? (
+            {user?.userType === "patient" ? (
               <Link
                 className="link"
                 activeclassname="active"
@@ -123,7 +123,7 @@ const Sidebar = () => {
                 </div>
               </Link>
             ) : null}
-            {user?.userType === "admin" ? (
+            {/* {user?.userType === "admin" ? (
               <Link className="link" activeclassname="active" to={"/addnurse"}>
                 <div className="icon">
                   <GiNurseFemale className="mainIcon" />
@@ -135,7 +135,7 @@ const Sidebar = () => {
                   Add Nurse
                 </div>
               </Link>
-            ) : null}
+            ) : null} */}
             {user?.userType === "admin" ? (
               <Link className="link" activeclassname="active" to={"/admin"}>
                 <div className="icon">

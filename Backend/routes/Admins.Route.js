@@ -3,6 +3,7 @@ const {
   AdminModel,
   AdminCredModel,
   createTables,
+  findById,
 } = require("../models/Admin.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -14,9 +15,9 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const admins = await AdminModel.find();
-
-    res.status(200).send(admins);
+    //const admins = await AdminModel.find();
+    await createTables();
+    res.status(200).send("admin table exists or created");
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
@@ -44,14 +45,21 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { adminID, password } = req.body;
+  //console.log({ adminID, password });
   try {
-    const admin = await AdminModel.findOne({ adminID, password });
+    const admin = await findById(adminID);
+    console.log(admin);
+    //const admin = await AdminModel.findOne({ adminID, password });
 
-    if (admin) {
-      const token = jwt.sign({ foo: "bar" }, process.env.key, {
+    if (adminID == admin.id && password == admin.password) {
+      const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });
-      res.send({ message: "Successful", user: admin, token: token });
+      res.send({
+        message: "Successful",
+        user: { ...admin, userType: "admin" },
+        token: token,
+      });
     } else {
       res.send({ message: "Wrong credentials" });
     }

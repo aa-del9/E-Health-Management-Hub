@@ -13,10 +13,10 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    await createTable();
-    const patients = await findById(100);
+    const hi = await createTable();
+    //const patients = await findById(100);
     //const nurses = await NurseModel.find();
-    res.status(200).send(patients);
+    res.status(200).send(hi);
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
@@ -42,7 +42,7 @@ router.post("/register", async (req, res) => {
       await add(patientCredModel);
       return res.send({ value, message: "Registered" });
     }
-
+    //hi
     // const nurse = await NurseModel.findOne({ email });
     // if (nurse) {
     //   return res.send({
@@ -68,7 +68,11 @@ router.post("/login", async (req, res) => {
       const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });
-      res.send({ message: "Successful", user: patient, token: token });
+      res.send({
+        message: "Successful",
+        user: { ...patient, userType: "patient" },
+        token: token,
+      });
     } else {
       res.send({ message: "Wrong credentials" });
     }
