@@ -89,7 +89,7 @@ const patientCredModel = {
 };
 
 const createTable = () => {
-  return dbhelper.query(createTableQuery, 0, (err, result) => {
+  return dbhelper.query(findQuery, [100], (err, result) => {
     if (err) {
       console.error("Error: ", err);
       // Handle the error, e.g., by sending a response or calling a callback with the error

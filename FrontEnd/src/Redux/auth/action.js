@@ -81,11 +81,8 @@ export const DoctorLogin = (data) => async (dispatch) => {
 export const AdminLogin = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.LOGIN_ADMIN_REQUEST });
-    const res = await axios.post(
-      "https://zany-gray-clam-gear.cyclic.app/admin/login",
-      data
-    );
-    console.log(res.data);
+    const res = await axios.post("http://localhost:3001/admin/login", data);
+    console.log("here", res.data.user);
     dispatch({
       type: types.LOGIN_ADMIN_SUCCESS,
       payload: {

@@ -1,19 +1,20 @@
 const db = require("../configs/db");
+const dbhelper = require("../configs/dbhelper");
 const mongoose = require("mongoose");
 const {
   createCredTable,
-  findCredQuery,
-  addCred,
-} = require("../configs/queries/patient");
-const knex = require("knex")({
-  client: "pg",
-  connection: {
-    host: process.env.PG_HOST,
-    user: process.env.PG_USER,
-    password: process.env.PG_PASSWORD,
-    database: process.env.PG_DATABASE,
-  },
-});
+  findQuery,
+  addQuery,
+} = require("../configs/queries/admin");
+// const knex = require("knex")({
+//   client: "pg",
+//   connection: {
+//     host: process.env.PG_HOST,
+//     user: process.env.PG_USER,
+//     password: process.env.PG_PASSWORD,
+//     database: process.env.PG_DATABASE,
+//   },
+// });
 
 const adminSchema = mongoose.Schema({
   userType: {
@@ -90,4 +91,12 @@ const createTables = () => {
   });
 };
 
-module.exports = { AdminModel, AdminCredModel, createTables };
+const findById = (ID) => {
+  console.log("id received:", ID);
+  return dbhelper.query(findQuery, [ID]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+
+module.exports = { AdminModel, AdminCredModel, createTables, findById };
