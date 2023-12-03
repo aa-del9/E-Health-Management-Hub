@@ -1,5 +1,10 @@
 const express = require("express");
-const { DoctorModel } = require("../models/Doctor.model");
+const {
+  DoctorModel,
+  DoctorCredModel,
+  createTables,
+  findById,
+} = require("../models/Doctor.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
@@ -7,8 +12,9 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const doctors = await DoctorModel.find();
-    res.status(200).send(doctors);
+    // const doctors = await DoctorModel.find();
+    await createTables();
+    res.status(200).send("admin table exists or created");
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
@@ -36,13 +42,19 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { docID, password } = req.body;
   try {
-    const doctor = await DoctorModel.findOne({ docID, password });
+    // const doctor = await DoctorModel.findOne({ docID, password });
+    const doctor = await findById(docID);
+    console.log(doctor);
 
-    if (doctor) {
-      const token = jwt.sign({ foo: "bar" }, process.env.key, {
+    if (docID == doctor.id && password == doctor.password) {
+      const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });
-      res.send({ message: "Successful", user: doctor, token: token });
+      res.send({
+        message: "Successful",
+        user: { ...doctor, userType: "doctor" },
+        token: token,
+      });
     } else {
       res.send({ message: "Wrong credentials" });
     }
