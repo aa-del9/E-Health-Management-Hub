@@ -1,4 +1,11 @@
 const mongoose = require("mongoose");
+const db = require("../configs/db");
+const dbhelper = require("../configs/dbhelper");
+const {
+  createCredTable,
+  findQuery,
+  addQuery,
+} = require("../configs/queries/doctor");
 
 const doctorSchema = mongoose.Schema({
   userType: {
@@ -69,4 +76,29 @@ const doctorSchema = mongoose.Schema({
 
 const DoctorModel = mongoose.model("doctor", doctorSchema);
 
-module.exports = { DoctorModel };
+const DoctorCredModel = {
+  id: 0,
+  password: "",
+};
+
+const createTables = () => {
+  db.query(createCredTable, (err, result) => {
+    if (err) {
+      console.error("Error: ", err);
+      // Handle the error, e.g., by sending a response or calling a callback with the error
+    } else {
+      // Process the query result, e.g., by sending it as a response or calling a callback with the result
+      console.log("Query result:", result.rows);
+    }
+  });
+};
+
+const findById = (ID) => {
+  console.log("id received:", ID);
+  return dbhelper.query(findQuery, [ID]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+
+module.exports = { DoctorModel, DoctorCredModel, createTables, findById };

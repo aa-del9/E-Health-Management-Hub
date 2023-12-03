@@ -53,10 +53,7 @@ export const PatientSignup = (data) => async (dispatch) => {
 export const DoctorLogin = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.LOGIN_DOCTOR_REQUEST });
-    const res = await axios.post(
-      "https://zany-gray-clam-gear.cyclic.app/doctors/login",
-      data
-    );
+    const res = await axios.post("http://127.0.0.1:3001/doctors/login", data);
     console.log(res.data);
     dispatch({
       type: types.LOGIN_DOCTOR_SUCCESS,
