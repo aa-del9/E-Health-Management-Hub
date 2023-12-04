@@ -108,7 +108,7 @@ const AddDoctor = () => {
                 </div>
               </div>
               <div>
-                <label>Emergency Number</label>
+                <label>Phone Number</label>
                 <div className="inputdiv">
                   <input
                     type="number"
@@ -145,7 +145,6 @@ const AddDoctor = () => {
                     <option value="Choose Gender">Choose Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
-                    <option value="Others">Others</option>
                   </select>
                 </div>
               </div>
@@ -232,12 +231,12 @@ const AddDoctor = () => {
               </div>
 
               <div>
-                <label>Password</label>
+                <label>Fees</label>
                 <div className="inputdiv">
                   <input
-                    type="text"
-                    placeholder="Password"
-                    name="password"
+                    type="number"
+                    placeholder="Fees"
+                    name="Fees"
                     value={DoctorValue.password}
                     onChange={HandleDoctorChange}
                     required
