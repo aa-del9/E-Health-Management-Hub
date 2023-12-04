@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetAllData, GetPatients } from "../../../../Redux/Datas/action";
 
 const FrontPage = () => {
-  const columns = [
+  const patientColumns = [
     { title: "Name", dataIndex: "patientName", key: "patientName" },
     { title: "Age", dataIndex: "age", key: "age" },
     { title: "Disease", dataIndex: "disease", key: "disease" },
@@ -24,7 +24,17 @@ const FrontPage = () => {
     { title: "Email", dataIndex: "email", key: "email" },
   ];
 
+  const doctorColumns = [
+    { title: "Name", dataIndex: "patientName", key: "patientName" },
+    { title: "Age", dataIndex: "age", key: "age" },
+    { title: "Gender", dataIndex: "gender", key: "gender" },
+    { title: "Blood Group", dataIndex: "bloodGroup", key: "bloodGroup" },
+    { title: "Department", dataIndex: "department", key: "department" },
+    { title: "Email", dataIndex: "email", key: "email" },
+  ];
+
   const { patients } = useSelector((store) => store.data.patients);
+  const { doctors } = useSelector((store) => store.data.doctors);
   const {
     dashboard: { data },
   } = useSelector((store) => store.data);
@@ -54,18 +64,18 @@ const FrontPage = () => {
           <div className="two commondiv">
             {" "}
             <div>
-              <h1>{data?.nurse}</h1>
-              <p>Nurse</p>
+              <h1>{data?.patient}</h1>
+              <p>Patient</p>
             </div>
             <FaUserNurse className="overviewIcon" />
           </div>
-          <div className="three commondiv">
+          {/* <div className="three commondiv">
             <div>
               <h1>{data?.patient}</h1>
               <p>Patient</p>
             </div>
             <RiEmpathizeLine className="overviewIcon" />
-          </div>
+          </div> */}
           <div className="six commondiv">
             {" "}
             <div>
@@ -74,14 +84,14 @@ const FrontPage = () => {
             </div>
             <RiAdminLine className="overviewIcon" />
           </div>
-          <div className="four commondiv">
+          {/* <div className="four commondiv">
             {" "}
             <div>
               <h1>{data?.bed}</h1>
               <p>Beds</p>
             </div>
             <FaBed className="overviewIcon" />
-          </div>
+          </div> */}
 
           <div className="five commondiv">
             {" "}
@@ -112,7 +122,13 @@ const FrontPage = () => {
         <div className="patientDetails">
           <h1>Patient Details</h1>
           <div className="patientBox">
-            <Table columns={columns} dataSource={patients} />
+            <Table columns={patientColumns} dataSource={patients} />
+          </div>
+        </div>
+        <div className="patientDetails">
+          <h1>Doctor Details</h1>
+          <div className="patientBox">
+            <Table columns={doctorColumns} dataSource={doctors} />
           </div>
         </div>
       </div>
