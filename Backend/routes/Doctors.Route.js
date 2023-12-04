@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   try {
     // const doctors = await DoctorModel.find();
     await createTables();
-    res.status(200).send("admin table exists or created");
+    res.status(200).send("doctor table exists or created");
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
