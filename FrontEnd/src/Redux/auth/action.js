@@ -189,6 +189,7 @@ export const AdminRegister = (data) => async (dispatch) => {
 // REGISTER AMBULANCE
 export const AmbulanceRegister = (data) => async (dispatch) => {
   try {
+    console.log(data);
     dispatch({ type: types.REGISTER_AMBULANCE_REQUEST });
     const res = await axios.post(
       "https://zany-gray-clam-gear.cyclic.app/ambulances/add",

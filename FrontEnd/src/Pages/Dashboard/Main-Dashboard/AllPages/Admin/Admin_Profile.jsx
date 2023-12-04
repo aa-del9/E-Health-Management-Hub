@@ -14,15 +14,16 @@ import { Button, message, Modal } from "antd";
 import { UpdateDoctor, UpdateNurse } from "../../../../../Redux/auth/action";
 import { GetDoctorDetails } from "../../../../../Redux/Datas/action";
 import { Navigate } from "react-router-dom";
-import "./CSS/Doctor_Profile.css";
+import "./CSS/Admin_Profile.css";
 
 // *********************************************************
-const Doctor_Profile = () => {
+const Admin_Profile = () => {
   const { data } = useSelector((store) => store.auth);
-  const disptach = useDispatch();
+  console.log("heree", data);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    disptach(GetDoctorDetails());
+    dispatch(GetDoctorDetails());
   }, []);
 
   const [open, setOpen] = useState(false);
@@ -51,13 +52,8 @@ const Doctor_Profile = () => {
   };
 
   const [formData, setFormData] = useState({
-    docName: data.user.docName,
-    age: data.user.age,
-    gender: data.user.gender,
-    bloodGroup: data.user.bloodGroup,
-    education: data.user.education,
-    mobile: data.user.mobile,
-    DOB: data.user.DOB,
+    currentPassword: "",
+    newPassword: "",
   });
 
   const handleFormChange = (e) => {
@@ -65,7 +61,7 @@ const Doctor_Profile = () => {
   };
 
   const handleFormSubmit = () => {
-    disptach(UpdateDoctor(formData, data.user._id));
+    dispatch(UpdateDoctor(formData, data.user._id));
     success("user updated");
     handleOk();
   };
@@ -74,7 +70,7 @@ const Doctor_Profile = () => {
     return <Navigate to={"/"} />;
   }
 
-  if (data?.user.userType !== "doctor") {
+  if (data?.user.userType !== "admin") {
     return <Navigate to={"/dashboard"} />;
   }
 
@@ -92,7 +88,7 @@ const Doctor_Profile = () => {
               <hr />
               <div className="singleitemdiv">
                 <GiMeditation className="singledivicons" />
-                <p>{data?.user?.docName}</p>
+                <p>{data?.user?.adminName}</p>
               </div>
               <div className="singleitemdiv">
                 <MdBloodtype className="singledivicons" />
@@ -110,12 +106,12 @@ const Doctor_Profile = () => {
                 <button onClick={showModal}>
                   {" "}
                   <AiFillEdit />
-                  Edit profile
+                  Change Password
                 </button>
               </div>
 
               <Modal
-                title="Edit details"
+                title="Change Password"
                 open={open}
                 onOk={handleOk}
                 confirmLoading={confirmLoading}
@@ -125,58 +121,24 @@ const Doctor_Profile = () => {
                     Cancel
                   </Button>,
                   <Button key="submit" onClick={handleFormSubmit}>
-                    Edit
+                    Confirm
                   </Button>,
                 ]}
               >
                 <form className="inputForm">
+                  <p>Current password</p>
                   <input
-                    name="nurseName"
-                    value={formData.docName}
-                    onChange={handleFormChange}
-                    type="text"
-                    placeholder="Full name"
-                  />
-                  <input
-                    name="age"
-                    value={formData.age}
-                    onChange={handleFormChange}
-                    type="number"
-                    placeholder="Age"
-                  />
-                  <select name="gender" onChange={handleFormChange}>
-                    <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Others</option>
-                  </select>
-                  <input
-                    name="bloodGroup"
-                    value={formData.bloodGroup}
-                    onChange={handleFormChange}
-                    type="text"
-                    placeholder="Blood Group"
-                  />
-                  <input
-                    name="education"
-                    value={formData.education}
-                    onChange={handleFormChange}
-                    type="text"
-                    placeholder="education"
-                  />
-                  <input
-                    name="mobile"
+                    name="currentPassword"
                     value={formData.mobile}
                     onChange={handleFormChange}
-                    type="number"
-                    placeholder="mobile"
+                    type="password"
                   />
+                  <p>New password</p>
                   <input
-                    name="DOB"
-                    value={formData.DOB}
+                    name="newPassword"
+                    value={formData.mobile}
                     onChange={handleFormChange}
-                    type="date"
-                    placeholder="Date of birth"
+                    type="password"
                   />
                 </form>
               </Modal>
@@ -234,4 +196,4 @@ const Doctor_Profile = () => {
   );
 };
 
-export default Doctor_Profile;
+export default Admin_Profile;

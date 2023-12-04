@@ -67,17 +67,17 @@ const Add_Ambulance = () => {
               <img
                 src={one}
                 alt="first_img"
-                onClick={() => setambuType("Mobile ICU Ambulance")}
+                onClick={() => setambuType("Ambulance Bike")}
               />
               <img
                 src={two}
                 alt="first_img"
-                onClick={() => setambuType("Basic Life Support Ambulance")}
+                onClick={() => setambuType("Bolan van ambulance")}
               />
               <img
                 src={three}
                 alt="first_img"
-                onClick={() => setambuType("Collective Ambulance")}
+                onClick={() => setambuType("Hiace Deluxe Ambulance")}
               />
             </div>
             {/* ******************************************************** */}
@@ -112,8 +112,8 @@ const Add_Ambulance = () => {
                 <label>Ambulance Code</label>
                 <div className="inputdiv">
                   <input
-                    type="number"
-                    placeholder="eg.1223"
+                    type="text"
+                    placeholder="eg. ABC 123"
                     name="ambulanceID"
                     value={AmbuData.ambulanceID}
                     onChange={HandleAmbuChange}

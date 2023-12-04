@@ -21,9 +21,6 @@ const Add_Admin = () => {
     gender: "",
     DOB: "",
     address: "",
-    education: "",
-    adminID: Date.now(),
-    password: "",
   };
   const [AdminValue, setAdminValue] = useState(InitData);
 
@@ -48,8 +45,8 @@ const Add_Admin = () => {
 
       let data = {
         email: res.data.email,
-        password: res.data.password,
-        userId: res.data.adminID,
+        // password: res.data.password,
+        // userId: res.data.adminID,
       };
       dispatch(SendPassword(data)).then((res) => notify("Account Detais Sent"));
       setloading(false);
@@ -137,9 +134,8 @@ const Add_Admin = () => {
                     required
                   >
                     <option value="Choose Gender">Choose Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
                   </select>
                 </div>
               </div>
@@ -169,7 +165,7 @@ const Add_Admin = () => {
                   />
                 </div>
               </div>
-              <div>
+              {/* <div>
                 <label>Education</label>
                 <div className="inputdiv">
                   <input
@@ -194,7 +190,7 @@ const Add_Admin = () => {
                     required
                   />
                 </div>
-              </div>
+              </div> */}
 
               <button type="submit" className="formsubmitbutton">
                 {loading ? "Loading..." : "Submit"}
