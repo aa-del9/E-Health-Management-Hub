@@ -34,6 +34,30 @@ export const GetDoctorDetails = () => async (dispatch) => {
     const res = await axios.get(
       "https://zany-gray-clam-gear.cyclic.app/doctors"
     );
+    console.log("this", res);
+    // dispatch({
+    //   type: types.GET_DOCTOR_SUCCESS,
+    //   payload: {
+    //
+    //   },
+    // });
+  } catch (error) {
+    dispatch({
+      type: types.GET_DOCTOR_ERROR,
+      payload: {
+        message: error,
+      },
+    });
+  }
+};
+
+// GET DOCTOR DETAILS
+export const GetAdminDetails = () => async (dispatch) => {
+  try {
+    dispatch({ type: types.GET_ADMIN_REQUEST });
+    const res = await axios.get(
+      "https://zany-gray-clam-gear.cyclic.app/doctors"
+    );
     console.log(res);
     // dispatch({
     //   type: types.GET_DOCTOR_SUCCESS,

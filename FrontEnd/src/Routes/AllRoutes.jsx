@@ -18,6 +18,7 @@ import Add_Patient from "../Pages/Dashboard/Main-Dashboard/AllPages/Nurse/Add_Pa
 import Book_Appointment from "../Pages/Dashboard/Main-Dashboard/AllPages/Nurse/Book_Appointment";
 import Nurse_Profile from "../Pages/Dashboard/Main-Dashboard/AllPages/Nurse/Nurse_Profile";
 import FrontPage from "../Pages/Dashboard/Main-Dashboard/GlobalFiles/FrontPage";
+import Admin_Profile from "../Pages/Dashboard/Main-Dashboard/AllPages/Admin/Admin_Profile";
 const AllRoutes = () => {
   return (
     <>
@@ -31,6 +32,7 @@ const AllRoutes = () => {
         <Route path="/rooms" element={<Beds_Rooms />} />
         <Route path="/admin" element={<Add_Admin />} />
         <Route path="/addbeds" element={<AddBeds />} />
+        <Route path="/adminprofile" element={<Admin_Profile />} />
         ******************** Doctor Part *************************
         <Route path="/reports" element={<AllReport />} />
         <Route path="/checkappointment" element={<Check_Appointment />} />
