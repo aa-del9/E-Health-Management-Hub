@@ -7,7 +7,7 @@ exports.query = function (sql, values) {
         console.log(err);
         reject(err);
       } else {
-        resolve(result.rows[0]);
+        resolve(result.rows);
       }
     });
   });

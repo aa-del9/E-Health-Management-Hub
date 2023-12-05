@@ -3,8 +3,9 @@ const db = require("../configs/db");
 const dbhelper = require("../configs/dbhelper");
 const {
   createCredTable,
-  findQuery,
+  findCredQuery,
   addQuery,
+  getAllQuery,
 } = require("../configs/queries/doctor");
 
 const doctorSchema = mongoose.Schema({
@@ -76,9 +77,21 @@ const doctorSchema = mongoose.Schema({
 
 const DoctorModel = mongoose.model("doctor", doctorSchema);
 
-const DoctorCredModel = {
+const docModel = {
   id: 0,
+  name: "",
+  phoneNum: 0,
+  email: "",
   password: "",
+  age: 0,
+  gender: "",
+  bloodGroup: "",
+  dob: "",
+  address: "",
+  education: "",
+  department: "",
+  availability: [],
+  fees: 0,
 };
 
 const createTables = () => {
@@ -92,13 +105,25 @@ const createTables = () => {
     }
   });
 };
-
-const findById = (ID) => {
-  console.log("id received:", ID);
-  return dbhelper.query(findQuery, [ID]).then((result) => {
-    console.log(result, "in db helper");
+const getAllDoctors = () => {
+  return dbhelper.query(getAllQuery).then((result) => {
+    // console.log("in db helper", result);
     return result;
   });
 };
 
-module.exports = { DoctorModel, DoctorCredModel, createTables, findById };
+const findById = (ID) => {
+  console.log("id received:", ID);
+  return dbhelper.query(findCredQuery, [ID]).then((result) => {
+    console.log("in db helper", result);
+    return result;
+  });
+};
+
+module.exports = {
+  DoctorModel,
+  docModel,
+  getAllDoctors,
+  createTables,
+  findById,
+};

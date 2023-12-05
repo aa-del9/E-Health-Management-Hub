@@ -1,7 +1,8 @@
 const express = require("express");
 const {
   DoctorModel,
-  DoctorCredModel,
+  getAllDoctors,
+  docModel,
   createTables,
   findById,
 } = require("../models/Doctor.model");
@@ -14,7 +15,9 @@ router.get("/", async (req, res) => {
   try {
     // const doctors = await DoctorModel.find();
     await createTables();
-    res.status(200).send("doctor table exists or created");
+    const doctors = await getAllDoctors();
+    //console.log(doctors);
+    res.status(200).send(doctors);
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
@@ -44,9 +47,8 @@ router.post("/login", async (req, res) => {
   try {
     // const doctor = await DoctorModel.findOne({ docID, password });
     const doctor = await findById(docID);
-    console.log(doctor);
 
-    if (docID == doctor.id && password == doctor.password) {
+    if (docID == doctor[0].id && password == doctor[0].password) {
       const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });

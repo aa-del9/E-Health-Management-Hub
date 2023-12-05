@@ -26,10 +26,18 @@ export default function dataReducer(state = initialState, { type, payload }) {
         beds: payload,
       };
     case types.GET_PATIENT_SUCCESS:
+      //console.log("in he", payload);
       return {
         ...state,
         loading: false,
         patients: payload,
+      };
+    case types.GET_DOCTOR_SUCCESS:
+      // console.log("in she data", payload);
+      return {
+        ...state,
+        loading: false,
+        doctors: payload,
       };
     case types.GET_ALLDATA_SUCCESS:
       return {

@@ -31,16 +31,13 @@ export const CreateReport = (data) => async (dispatch) => {
 export const GetDoctorDetails = () => async (dispatch) => {
   try {
     dispatch({ type: types.GET_DOCTOR_REQUEST });
-    const res = await axios.get(
-      "https://zany-gray-clam-gear.cyclic.app/doctors"
-    );
+    const res = await axios.get("http://127.0.0.1:3001/doctors");
     console.log("this", res);
-    // dispatch({
-    //   type: types.GET_DOCTOR_SUCCESS,
-    //   payload: {
-    //
-    //   },
-    // });
+    const doctors = { doctors: res.data };
+    dispatch({
+      type: types.GET_DOCTOR_SUCCESS,
+      payload: doctors,
+    });
   } catch (error) {
     dispatch({
       type: types.GET_DOCTOR_ERROR,
@@ -52,28 +49,28 @@ export const GetDoctorDetails = () => async (dispatch) => {
 };
 
 // GET DOCTOR DETAILS
-export const GetAdminDetails = () => async (dispatch) => {
-  try {
-    dispatch({ type: types.GET_ADMIN_REQUEST });
-    const res = await axios.get(
-      "https://zany-gray-clam-gear.cyclic.app/doctors"
-    );
-    console.log(res);
-    // dispatch({
-    //   type: types.GET_DOCTOR_SUCCESS,
-    //   payload: {
-    //
-    //   },
-    // });
-  } catch (error) {
-    dispatch({
-      type: types.GET_DOCTOR_ERROR,
-      payload: {
-        message: error,
-      },
-    });
-  }
-};
+// export const GetAdminDetails = () => async (dispatch) => {
+//   try {
+//     dispatch({ type: types.GET_ADMIN_REQUEST });
+//     const res = await axios.get(
+//       "https://zany-gray-clam-gear.cyclic.app/doctors"
+//     );
+//     console.log(res);
+//     // dispatch({
+//     //   type: types.GET_DOCTOR_SUCCESS,
+//     //   payload: {
+//     //
+//     //   },
+//     // });
+//   } catch (error) {
+//     dispatch({
+//       type: types.GET_DOCTOR_ERROR,
+//       payload: {
+//         message: error,
+//       },
+//     });
+//   }
+// };
 
 //ADD PATIENTS
 export const AddPatients = (data) => async (dispatch) => {
@@ -296,13 +293,12 @@ export const dischargePatient = (data) => async (dispatch) => {
 export const GetPatients = () => async (dispatch) => {
   try {
     dispatch({ type: types.GET_PATIENT_REQUEST });
-    const res = await axios.get(
-      `https://zany-gray-clam-gear.cyclic.app/patients`
-    );
-    console.log(res.data);
+    const res = await axios.get(`http://127.0.0.1:3001/nurses`);
+    console.log("pats", res);
+    const patients = { patients: res.data };
     dispatch({
       type: types.GET_PATIENT_SUCCESS,
-      payload: res.data,
+      payload: patients,
     });
   } catch (error) {
     console.log(error);
