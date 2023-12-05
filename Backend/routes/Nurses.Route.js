@@ -1,10 +1,11 @@
 const express = require("express");
 const {
+  add,
   NurseModel,
+  getAllNurses,
   createTable,
   patientCredModel,
-  findById,
-  add,
+  findCred,
 } = require("../models/Nurse.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -13,10 +14,11 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const hi = await createTable();
-    //const patients = await findById(100);
-    //const nurses = await NurseModel.find();
-    res.status(200).send(hi);
+    //await createTable();
+    console.log("idhr");
+    const patients = await getAllNurses();
+    console.log(patients);
+    res.status(200).send(patients);
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
@@ -24,7 +26,6 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  console.log("hi");
   const data = req.body;
   console.log(data);
   try {
@@ -61,10 +62,10 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { nurseID, password } = req.body;
   try {
-    const patient = await findById(nurseID);
+    const patient = await findCred(nurseID);
     //const nurse = await NurseModel.findOne({ nurseID, password });
     //console.log("res", patient.password);
-    if (nurseID == patient.id && password == patient.password) {
+    if (nurseID == patient[0].id && password == patient[0].password) {
       const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });

@@ -1,8 +1,9 @@
 //const db = require("../configs/db");
 const dbhelper = require("../configs/dbhelper");
 const {
-  createTableQuery,
-  findQuery,
+  createCredTable,
+  findCredQuery,
+  getAllQuery,
   addQuery,
 } = require("../configs/queries/patient");
 let x = false;
@@ -89,7 +90,7 @@ const patientCredModel = {
 };
 
 const createTable = () => {
-  return dbhelper.query(findQuery, [100], (err, result) => {
+  return dbhelper.query(createCredTable, (err, result) => {
     if (err) {
       console.error("Error: ", err);
       // Handle the error, e.g., by sending a response or calling a callback with the error
@@ -100,9 +101,9 @@ const createTable = () => {
   });
 };
 
-const findById = (ID) => {
+const findCred = (ID) => {
   console.log("id received:", ID);
-  return dbhelper.query(findQuery, [ID]).then((result) => {
+  return dbhelper.query(findCredQuery, [ID]).then((result) => {
     console.log(result, "in db helper");
     return result;
   });
@@ -117,6 +118,13 @@ const adds = () => {
       // Process the query result, e.g., by sending it as a response or calling a callback with the result
       console.log("Query result:", result.rows);
     }
+  });
+};
+
+const getAllNurses = () => {
+  return dbhelper.query(getAllQuery).then((result) => {
+    // console.log("in db helper", result);
+    return result;
   });
 };
 
@@ -157,4 +165,11 @@ const add = async (data) => {
 //     console.error("Error creating nurses table:", error);
 //   });
 
-module.exports = { add, NurseModel, createTable, patientCredModel, findById };
+module.exports = {
+  add,
+  NurseModel,
+  getAllNurses,
+  createTable,
+  patientCredModel,
+  findCred,
+};

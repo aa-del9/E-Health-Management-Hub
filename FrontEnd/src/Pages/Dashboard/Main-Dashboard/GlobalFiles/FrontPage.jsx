@@ -12,23 +12,27 @@ import { RiAdminLine } from "react-icons/ri";
 import Sidebar from "./Sidebar";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAllData, GetPatients } from "../../../../Redux/Datas/action";
+import {
+  GetAllData,
+  GetPatients,
+  GetDoctorDetails,
+} from "../../../../Redux/Datas/action";
 
 const FrontPage = () => {
   const patientColumns = [
-    { title: "Name", dataIndex: "patientName", key: "patientName" },
+    { title: "Name", dataIndex: "name", key: "name" },
     { title: "Age", dataIndex: "age", key: "age" },
     { title: "Disease", dataIndex: "disease", key: "disease" },
-    { title: "Blood Group", dataIndex: "bloodGroup", key: "bloodGroup" },
-    { title: "Department", dataIndex: "department", key: "department" },
+    { title: "Blood Group", dataIndex: "bloodgroup", key: "bloodgroup" },
+    { title: "Gender", dataIndex: "gender", key: "gender" },
     { title: "Email", dataIndex: "email", key: "email" },
   ];
 
   const doctorColumns = [
-    { title: "Name", dataIndex: "patientName", key: "patientName" },
+    { title: "Name", dataIndex: "name", key: "name" },
     { title: "Age", dataIndex: "age", key: "age" },
     { title: "Gender", dataIndex: "gender", key: "gender" },
-    { title: "Blood Group", dataIndex: "bloodGroup", key: "bloodGroup" },
+    { title: "Phone Number", dataIndex: "phonenum", key: "phonenum" },
     { title: "Department", dataIndex: "department", key: "department" },
     { title: "Email", dataIndex: "email", key: "email" },
   ];
@@ -40,11 +44,15 @@ const FrontPage = () => {
   } = useSelector((store) => store.data);
 
   console.log(data);
-
+  console.log(patients);
+  console.log("doctors", doctors);
   const dispatch = useDispatch();
-
+  const {
+    data: { user },
+  } = useSelector((state) => state.auth);
   useEffect(() => {
     dispatch(GetPatients());
+    dispatch(GetDoctorDetails());
     dispatch(GetAllData());
   }, []);
 
@@ -52,39 +60,41 @@ const FrontPage = () => {
     <div className="container">
       <Sidebar />
       <div className="AfterSideBar">
-        <h1 style={{ color: "rgb(184 191 234)" }}>Overview</h1>
-        <div className="maindiv">
-          <div className="one commondiv">
-            <div>
-              <h1>{data?.doctor}</h1>
-              <p>Doctor</p>
-            </div>
-            <MdPersonAdd className="overviewIcon" />
-          </div>
-          <div className="two commondiv">
-            {" "}
-            <div>
-              <h1>{data?.patient}</h1>
-              <p>Patient</p>
-            </div>
-            <FaUserNurse className="overviewIcon" />
-          </div>
-          {/* <div className="three commondiv">
+        {user?.userType === "admin" ? (
+          <>
+            <h1 style={{ color: "rgb(184 191 234)" }}>Overview</h1>
+            <div className="maindiv">
+              <div className="one commondiv">
+                <div>
+                  <h1>{data?.doctor}</h1>
+                  <p>Doctor</p>
+                </div>
+                <MdPersonAdd className="overviewIcon" />
+              </div>
+              <div className="two commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.patient}</h1>
+                  <p>Patient</p>
+                </div>
+                <FaUserNurse className="overviewIcon" />
+              </div>
+              {/* <div className="three commondiv">
             <div>
               <h1>{data?.patient}</h1>
               <p>Patient</p>
             </div>
             <RiEmpathizeLine className="overviewIcon" />
           </div> */}
-          <div className="six commondiv">
-            {" "}
-            <div>
-              <h1>{data?.admin}</h1>
-              <p>Admin</p>
-            </div>
-            <RiAdminLine className="overviewIcon" />
-          </div>
-          {/* <div className="four commondiv">
+              <div className="six commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.admin}</h1>
+                  <p>Admin</p>
+                </div>
+                <RiAdminLine className="overviewIcon" />
+              </div>
+              {/* <div className="four commondiv">
             {" "}
             <div>
               <h1>{data?.bed}</h1>
@@ -93,38 +103,44 @@ const FrontPage = () => {
             <FaBed className="overviewIcon" />
           </div> */}
 
-          <div className="five commondiv">
-            {" "}
-            <div>
-              <h1>{data?.ambulance}</h1>
-              <p>Ambulance</p>
+              <div className="five commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.ambulance}</h1>
+                  <p>Ambulance</p>
+                </div>
+                <FaAmbulance className="overviewIcon" />
+              </div>
+              <div className="six commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.appointment}</h1>
+                  <p>Appointment</p>
+                </div>
+                <BsFillBookmarkCheckFill className="overviewIcon" />
+              </div>
+              <div className="six commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.report}</h1>
+                  <p>Reports</p>
+                </div>
+                <MdPayment className="overviewIcon" />
+              </div>
             </div>
-            <FaAmbulance className="overviewIcon" />
-          </div>
-          <div className="six commondiv">
-            {" "}
-            <div>
-              <h1>{data?.appointment}</h1>
-              <p>Appointment</p>
-            </div>
-            <BsFillBookmarkCheckFill className="overviewIcon" />
-          </div>
-          <div className="six commondiv">
-            {" "}
-            <div>
-              <h1>{data?.report}</h1>
-              <p>Reports</p>
-            </div>
-            <MdPayment className="overviewIcon" />
-          </div>
-        </div>
+          </>
+        ) : null}
+
         {/* ************************************* */}
-        <div className="patientDetails">
-          <h1>Patient Details</h1>
-          <div className="patientBox">
-            <Table columns={patientColumns} dataSource={patients} />
+        {user?.userType !== "patient" ? (
+          <div className="patientDetails">
+            <h1>Patient Details</h1>
+            <div className="patientBox">
+              <Table columns={patientColumns} dataSource={patients} />
+            </div>
           </div>
-        </div>
+        ) : null}
+
         <div className="patientDetails">
           <h1>Doctor Details</h1>
           <div className="patientBox">
