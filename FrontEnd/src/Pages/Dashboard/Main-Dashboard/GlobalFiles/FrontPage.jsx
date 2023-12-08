@@ -60,6 +60,7 @@ const FrontPage = () => {
   }, []);
 
   const userType = placement;
+  console.log("userType", userType);
 
   return (
     <div className="container">
@@ -74,57 +75,62 @@ const FrontPage = () => {
             </div>
             <RiEmpathizeLine className="overviewIcon" />
           </div> */}
-          {userType === "Admin" ? (
+          {userType !== "Patient" ? (
             <>
+              <div className="one commondiv">
+                <div>
+                  <h1>{data?.doctor}</h1>
+                  <p>Doctor</p>
+                </div>
+                <MdPersonAdd className="overviewIcon" />
+              </div>
+              <div className="two commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.patient}</h1>
+                  <p>Patient</p>
+                </div>
+                <FaUserNurse className="overviewIcon" />
+              </div>
               <div className="six commondiv">
                 {" "}
                 <div>
-                  <h1>{data?.admin}</h1>
-                  <p>Admin</p>
+                  <h1>{data?.appointment}</h1>
+                  <p>Appointment</p>
                 </div>
-                <RiAdminLine className="overviewIcon" />
+                <BsFillBookmarkCheckFill className="overviewIcon" />
               </div>
-              <div className="five commondiv">
-                {" "}
-                <div>
-                  <h1>{data?.ambulance}</h1>
-                  <p>Ambulance</p>
-                </div>
-                <FaAmbulance className="overviewIcon" />
-              </div>
-              <div className="six commondiv">
-                {" "}
-                <div>
-                  <h1>{data?.report}</h1>
-                  <p>Reports</p>
-                </div>
-                <MdPayment className="overviewIcon" />
-              </div>
+              {userType === "Admin" ? (
+                <>
+                  <div className="six commondiv">
+                    {" "}
+                    <div>
+                      <h1>{data?.admin}</h1>
+                      <p>Admin</p>
+                    </div>
+                    <RiAdminLine className="overviewIcon" />
+                  </div>
+                  <div className="five commondiv">
+                    {" "}
+                    <div>
+                      <h1>{data?.ambulance}</h1>
+                      <p>Ambulance</p>
+                    </div>
+                    <FaAmbulance className="overviewIcon" />
+                  </div>
+                  <div className="six commondiv">
+                    {" "}
+                    <div>
+                      <h1>{data?.report}</h1>
+                      <p>Reports</p>
+                    </div>
+                    <MdPayment className="overviewIcon" />
+                  </div>
+                </>
+              ) : null}
             </>
           ) : null}
-          <div className="one commondiv">
-            <div>
-              <h1>{data?.doctor}</h1>
-              <p>Doctor</p>
-            </div>
-            <MdPersonAdd className="overviewIcon" />
-          </div>
-          <div className="two commondiv">
-            {" "}
-            <div>
-              <h1>{data?.patient}</h1>
-              <p>Patient</p>
-            </div>
-            <FaUserNurse className="overviewIcon" />
-          </div>
-          <div className="six commondiv">
-            {" "}
-            <div>
-              <h1>{data?.appointment}</h1>
-              <p>Appointment</p>
-            </div>
-            <BsFillBookmarkCheckFill className="overviewIcon" />
-          </div>
+
           {/* <div className="four commondiv">
             {" "}
             <div>
@@ -138,22 +144,14 @@ const FrontPage = () => {
 
         <div>
           {userType === "Admin" ? (
-            <>
-              <div className="patientDetails">
-                <h1>Patient Details</h1>
-                <div className="patientBox">
-                  <Table columns={patientColumns} dataSource={patients} />
-                </div>
+            <div className="patientDetails">
+              <h1>Doctor Details</h1>
+              <div className="patientBox">
+                <Table columns={doctorColumns} dataSource={doctors} />
               </div>
-              <div className="patientDetails">
-                <h1>Doctor Details</h1>
-                <div className="patientBox">
-                  <Table columns={doctorColumns} dataSource={doctors} />
-                </div>
-              </div>
-            </>
+            </div>
           ) : null}
-          {userType === "doctor" ? (
+          {userType !== "Patient" ? (
             <div className="patientDetails">
               <h1>Patient Details</h1>
               <div className="patientBox">

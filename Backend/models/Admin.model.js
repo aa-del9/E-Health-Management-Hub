@@ -3,7 +3,7 @@ const dbhelper = require("../configs/dbhelper");
 const mongoose = require("mongoose");
 const {
   createCredTable,
-  findQuery,
+  findCredQuery,
   addQuery,
 } = require("../configs/queries/admin");
 // const knex = require("knex")({
@@ -91,12 +91,12 @@ const createTables = () => {
   });
 };
 
-const findById = (ID) => {
+const findCred = (ID) => {
   console.log("id received:", ID);
-  return dbhelper.query(findQuery, [ID]).then((result) => {
+  return dbhelper.query(findCredQuery, [ID]).then((result) => {
     console.log(result, "in db helper");
     return result;
   });
 };
 
-module.exports = { AdminModel, AdminCredModel, createTables, findById };
+module.exports = { AdminModel, AdminCredModel, createTables, findCred };

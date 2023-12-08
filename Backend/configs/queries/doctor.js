@@ -14,7 +14,7 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS doctors (
   availability TIME []
 );`;
 
-let findCredQuery = `SELECT id,password FROM doctors WHERE id = $1;`;
+const findCredQuery = `SELECT id,password FROM doctors WHERE id = $1;`;
 //todo: change columns
 const addQuery = () => {
   `INSERT INTO doctors (id) VALUES (${id})`,

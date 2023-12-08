@@ -2,7 +2,7 @@ const express = require("express");
 const {
   add,
   NurseModel,
-  getAllNurses,
+  getAllPatients,
   createTable,
   patientCredModel,
   findCred,
@@ -16,8 +16,7 @@ router.get("/", async (req, res) => {
   try {
     //await createTable();
     console.log("idhr");
-    const patients = await getAllNurses();
-    console.log(patients);
+    const patients = await getAllPatients();
     res.status(200).send(patients);
   } catch (error) {
     console.log(error);

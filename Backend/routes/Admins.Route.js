@@ -3,7 +3,7 @@ const {
   AdminModel,
   AdminCredModel,
   createTables,
-  findById,
+  findCred,
 } = require("../models/Admin.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -47,11 +47,10 @@ router.post("/login", async (req, res) => {
   const { adminID, password } = req.body;
   //console.log({ adminID, password });
   try {
-    const admin = await findById(adminID);
-    console.log(admin);
+    const admin = await findCred(adminID);
     //const admin = await AdminModel.findOne({ adminID, password });
 
-    if (adminID == admin.id && password == admin.password) {
+    if (adminID == admin[0].id && password == admin[0].password) {
       const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });

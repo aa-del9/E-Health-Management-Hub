@@ -121,7 +121,7 @@ const adds = () => {
   });
 };
 
-const getAllNurses = () => {
+const getAllPatients = () => {
   return dbhelper.query(getAllQuery).then((result) => {
     // console.log("in db helper", result);
     return result;
@@ -168,7 +168,7 @@ const add = async (data) => {
 module.exports = {
   add,
   NurseModel,
-  getAllNurses,
+  getAllPatients,
   createTable,
   patientCredModel,
   findCred,
