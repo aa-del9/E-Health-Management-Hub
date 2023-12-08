@@ -1,13 +1,29 @@
 const createCredTable = `CREATE TABLE IF NOT EXISTS admins (
-    id INT PRIMARY KEY,
-    password VARCHAR(255) NOT NULL
-  )`;
+  name VARCHAR(255),
+  id SERIAL PRIMARY KEY,
+  phoneNum BIGINT,
+  email VARCHAR(255),
+  password VARCHAR(255) NOT NULL,
+  age INTEGER,
+  gender VARCHAR(255),
+  DOB DATE,
+  address VARCHAR(255)
+);`;
 
-const findCredQuery = `SELECT id,password FROM doctors WHERE id = $1;`;
+const findCredQuery = `SELECT id,password FROM admins WHERE id = $1;`;
 
-const addQuery = () => {
-  `INSERT INTO admins (id) VALUES (${id})`,
-    `INSERT INTO admins (password) VALUES (${password})`;
+const getCredsWithEmailQuery = `SELECT id,password FROM admins WHERE email = $1;`;
+
+const addQuery = `INSERT INTO admins (
+    name, phoneNum, email, password, age, gender, DOB, address)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
+
+const findIfExistsQuery = `SELECT email FROM admins WHERE email = $1;`;
+
+module.exports = {
+  createCredTable,
+  findIfExistsQuery,
+  findCredQuery,
+  addQuery,
+  getCredsWithEmailQuery,
 };
-
-module.exports = { createCredTable, findCredQuery, addQuery };

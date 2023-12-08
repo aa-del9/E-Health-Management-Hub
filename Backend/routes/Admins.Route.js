@@ -2,7 +2,10 @@ const express = require("express");
 const {
   AdminModel,
   AdminCredModel,
+  findIfExists,
   createTables,
+  addAdmin,
+  getCreds,
   findCred,
 } = require("../models/Admin.model");
 require("dotenv").config();
@@ -25,19 +28,27 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { email } = req.body;
   try {
     await createTables();
-    const admin = await AdminModel.findOne({ email });
-    if (admin) {
+    const admin = await findIfExists(req.body.email);
+    console.log(admin);
+    // const admin = await AdminModel.findOne({ email });
+    if (admin.length > 0) {
       return res.send({
         message: "Admin already exists",
       });
     }
-    let value = new AdminModel(req.body);
-    await value.save();
-    const data = await AdminModel.findOne({ email });
-    return res.send({ data, message: "Registered" });
+    const value = req.body;
+    // console.log(value);
+    //let value = new AdminModel(req.body);
+    // await value.save();
+    await addAdmin(value);
+    // const data = await AdminModel.findOne({ email });
+    const data = await findIfExists(req.body.email);
+
+    const email = data[0].email;
+    console.log(email);
+    return res.send({ email, message: "Registered" });
   } catch (error) {
     res.send({ message: "error" });
   }
@@ -49,14 +60,17 @@ router.post("/login", async (req, res) => {
   try {
     const admin = await findCred(adminID);
     //const admin = await AdminModel.findOne({ adminID, password });
-
-    if (adminID == admin[0].id && password == admin[0].password) {
+    if (
+      admin.length > 0 &&
+      adminID == admin[0].id &&
+      password == admin[0].password
+    ) {
       const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });
       res.send({
         message: "Successful",
-        user: { ...admin, userType: "admin" },
+        user: { ...admin[0], userType: "admin" },
         token: token,
       });
     } else {
@@ -97,29 +111,35 @@ router.delete("/:adminId", async (req, res) => {
   }
 });
 
-router.post("/password", (req, res) => {
-  const { email, userId, password } = req.body;
-
+router.post("/password", async (req, res) => {
+  //TODO
+  //const { email, userId, password } = req.body;
+  console.log(req.body);
+  const creds = await getCreds(req.body.email);
+  console.log(creds);
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
     auth: {
-      user: "agrawaljoy1@gmail.com",
-      pass: "zxkyjqfuhiizmxrg",
+      user: "aadel.sheikh34@gmail.com",
+      pass: "passingword1395",
     },
   });
 
   const mailOptions = {
-    from: "agrawaljoy1@gmail.com",
-    to: email,
+    from: "aadel.sheikh34@gmail.com",
+    to: "aadel.sheikh34@gmail.com",
     subject: "Account ID and Password",
-    text: `This is your User Id : ${userId} and  Password : ${password} .`,
+    text: "This is your User Id : ${creds[0].id} and  Password : ${creds[0].password} .",
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       return res.send(error);
     }
-    return res.send("Password reset email sent");
+    console.log(info.messageId);
+    return res.send("Password reset email sent", info.messageId);
   });
 });
 

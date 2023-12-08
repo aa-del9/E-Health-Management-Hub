@@ -15,9 +15,10 @@ const Add_Admin = () => {
 
   const InitData = {
     adminName: "",
-    age: "",
-    mobile: "",
+    phoneNum: "",
     email: "",
+    password: "Admin@123",
+    age: "",
     gender: "",
     DOB: "",
     address: "",
@@ -29,9 +30,10 @@ const Add_Admin = () => {
   };
   const dispatch = useDispatch();
 
-  const HandleDoctorSubmit = (e) => {
+  const HandleAdminSubmit = (e) => {
     e.preventDefault();
     setloading(true);
+
     dispatch(AdminRegister(AdminValue)).then((res) => {
       if (res.message === "Admin already exists") {
         setloading(false);
@@ -42,9 +44,8 @@ const Add_Admin = () => {
         return notify("Something went wrong, Please try Again");
       }
       notify("Admin Added");
-
       let data = {
-        email: res.data.email,
+        email: res.email,
         // password: res.data.password,
         // userId: res.data.adminID,
       };
@@ -71,7 +72,7 @@ const Add_Admin = () => {
           <div className="Main_Add_Doctor_div">
             <h1>Add Admin</h1>
             <img src={admin} alt="doctor" className="avatarimg" />
-            <form onSubmit={HandleDoctorSubmit}>
+            <form onSubmit={HandleAdminSubmit}>
               <div>
                 <label>Name</label>
                 <div className="inputdiv">
@@ -104,8 +105,8 @@ const Add_Admin = () => {
                   <input
                     type="number"
                     placeholder="Emergency Number"
-                    name="mobile"
-                    value={AdminValue.mobile}
+                    name="phoneNum"
+                    value={AdminValue.phoneNum}
                     onChange={HandleDoctorChange}
                     required
                   />
