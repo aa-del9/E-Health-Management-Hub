@@ -14,6 +14,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Drawer } from "antd";
+import { useAuth } from "../../../Routes/AuthContext";
 const notify = (text) => toast(text);
 
 const DLogin = () => {
@@ -33,7 +34,7 @@ const DLogin = () => {
 
   // ************************************************
   const [Loading, setLoading] = useState(false);
-  const [placement, SetPlacement] = useState("Patient");
+  const { placement, setAuthPlacement } = useAuth();
   const [formvalue, setFormvalue] = useState({
     ID: "",
     password: "",
@@ -125,7 +126,7 @@ const DLogin = () => {
   };
 
   const placementChange = (e) => {
-    SetPlacement(e.target.value);
+    setAuthPlacement(e.target.value);
   };
 
   const [ForgetPassword, setForgetPassword] = useState({
