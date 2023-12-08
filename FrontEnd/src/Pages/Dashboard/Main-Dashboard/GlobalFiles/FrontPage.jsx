@@ -13,7 +13,7 @@ import Sidebar from "./Sidebar";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetAllData, GetPatients } from "../../../../Redux/Datas/action";
-import { usertype } from "../../Dashboard-Login/DLogin";
+import { userType } from "../../Dashboard-Login/DLogin";
 import { useAuth } from "../../../../Routes/AuthContext";
 
 const FrontPage = () => {
@@ -66,7 +66,7 @@ const FrontPage = () => {
             </div>
             <RiEmpathizeLine className="overviewIcon" />
           </div> */}
-          {userType === "Admin" && (
+          {userType === "Admin" ? (
             <>
               <div className="six commondiv">
                 {" "}
@@ -93,7 +93,7 @@ const FrontPage = () => {
                 <MdPayment className="overviewIcon" />
               </div>
             </>
-          )}
+          ) : null}
           <div className="one commondiv">
             <div>
               <h1>{data?.doctor}</h1>
@@ -129,7 +129,7 @@ const FrontPage = () => {
         {/* ************************************* */}
 
         <div>
-          {userType === "Admin" && (
+          {userType === "Admin" ? (
             <>
               <div className="patientDetails">
                 <h1>Patient Details</h1>
@@ -144,15 +144,15 @@ const FrontPage = () => {
                 </div>
               </div>
             </>
-          )}
-          {userType === "doctor" && (
+          ) : null}
+          {userType === "doctor" ? (
             <div className="patientDetails">
               <h1>Patient Details</h1>
               <div className="patientBox">
                 <Table columns={patientColumns} dataSource={patients} />
               </div>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>
