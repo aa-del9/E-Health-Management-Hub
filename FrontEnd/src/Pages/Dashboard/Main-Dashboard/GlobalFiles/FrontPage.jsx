@@ -13,8 +13,11 @@ import Sidebar from "./Sidebar";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetAllData, GetPatients } from "../../../../Redux/Datas/action";
+import { usertype } from "../../Dashboard-Login/DLogin";
+import { useAuth } from "../../../../Routes/AuthContext";
 
 const FrontPage = () => {
+  const { placement } = useAuth();
   const patientColumns = [
     { title: "Name", dataIndex: "patientName", key: "patientName" },
     { title: "Age", dataIndex: "age", key: "age" },
@@ -48,12 +51,49 @@ const FrontPage = () => {
     dispatch(GetAllData());
   }, []);
 
+  const userType = placement;
+
   return (
     <div className="container">
       <Sidebar />
       <div className="AfterSideBar">
         <h1 style={{ color: "rgb(184 191 234)" }}>Overview</h1>
         <div className="maindiv">
+          {/* <div className="three commondiv">
+            <div>
+              <h1>{data?.patient}</h1>
+              <p>Patient</p>
+            </div>
+            <RiEmpathizeLine className="overviewIcon" />
+          </div> */}
+          {userType === "Admin" && (
+            <>
+              <div className="six commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.admin}</h1>
+                  <p>Admin</p>
+                </div>
+                <RiAdminLine className="overviewIcon" />
+              </div>
+              <div className="five commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.ambulance}</h1>
+                  <p>Ambulance</p>
+                </div>
+                <FaAmbulance className="overviewIcon" />
+              </div>
+              <div className="six commondiv">
+                {" "}
+                <div>
+                  <h1>{data?.report}</h1>
+                  <p>Reports</p>
+                </div>
+                <MdPayment className="overviewIcon" />
+              </div>
+            </>
+          )}
           <div className="one commondiv">
             <div>
               <h1>{data?.doctor}</h1>
@@ -69,20 +109,13 @@ const FrontPage = () => {
             </div>
             <FaUserNurse className="overviewIcon" />
           </div>
-          {/* <div className="three commondiv">
-            <div>
-              <h1>{data?.patient}</h1>
-              <p>Patient</p>
-            </div>
-            <RiEmpathizeLine className="overviewIcon" />
-          </div> */}
           <div className="six commondiv">
             {" "}
             <div>
-              <h1>{data?.admin}</h1>
-              <p>Admin</p>
+              <h1>{data?.appointment}</h1>
+              <p>Appointment</p>
             </div>
-            <RiAdminLine className="overviewIcon" />
+            <BsFillBookmarkCheckFill className="overviewIcon" />
           </div>
           {/* <div className="four commondiv">
             {" "}
@@ -92,44 +125,34 @@ const FrontPage = () => {
             </div>
             <FaBed className="overviewIcon" />
           </div> */}
-
-          <div className="five commondiv">
-            {" "}
-            <div>
-              <h1>{data?.ambulance}</h1>
-              <p>Ambulance</p>
-            </div>
-            <FaAmbulance className="overviewIcon" />
-          </div>
-          <div className="six commondiv">
-            {" "}
-            <div>
-              <h1>{data?.appointment}</h1>
-              <p>Appointment</p>
-            </div>
-            <BsFillBookmarkCheckFill className="overviewIcon" />
-          </div>
-          <div className="six commondiv">
-            {" "}
-            <div>
-              <h1>{data?.report}</h1>
-              <p>Reports</p>
-            </div>
-            <MdPayment className="overviewIcon" />
-          </div>
         </div>
         {/* ************************************* */}
-        <div className="patientDetails">
-          <h1>Patient Details</h1>
-          <div className="patientBox">
-            <Table columns={patientColumns} dataSource={patients} />
-          </div>
-        </div>
-        <div className="patientDetails">
-          <h1>Doctor Details</h1>
-          <div className="patientBox">
-            <Table columns={doctorColumns} dataSource={doctors} />
-          </div>
+
+        <div>
+          {userType === "Admin" && (
+            <>
+              <div className="patientDetails">
+                <h1>Patient Details</h1>
+                <div className="patientBox">
+                  <Table columns={patientColumns} dataSource={patients} />
+                </div>
+              </div>
+              <div className="patientDetails">
+                <h1>Doctor Details</h1>
+                <div className="patientBox">
+                  <Table columns={doctorColumns} dataSource={doctors} />
+                </div>
+              </div>
+            </>
+          )}
+          {userType === "doctor" && (
+            <div className="patientDetails">
+              <h1>Patient Details</h1>
+              <div className="patientBox">
+                <Table columns={patientColumns} dataSource={patients} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

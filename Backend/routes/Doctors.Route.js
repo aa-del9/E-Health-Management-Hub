@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    // const doctors = await DoctorModel.find();
+    const doctors = await DoctorModel.find();
     await createTables();
     res.status(200).send("doctor table exists or created");
   } catch (error) {
