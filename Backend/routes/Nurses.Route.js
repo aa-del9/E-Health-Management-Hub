@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    //await createTable();
+    await createTable();
     console.log("idhr");
     const patients = await getAllPatients();
     res.status(200).send(patients);

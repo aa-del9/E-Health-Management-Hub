@@ -5,7 +5,7 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS doctors (
   email VARCHAR(255),
   password VARCHAR(255) NOT NULL,
   age INTEGER,
-  gender VARCHAR(255),
+  gender CHAR(1),
   bloodGroup VARCHAR(255),
   DOB DATE,
   address VARCHAR(255),
