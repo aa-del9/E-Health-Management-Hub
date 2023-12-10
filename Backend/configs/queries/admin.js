@@ -3,7 +3,7 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS admins (
     password VARCHAR(255) NOT NULL
   )`;
 
-const findCredQuery = `SELECT id,password FROM doctors WHERE id = $1;`;
+const findCredQuery = `SELECT id,password FROM admincred WHERE id = $1;`;
 
 const addQuery = () => {
   `INSERT INTO admins (id) VALUES (${id})`,

@@ -3,9 +3,11 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [placement, setPlacement] = useState("Patient");
+  const storedPlacement = localStorage.getItem("placement");
+  const [placement, setPlacement] = useState(storedPlacement || "Patient");
 
   const setAuthPlacement = (newPlacement) => {
+    localStorage.setItem("placement", newPlacement);
     setPlacement(newPlacement);
   };
   useEffect(() => {

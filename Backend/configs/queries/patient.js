@@ -15,7 +15,7 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS patients (
   FOREIGN KEY (docID) REFERENCES doctors(id)
 );`;
 
-let findCredQuery = `SELECT id,password FROM patients WHERE id = $1;`;
+let findCredQuery = `SELECT id,password FROM pat_cred WHERE id = $1;`;
 //todo: change columns
 const addQuery = () => {
   `INSERT INTO patients (id) VALUES (${id})`,

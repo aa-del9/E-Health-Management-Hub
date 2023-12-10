@@ -22,6 +22,7 @@ import { useAuth } from "../../../../Routes/AuthContext";
 
 const FrontPage = () => {
   const { placement } = useAuth();
+
   const patientColumns = [
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Age", dataIndex: "age", key: "age" },
@@ -61,6 +62,11 @@ const FrontPage = () => {
 
   const userType = placement;
   console.log("userType", userType);
+  console.log("User Object:", user);
+
+  // Get property names using Object.keys()
+  const propertyNames = Object.keys(user);
+  console.log("User Properties:", propertyNames);
 
   return (
     <div className="container">

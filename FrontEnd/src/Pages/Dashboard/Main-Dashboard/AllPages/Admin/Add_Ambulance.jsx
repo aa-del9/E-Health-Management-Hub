@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import one from "../../../../../img/ambuone.png";
-import two from "../../../../../img/ambutwo.png";
-import three from "../../../../../img/ambuthree.png";
+import one from "../../../../../img/motor.png";
+import two from "../../../../../img/bolan.png";
+import three from "../../../../../img/deluxambulance.png";
 import "./CSS/Add_Ambu.css";
 import { useDispatch, useSelector } from "react-redux";
 import { AmbulanceRegister } from "../../../../../Redux/auth/action";

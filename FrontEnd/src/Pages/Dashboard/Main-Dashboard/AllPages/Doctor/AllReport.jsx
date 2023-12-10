@@ -1,17 +1,48 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GetAllReports } from "../../../../../Redux/Datas/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
+import { useAuth } from "../../../../../Routes/AuthContext";
 
 const AllReport = () => {
   const dispatch = useDispatch();
   const [Report, setReport] = useState();
+  const { user } = useSelector((state) => state.auth);
+  const { placement } = useAuth();
+  const userType = placement;
+
+  // useEffect(() => {
+
+  //   dispatch(GetAllReports()).then((res) => {
+  //     setReport(res);
+  //   });
+  // }, []);
+
   useEffect(() => {
-    dispatch(GetAllReports()).then((res) => {
-      setReport(res);
-    });
-  }, []);
+    const fetchReports = () => {
+      let fetchedReports;
+
+      try {
+        if (userType === "Doctor") {
+          dispatch(GetAllReports()).then((res) => {
+            fetchedReports = res;
+            setReport(fetchedReports);
+          });
+        } else if (userType === "Patient" && user && user.email) {
+          dispatch(GetAllReports({ patientEmail: user.email })).then((res) => {
+            fetchedReports = res;
+            setReport(fetchedReports);
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      }
+    };
+
+    fetchReports();
+  }, [dispatch, user?.email, userType]);
+
   return (
     <>
       <div className="container">
