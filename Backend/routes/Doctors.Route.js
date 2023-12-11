@@ -5,6 +5,8 @@ const {
   docModel,
   createTables,
   findById,
+  findIfExists,
+  addDoctor,
 } = require("../models/Doctor.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -16,7 +18,7 @@ router.get("/", async (req, res) => {
     // const doctors = await DoctorModel.find();
     await createTables();
     const doctors = await getAllDoctors();
-    //console.log(doctors);
+    console.log("doctors", doctors);
     res.status(200).send(doctors);
   } catch (error) {
     console.log(error);
@@ -25,18 +27,26 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { email } = req.body;
+  //const { email } = req.body;
   try {
-    const doctor = await DoctorModel.findOne({ email });
-    if (doctor) {
+    await createTables();
+    const doctor = await findIfExists(req.body.email);
+    //const doctor = await DoctorModel.findOne({ email });
+    if (doctor.length > 0) {
       return res.send({
         message: "Doctor already exists",
       });
     }
-    let value = new DoctorModel(req.body);
-    await value.save();
-    const data = await DoctorModel.findOne({ email });
-    return res.send({ data, message: "Registered" });
+    // let value = new DoctorModel(req.body);
+    // await value.save();
+    const value = req.body;
+    console.log(value);
+    await addDoctor(value);
+    // const data = await DoctorModel.findOne({ email });
+    const data = await findIfExists(req.body.email);
+    const email = data[0].email;
+    console.log(email);
+    return res.send({ email, message: "Registered" });
   } catch (error) {
     res.send({ message: "error" });
   }

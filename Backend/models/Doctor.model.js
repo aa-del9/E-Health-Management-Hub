@@ -5,6 +5,7 @@ const {
   createCredTable,
   findCredQuery,
   addQuery,
+  findIfExistsQuery,
   getAllQuery,
 } = require("../configs/queries/doctor");
 
@@ -101,13 +102,31 @@ const createTables = () => {
       // Handle the error, e.g., by sending a response or calling a callback with the error
     } else {
       // Process the query result, e.g., by sending it as a response or calling a callback with the result
-      console.log("Query result:", result.rows);
+      console.log("Doctor table created or exists.");
     }
   });
 };
 const getAllDoctors = () => {
   return dbhelper.query(getAllQuery).then((result) => {
     // console.log("in db helper", result);
+    return result;
+  });
+};
+
+const findIfExists = (email) => {
+  console.log("email received to db:", email);
+  return dbhelper.query(findIfExistsQuery, [email]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+
+const addDoctor = (doctor) => {
+  console.log("doctor received:", doctor);
+  const array = Object.values(doctor);
+  console.log(array);
+  return dbhelper.query(addQuery, array).then((result) => {
+    console.log(result, "in db helper");
     return result;
   });
 };
@@ -126,4 +145,6 @@ module.exports = {
   getAllDoctors,
   createTables,
   findById,
+  findIfExists,
+  addDoctor,
 };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./CSS/Add_Doctor.css";
 import doctor from "../../../../../img/doctoravatar.png";
 import { useDispatch, useSelector } from "react-redux";
-import { DoctorRegister, SendPassword } from "../../../../../Redux/auth/action";
+import { DoctorRegister, sendPassword } from "../../../../../Redux/auth/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -18,30 +18,29 @@ const AddDoctor = () => {
   const [loading, setLoading] = useState(false);
 
   const initData = {
-    docName: "",
-    age: "",
-    mobile: "",
+    doctorName: "",
+    phoneNum: 0,
     email: "",
-    bloodGroup: "",
+    age: 0,
     gender: "",
+    bloodGroup: "",
     DOB: "",
     address: "",
     education: "",
     department: "",
-    docID: Date.now(),
-    password: "",
-    details: "",
+    fees: 0,
   };
-  const [DoctorValue, setDoctorValue] = useState(initData);
+  const [doctorValue, setDoctorValue] = useState(initData);
 
   const HandleDoctorChange = (e) => {
-    setDoctorValue({ ...DoctorValue, [e.target.name]: e.target.value });
+    setDoctorValue({ ...doctorValue, [e.target.name]: e.target.value });
   };
 
   const HandleDoctorSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    dispatch(DoctorRegister(DoctorValue)).then((res) => {
+    dispatch(DoctorRegister(doctorValue)).then((res) => {
+      console.log("res", res);
       if (res.message === "Doctor already exists") {
         setLoading(false);
         return notify("Doctor Already Exist");
@@ -52,12 +51,10 @@ const AddDoctor = () => {
       }
 
       let data = {
-        email: res.data.email,
-        password: res.data.password,
-        userId: res.data.docID,
+        email: res.email,
       };
       console.log(data, "DOCTOR REGISTER SUCCESSFULLY");
-      dispatch(SendPassword(data)).then((res) => notify("Account Detais Sent"));
+      dispatch(sendPassword(data)).then((res) => notify("Account Detais Sent"));
       setLoading(false);
       setDoctorValue(initData);
     });
@@ -87,8 +84,8 @@ const AddDoctor = () => {
                   <input
                     type="text"
                     placeholder="Full Name"
-                    name="docName"
-                    value={DoctorValue.docName}
+                    name="doctorName"
+                    value={doctorValue.doctorName}
                     onChange={HandleDoctorChange}
                     required
                   />
@@ -101,7 +98,7 @@ const AddDoctor = () => {
                     type="number"
                     placeholder="Age"
                     name="age"
-                    value={DoctorValue.age}
+                    value={doctorValue.age}
                     onChange={HandleDoctorChange}
                     required
                   />
@@ -113,8 +110,8 @@ const AddDoctor = () => {
                   <input
                     type="number"
                     placeholder="Emergency Number"
-                    name="mobile"
-                    value={DoctorValue.mobile}
+                    name="phoneNum"
+                    value={doctorValue.phoneNum}
                     onChange={HandleDoctorChange}
                     required
                   />
@@ -127,7 +124,7 @@ const AddDoctor = () => {
                     type="email"
                     placeholder="abc@abc.com"
                     name="email"
-                    value={DoctorValue.email}
+                    value={doctorValue.email}
                     onChange={HandleDoctorChange}
                     required
                   />
@@ -138,7 +135,7 @@ const AddDoctor = () => {
                 <div className="inputdiv">
                   <select
                     name="gender"
-                    value={DoctorValue.gender}
+                    value={doctorValue.gender}
                     onChange={HandleDoctorChange}
                     required
                   >
@@ -153,7 +150,7 @@ const AddDoctor = () => {
                 <div className="inputdiv">
                   <select
                     name="bloodGroup"
-                    value={DoctorValue.bloodGroup}
+                    value={doctorValue.bloodGroup}
                     onChange={HandleDoctorChange}
                     required
                   >
@@ -176,7 +173,7 @@ const AddDoctor = () => {
                     type="date"
                     placeholder="dd-mm-yy"
                     name="DOB"
-                    value={DoctorValue.DOB}
+                    value={doctorValue.DOB}
                     onChange={HandleDoctorChange}
                     required
                   />
@@ -189,7 +186,7 @@ const AddDoctor = () => {
                     type="text"
                     placeholder="Address"
                     name="address"
-                    value={DoctorValue.address}
+                    value={doctorValue.address}
                     onChange={HandleDoctorChange}
                     required
                   />
@@ -202,7 +199,7 @@ const AddDoctor = () => {
                     type="text"
                     placeholder="eg.MBBS"
                     name="education"
-                    value={DoctorValue.education}
+                    value={doctorValue.education}
                     onChange={HandleDoctorChange}
                     required
                   />
@@ -213,7 +210,7 @@ const AddDoctor = () => {
                 <div className="inputdiv">
                   <select
                     name="department"
-                    value={DoctorValue.department}
+                    value={doctorValue.department}
                     onChange={HandleDoctorChange}
                     required
                   >
@@ -236,14 +233,14 @@ const AddDoctor = () => {
                   <input
                     type="number"
                     placeholder="Fees"
-                    name="Fees"
-                    value={DoctorValue.password}
+                    name="fees"
+                    value={doctorValue.fees}
                     onChange={HandleDoctorChange}
                     required
                   />
                 </div>
               </div>
-              <div>
+              {/* <div>
                 <label>Other Details</label>
                 <div className="inputdiv">
                   <textarea
@@ -257,7 +254,7 @@ const AddDoctor = () => {
                     required
                   />
                 </div>
-              </div>
+              </div> */}
               <button type="submit" className="formsubmitbutton">
                 {loading ? "Loading..." : "Submit"}
               </button>
