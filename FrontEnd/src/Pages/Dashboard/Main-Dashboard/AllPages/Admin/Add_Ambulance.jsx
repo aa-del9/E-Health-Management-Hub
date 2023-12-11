@@ -14,22 +14,23 @@ const notify = (text) => toast(text);
 const Add_Ambulance = () => {
   const { data } = useSelector((store) => store.auth);
 
-  let [ambuType, setambuType] = useState("none");
+  const [ambuType, setambuType] = useState("");
 
-  const [AmbuData, setAmbuDate] = useState({
-    type: "none",
-    charges: "",
-    ambulanceID: "",
-    ambulanceDriver: "",
-    number: "",
+  const [AmbuData, setAmbuData] = useState({
+    numPlate: "",
+    ambuType: "",
+    pph: 0,
+    driverName: "",
+    driverNum: 0,
   });
 
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
   const HandleAmbuChange = (e) => {
-    setAmbuDate({
+    console.log(AmbuData);
+    setAmbuData({
       ...AmbuData,
       [e.target.name]: e.target.value,
     });
@@ -37,14 +38,20 @@ const Add_Ambulance = () => {
 
   const HandleAmbuSubmit = (e) => {
     e.preventDefault();
-    setloading(true);
-    let data = {
-      ...AmbuData,
-      type: ambuType,
-    };
-    dispatch(AmbulanceRegister(data));
-    setloading(false);
-    notify("Ambulance Added");
+    setLoading(true);
+    dispatch(AmbulanceRegister(AmbuData)).then((res) => {
+      console.log("res", res);
+      if (res.message === "Ambulance already exists") {
+        setLoading(false);
+        return notify("Ambulance Already Exists");
+      }
+      if (res.message === "error") {
+        setLoading(false);
+        return notify("Something went wrong, Please try Again");
+      }
+      setLoading(false);
+      notify("Ambulance Added");
+    });
   };
 
   if (data?.isAuthticated === false) {
@@ -87,8 +94,8 @@ const Add_Ambulance = () => {
                 <div className="inputdiv">
                   <input
                     type="text"
-                    placeholder="Select img"
-                    name="type"
+                    placeholder="Select image"
+                    name="ambuType"
                     value={ambuType}
                     onChange={HandleAmbuChange}
                     required
@@ -101,21 +108,21 @@ const Add_Ambulance = () => {
                   <input
                     type="number"
                     placeholder="eg.200/-"
-                    name="charges"
-                    value={AmbuData.charges}
+                    name="pph"
+                    value={AmbuData.pph}
                     onChange={HandleAmbuChange}
                     required
                   />
                 </div>
               </div>
               <div>
-                <label>Ambulance Code</label>
+                <label>Ambulance Plate No.</label>
                 <div className="inputdiv">
                   <input
                     type="text"
                     placeholder="eg. ABC 123"
-                    name="ambulanceID"
-                    value={AmbuData.ambulanceID}
+                    name="numPlate"
+                    value={AmbuData.numPlate}
                     onChange={HandleAmbuChange}
                     required
                   />
@@ -127,8 +134,8 @@ const Add_Ambulance = () => {
                   <input
                     type="text"
                     placeholder="Name"
-                    name="ambulanceDriver"
-                    value={AmbuData.ambulanceDriver}
+                    name="driverName"
+                    value={AmbuData.driverName}
                     onChange={HandleAmbuChange}
                     required
                   />
@@ -140,8 +147,8 @@ const Add_Ambulance = () => {
                   <input
                     type="number"
                     placeholder="Contact No"
-                    name="number"
-                    value={AmbuData.number}
+                    name="driverNum"
+                    value={AmbuData.driverNum}
                     onChange={HandleAmbuChange}
                     required
                   />

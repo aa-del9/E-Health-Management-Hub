@@ -103,8 +103,9 @@ export const AdminLogin = (data) => async (dispatch) => {
 export const DoctorRegister = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.REGISTER_DOCTOR_REQUEST });
+    console.log("here", data);
     const res = await axios.post(
-      "https://zany-gray-clam-gear.cyclic.app/doctors/register",
+      "http://127.0.0.1:3001/doctors/register",
       data
     );
     // console.log(res);
@@ -184,13 +185,11 @@ export const AdminRegister = (data) => async (dispatch) => {
 // REGISTER AMBULANCE
 export const AmbulanceRegister = (data) => async (dispatch) => {
   try {
-    console.log(data);
+    console.log("Data", data);
     dispatch({ type: types.REGISTER_AMBULANCE_REQUEST });
-    const res = await axios.post(
-      "https://zany-gray-clam-gear.cyclic.app/ambulances/add",
-      data
-    );
+    const res = await axios.post("http://127.0.0.1:3001/ambulances/add", data);
     console.log(res);
+    return res.data;
     // dispatch({
     //   type: types.REGISTER_AMBULANCE_SUCCESS,
     //   payload: {
@@ -252,7 +251,7 @@ export const UpdateDoctor = (data, id) => async (dispatch) => {
 };
 
 //update doctor
-export const SendPassword = (data) => async (dispatch) => {
+export const sendPassword = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.EDIT_DOCTOR_REQUEST });
     const res = await axios.post(`http://127.0.0.1:3001/admin/password`, data);

@@ -1,5 +1,10 @@
 const express = require("express");
-const { AmbulanceModel } = require("../models/Ambulance.model");
+const {
+  AmbulanceModel,
+  addAmbulance,
+  createTable,
+  findIfExists,
+} = require("../models/Ambulance.model");
 
 const router = express.Router();
 
@@ -17,12 +22,19 @@ router.get("/", async (req, res) => {
 router.post("/add", async (req, res) => {
   const payload = req.body;
   try {
-    const ambulance = new AmbulanceModel(payload);
-    await ambulance.save();
+    await createTable;
+    const ambulance = await findIfExists(payload.numPlate);
+    if (ambulance.length > 0) {
+      return res.send({
+        message: "Ambulance already exists",
+      });
+    }
+    console.log("payload", payload);
+    await addAmbulance(payload);
+    return res.send({ message: "Ambulance Added Successfully" });
   } catch (error) {
-    res.send(error);
+    res.send({ message: "error" });
   }
-  res.send("Ambulance Added Successfully");
 });
 
 router.patch("/:ambulanceId", async (req, res) => {
