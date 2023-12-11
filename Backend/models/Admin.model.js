@@ -83,7 +83,7 @@ const AdminCredModel = {
 
 const createTables = () => {
   console.log("here first");
-  db.query(createCredTable, (err, result) => {
+  dbhelper.query(createCredTable, [], (err, result) => {
     if (err) {
       console.error("Error: ", err);
       // Handle the error, e.g., by sending a response or calling a callback with the error

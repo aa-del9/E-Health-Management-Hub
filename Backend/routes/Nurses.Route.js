@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
     await createTable();
     console.log("idhr");
     const patients = await getAllPatients();
+    // console.log("patients", patients);
     res.status(200).send(patients);
   } catch (error) {
     console.log(error);

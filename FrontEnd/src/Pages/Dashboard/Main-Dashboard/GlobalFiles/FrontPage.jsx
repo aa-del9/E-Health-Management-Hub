@@ -47,7 +47,7 @@ const FrontPage = () => {
   } = useSelector((store) => store.data);
 
   console.log(data);
-  console.log(patients);
+  console.log("patients", patients);
   console.log("doctors", doctors);
   const dispatch = useDispatch();
   const {

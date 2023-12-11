@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AdminRegister, SendPassword } from "../../../../../Redux/auth/action";
+import { AdminRegister, sendPassword } from "../../../../../Redux/auth/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import admin from "../../../../../img/admin.jpg";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,7 +17,6 @@ const Add_Admin = () => {
     adminName: "",
     phoneNum: "",
     email: "",
-    password: "Admin@123",
     age: "",
     gender: "",
     DOB: "",
@@ -49,7 +48,7 @@ const Add_Admin = () => {
         // password: res.data.password,
         // userId: res.data.adminID,
       };
-      dispatch(SendPassword(data)).then((res) => notify("Account Detais Sent"));
+      dispatch(sendPassword(data)).then((res) => notify("Account Detais Sent"));
       setloading(false);
       setAdminValue(InitData);
     });

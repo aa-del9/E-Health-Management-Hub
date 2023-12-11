@@ -1,5 +1,5 @@
-const createCredTable = `CREATE TABLE IF NOT EXISTS patients (
-  id INT PRIMARY KEY,
+const createTableQuery = `CREATE TABLE IF NOT EXISTS patients (
+  id SERIAL PRIMARY KEY,
   name VARCHAR(255),
   phoneNum BIGINT,
   email VARCHAR(255),
@@ -15,12 +15,12 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS patients (
   FOREIGN KEY (docID) REFERENCES doctors(id)
 );`;
 
-let findCredQuery = `SELECT id,password FROM patients WHERE id = $1;`;
+const findCredQuery = `SELECT id,password FROM patients WHERE id = $1;`;
 //todo: change columns
 const addQuery = () => {
   `INSERT INTO patients (id) VALUES (${id})`,
     `INSERT INTO patients (password) VALUES (${password})`;
 };
 
-const getAllQuery = `SELECT * FROM patients;`;
-module.exports = { createCredTable, findCredQuery, getAllQuery, addQuery };
+const getAllQuery = `SELECT * FROM patient_details;`;
+module.exports = { createTableQuery, findCredQuery, getAllQuery, addQuery };

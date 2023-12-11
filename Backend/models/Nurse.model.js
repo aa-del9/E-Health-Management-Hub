@@ -1,7 +1,7 @@
 //const db = require("../configs/db");
 const dbhelper = require("../configs/dbhelper");
 const {
-  createCredTable,
+  createTableQuery,
   findCredQuery,
   getAllQuery,
   addQuery,
@@ -90,13 +90,13 @@ const patientCredModel = {
 };
 
 const createTable = () => {
-  return dbhelper.query(createCredTable, (err, result) => {
+  return dbhelper.query(createTableQuery, [], (err, result) => {
     if (err) {
       console.error("Error: ", err);
       // Handle the error, e.g., by sending a response or calling a callback with the error
     } else {
       // Process the query result, e.g., by sending it as a response or calling a callback with the result
-      console.log("Patient Credits Table created or  already exists.");
+      console.log("Patient Table created or  already exists.");
     }
   });
 };
@@ -123,7 +123,7 @@ const adds = () => {
 
 const getAllPatients = () => {
   return dbhelper.query(getAllQuery).then((result) => {
-    // console.log("in db helper", result);
+    //console.log("in db helper", result);
     return result;
   });
 };

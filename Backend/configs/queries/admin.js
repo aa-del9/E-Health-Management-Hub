@@ -15,8 +15,8 @@ const findCredQuery = `SELECT id,password FROM admins WHERE id = $1;`;
 const getCredsWithEmailQuery = `SELECT id,password FROM admins WHERE email = $1;`;
 
 const addQuery = `INSERT INTO admins (
-    name, phoneNum, email, password, age, gender, DOB, address)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`;
+    name, phoneNum, email, age, gender, DOB, address)
+    VALUES ($1, $2, $3, $4, $5, $6, $7);`;
 
 const findIfExistsQuery = `SELECT email FROM admins WHERE email = $1;`;
 
