@@ -5,6 +5,7 @@ const {
   findCredQuery,
   getAllQuery,
   addQuery,
+  findIfExistsQuery,
 } = require("../configs/queries/patient");
 let x = false;
 const knex = require("knex")({
@@ -109,18 +110,6 @@ const findCred = (ID) => {
   });
 };
 
-const adds = () => {
-  db.query(addQuery(), (err, result) => {
-    if (err) {
-      console.error("Error: ", err);
-      // Handle the error, e.g., by sending a response or calling a callback with the error
-    } else {
-      // Process the query result, e.g., by sending it as a response or calling a callback with the result
-      console.log("Query result:", result.rows);
-    }
-  });
-};
-
 const getAllPatients = () => {
   return dbhelper.query(getAllQuery).then((result) => {
     //console.log("in db helper", result);
@@ -128,32 +117,22 @@ const getAllPatients = () => {
   });
 };
 
-const add = async (data) => {
-  console.log(data);
-  console.log(Object.entries(data));
-  const insertQuery = () => {
-    return knex("pat_cred").insert(data);
-  };
-  const insertQueries = Object.entries(data).map(([columnName, value]) => {
-    return knex("pat_cred").insert({ [columnName]: value });
+const findIfExists = (email) => {
+  console.log("email received to db:", email);
+  return dbhelper.query(findIfExistsQuery, [email]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
   });
-  try {
-    await insertQuery();
+};
 
-    console.log("Data inserted successfully");
-  } catch (error) {
-    console.error("Error inserting data:", error);
-  } finally {
-  }
-  // try {
-  //   //console.log(insertQueries);
-  //   await Promise.all(insertQueries);
-  //   console.log("Data inserted successfully");
-  // } catch (error) {
-  //   console.error("Error inserting data:", error);
-  // } finally {
-  //   knex.destroy();
-  // }
+const addPatient = (patient) => {
+  console.log("patient received:", patient);
+  const array = Object.values(patient);
+  console.log(array);
+  return dbhelper.query(addQuery, array).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
 };
 
 // // Create the nurses table
@@ -166,10 +145,11 @@ const add = async (data) => {
 //   });
 
 module.exports = {
-  add,
+  addPatient,
   NurseModel,
   getAllPatients,
   createTable,
   patientCredModel,
   findCred,
+  findIfExists,
 };

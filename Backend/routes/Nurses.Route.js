@@ -1,11 +1,12 @@
 const express = require("express");
 const {
-  add,
+  addPatient,
   NurseModel,
   getAllPatients,
   createTable,
   patientCredModel,
   findCred,
+  findIfExists,
 } = require("../models/Nurse.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -25,35 +26,14 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/register", async (req, res) => {
-  const data = req.body;
-  console.log(data);
+router.post("/signup", async (req, res) => {
+  const email = req.body.email;
+  console.log(req.body);
   try {
-    const patient = findById(data.id);
-    console.log(patient);
-    if (patient) {
-      return res.send({
-        message: "Patient already exists",
-      });
-    } else {
-      console.log("heree");
-      patientCredModel.id = data.id;
-      patientCredModel.password = data.password;
-      console.log("model", patientCredModel);
-      await add(patientCredModel);
-      return res.send({ value, message: "Registered" });
-    }
-    //hi
-    // const nurse = await NurseModel.findOne({ email });
-    // if (nurse) {
-    //   return res.send({
-    //     message: "Nurse already exists",
-    //   });
-    // }
-    // let value = new NurseModel(req.body);
-    // await value.save();
-    // const data = await NurseModel.findOne({ email });
-    // return res.send({ data, message: "Registered" });
+    await addPatient(req.body);
+    return res.send({
+      message: "Registered",
+    });
   } catch (error) {
     res.send({ message: "error" });
   }
@@ -80,6 +60,24 @@ router.post("/login", async (req, res) => {
   } catch (error) {
     console.log({ message: "Error" });
     console.log(error);
+  }
+});
+
+router.post("/check", async (req, res) => {
+  try {
+    const patient = await findIfExists(req.body.email);
+    console.log(patient);
+    if (patient.length > 0) {
+      return res.send({
+        message: "Patient already exists",
+      });
+    } else {
+      return res.send({
+        message: "Patient does not exist",
+      });
+    }
+  } catch (error) {
+    res.send({ message: "error" });
   }
 });
 

@@ -17,10 +17,37 @@ const createTableQuery = `CREATE TABLE IF NOT EXISTS patients (
 
 const findCredQuery = `SELECT id,password FROM patients WHERE id = $1;`;
 //todo: change columns
-const addQuery = () => {
-  `INSERT INTO patients (id) VALUES (${id})`,
-    `INSERT INTO patients (password) VALUES (${password})`;
-};
+const addQuery = `INSERT INTO patients (
+    name,
+    phonenum,
+    email,
+    password,
+    age,
+    gender,
+    bloodgroup,
+    dob,
+    address
+  )
+VALUES (
+    $1,
+    $2,
+    $3,
+    $4,
+    $5,
+    $6,
+    $7,
+    $8,
+    $9
+  );
+  `;
+
+const findIfExistsQuery = `SELECT email FROM patients WHERE email = $1;`;
 
 const getAllQuery = `SELECT * FROM patient_details;`;
-module.exports = { createTableQuery, findCredQuery, getAllQuery, addQuery };
+module.exports = {
+  findIfExistsQuery,
+  createTableQuery,
+  findCredQuery,
+  getAllQuery,
+  addQuery,
+};

@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
     // const doctors = await DoctorModel.find();
     await createTables();
     const doctors = await getAllDoctors();
-    console.log("doctors", doctors);
+    //console.log("doctors", doctors);
     res.status(200).send(doctors);
   } catch (error) {
     console.log(error);

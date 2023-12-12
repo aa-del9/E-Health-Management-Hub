@@ -26,10 +26,29 @@ export const NurseLogin = (data) => async (dispatch) => {
   }
 };
 
+export const CheckPatientExists = (data) => async (dispatch) => {
+  try {
+    const res = await axios.post("http://127.0.0.1:3001/nurses/check", data);
+    dispatch({
+      type: types.LOGIN_NURSE_SUCCESS,
+      payload: {
+        message: res.data.message,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    dispatch({
+      type: types.LOGIN_NURSE_ERROR,
+      payload: {
+        message: error,
+      },
+    });
+  }
+};
 export const PatientSignup = (data) => async (dispatch) => {
   try {
     console.log("data given by redux", data);
-    const res = await axios.post("http://127.0.0.1:3001/patient/signup", data);
+    const res = await axios.post("http://127.0.0.1:3001/nurses/signup", data);
     dispatch({
       type: types.LOGIN_NURSE_SUCCESS,
       payload: {

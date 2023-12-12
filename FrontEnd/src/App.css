@@ -9,8 +9,29 @@
 body {
   font-family: "Poppins", sans-serif;
 }
-
 .inputdiv input::placeholder {
   font-family: "Poppins", sans-serif;
   opacity: 1; /* Firefox */
+}
+
+
+.inputdiv select {
+  display: block;
+  width: 100%;
+  /* Change the background color */
+  background-color: rgba(250, 225, 225, 0.874);
+
+  /* Change the text color */
+  color: #333;
+
+  /* Add any other styles you want */
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+/* Change the color of the options */
+.inputdiv select option {
+  background-color: rgba(250, 225, 225, 0.874);
+  color: #333;
 }

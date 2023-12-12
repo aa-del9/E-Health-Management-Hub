@@ -19,12 +19,14 @@ import Book_Appointment from "../Pages/Dashboard/Main-Dashboard/AllPages/Nurse/B
 import Nurse_Profile from "../Pages/Dashboard/Main-Dashboard/AllPages/Nurse/Nurse_Profile";
 import FrontPage from "../Pages/Dashboard/Main-Dashboard/GlobalFiles/FrontPage";
 import Admin_Profile from "../Pages/Dashboard/Main-Dashboard/AllPages/Admin/Admin_Profile";
+import SignupDetails from "../Pages/Dashboard/Dashboard-Login/Signup/SignupDetails";
 const AllRoutes = () => {
   return (
     <>
       <Routes>
         <Route path="/" element={<DLogin />} />
         <Route path="/signup" element={<DSignup />} />
+        <Route path="/adddetails" element={<SignupDetails />} />
         <Route path="/dashboard" element={<FrontPage />} />
         <Route path="/addoctor" element={<AddDoctor />} />
         <Route path="/addambulance" element={<Add_Ambulance />} />
