@@ -3,14 +3,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetAllReports } from "../../../../../Redux/Datas/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
-import { useAuth } from "../../../../../Routes/AuthContext";
 
 const AllReport = () => {
   const dispatch = useDispatch();
   const [Report, setReport] = useState();
   const { user } = useSelector((state) => state.auth);
-  const { placement } = useAuth();
-  const userType = placement;
 
   // useEffect(() => {
 
@@ -24,12 +21,12 @@ const AllReport = () => {
       let fetchedReports;
 
       try {
-        if (userType === "Doctor") {
+        if (user?.userType === "Doctor") {
           dispatch(GetAllReports()).then((res) => {
             fetchedReports = res;
             setReport(fetchedReports);
           });
-        } else if (userType === "Patient" && user && user.email) {
+        } else if (user?.userType === "Patient" && user && user.email) {
           dispatch(GetAllReports({ patientEmail: user.email })).then((res) => {
             fetchedReports = res;
             setReport(fetchedReports);
@@ -41,7 +38,7 @@ const AllReport = () => {
     };
 
     fetchReports();
-  }, [dispatch, user?.email, userType]);
+  }, [user, dispatch, user?.email, user?.userType]);
 
   return (
     <>
