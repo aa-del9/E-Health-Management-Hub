@@ -17,11 +17,8 @@ import {
   GetPatients,
   GetDoctorDetails,
 } from "../../../../Redux/Datas/action";
-import { userType } from "../../Dashboard-Login/DLogin";
-import { useAuth } from "../../../../Routes/AuthContext";
 
 const FrontPage = () => {
-  const { placement } = useAuth();
   const patientColumns = [
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Age", dataIndex: "age", key: "age" },
@@ -59,8 +56,7 @@ const FrontPage = () => {
     dispatch(GetAllData());
   }, []);
 
-  const userType = placement;
-  console.log("userType", userType);
+  console.log("userType", user?.userType);
 
   return (
     <div className="container">
@@ -75,7 +71,7 @@ const FrontPage = () => {
             </div>
             <RiEmpathizeLine className="overviewIcon" />
           </div> */}
-          {userType !== "Patient" ? (
+          {user?.userType !== "patient" ? (
             <>
               <div className="one commondiv">
                 <div>
@@ -100,7 +96,7 @@ const FrontPage = () => {
                 </div>
                 <BsFillBookmarkCheckFill className="overviewIcon" />
               </div>
-              {userType === "Admin" ? (
+              {user?.userType === "admin" ? (
                 <>
                   <div className="six commondiv">
                     {" "}
@@ -143,7 +139,7 @@ const FrontPage = () => {
         {/* ************************************* */}
 
         <div>
-          {userType === "Admin" ? (
+          {user?.userType === "admin" ? (
             <div className="patientDetails">
               <h1>Doctor Details</h1>
               <div className="patientBox">
@@ -151,7 +147,7 @@ const FrontPage = () => {
               </div>
             </div>
           ) : null}
-          {userType !== "Patient" ? (
+          {user?.userType !== "patient" ? (
             <div className="patientDetails">
               <h1>Patient Details</h1>
               <div className="patientBox">

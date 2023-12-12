@@ -14,7 +14,6 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Drawer } from "antd";
-import { useAuth } from "../../../Routes/AuthContext";
 const notify = (text) => toast(text);
 
 const DLogin = () => {
@@ -34,7 +33,7 @@ const DLogin = () => {
 
   // ************************************************
   const [Loading, setLoading] = useState(false);
-  const { placement, setAuthPlacement } = useAuth();
+  const [placement, setPlacement] = useState("Patient");
   const [formvalue, setFormvalue] = useState({
     ID: "",
     password: "",
@@ -54,9 +53,8 @@ const DLogin = () => {
           ...formvalue,
           nurseID: formvalue.ID,
         };
-        
-        dispatch(NurseLogin(data)).then((res) => {
 
+        dispatch(NurseLogin(data)).then((res) => {
           if (res.message === "Successful") {
             notify("Login Successful");
             setLoading(false);
@@ -122,11 +120,10 @@ const DLogin = () => {
         });
       }
     }
-
   };
 
   const placementChange = (e) => {
-    setAuthPlacement(e.target.value);
+    setPlacement(e.target.value);
   };
 
   const [ForgetPassword, setForgetPassword] = useState({
@@ -218,15 +215,17 @@ const DLogin = () => {
                   Get it on Email !
                 </span>
               </p>
-              <p style={{}}>
-                New here? {" "}
-                <span
-                  style={{ color: "blue", cursor: "pointer" }}
-                  onClick={toSignUp}
-                >
-                  Sign up!
-                </span>
-              </p>
+              {placement === "Patient" ? (
+                <p style={{}}>
+                  New here?{" "}
+                  <span
+                    style={{ color: "blue", cursor: "pointer" }}
+                    onClick={toSignUp}
+                  >
+                    Sign up!
+                  </span>
+                </p>
+              ) : null}
 
               {/* ********************************************************* */}
               <Drawer
