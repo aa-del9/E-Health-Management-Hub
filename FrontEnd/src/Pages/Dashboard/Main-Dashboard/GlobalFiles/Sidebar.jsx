@@ -242,7 +242,7 @@ const Sidebar = () => {
                 Beds
               </div>
             </Link> */}
-            {user?.userType === "doctor" ? (
+            {user?.userType !== "admin" ? (
               <Link className="link" activeclassname="active" to={"/reports"}>
                 <div className="icon">
                   <TbReportMedical className="mainIcon" />
