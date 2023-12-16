@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./CSS/Add_Doctor.css";
 import doctor from "../../../../../img/doctoravatar.png";
 import { useDispatch, useSelector } from "react-redux";
-import { DoctorRegister, sendPassword } from "../../../../../Redux/auth/action";
+import { DoctorRegister, mailCreds } from "../../../../../Redux/auth/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
 
 import { ToastContainer, toast } from "react-toastify";
@@ -52,9 +52,19 @@ const AddDoctor = () => {
 
       let data = {
         email: res.email,
+        userType: "doctor",
       };
       console.log(data, "DOCTOR REGISTER SUCCESSFULLY");
-      dispatch(sendPassword(data)).then((res) => notify("Account Detais Sent"));
+      dispatch(mailCreds(data)).then((res) => {
+        console.log(res);
+        if (res.message === "successful") {
+          setLoading(false);
+          return notify("Account Detais Sent");
+        } else if (res.message === "error") {
+          setLoading(false);
+          return notify("Something went wrong, Please try Again");
+        }
+      });
       setLoading(false);
       setDoctorValue(initData);
     });

@@ -6,6 +6,7 @@ const {
   createTable,
   patientCredModel,
   findCred,
+  getCredFromEmail,
   findIfExists,
 } = require("../models/Nurse.model");
 require("dotenv").config();
@@ -27,7 +28,6 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const email = req.body.email;
   console.log(req.body);
   try {
     await addPatient(req.body);

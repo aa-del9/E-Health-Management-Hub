@@ -7,6 +7,7 @@ const {
   addQuery,
   findIfExistsQuery,
   getAllQuery,
+  getCredsWithEmailQuery,
 } = require("../configs/queries/doctor");
 
 const doctorSchema = mongoose.Schema({
@@ -139,6 +140,14 @@ const findById = (ID) => {
   });
 };
 
+const getDoctorCredFromEmail = (email) => {
+  console.log("email received:", email);
+  return dbhelper.query(getCredsWithEmailQuery, [email]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+
 module.exports = {
   DoctorModel,
   docModel,
@@ -147,4 +156,5 @@ module.exports = {
   findById,
   findIfExists,
   addDoctor,
+  getDoctorCredFromEmail,
 };

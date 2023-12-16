@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./DSignup.css";
-import { PatientSignup, sendPassword } from "../../../../Redux/auth/action";
+import { PatientSignup, mailCreds } from "../../../../Redux/auth/action";
 const notify = (text) => toast(text);
 const SignupDetails = () => {
   const dispatch = useDispatch();
@@ -37,18 +37,21 @@ const SignupDetails = () => {
       if (res.message === "error") {
         setLoading(false);
         return notify("Something went wrong, Please try Again");
+      } else if (res.message === "Registered") {
+        notify("Your signup is complete. Sending login Credentials...");
+        let data = { email: formValue.email, userType: "patient" };
+        //todo: send email
+        dispatch(mailCreds(data)).then((res) => {
+          console.log("res", res);
+          if (res.message === "successful") {
+            notify("Account Detais Sent. Login to continue.");
+          } else if (res.message === "error") {
+            setLoading(false);
+            notify("Something went wrong, Please try Again");
+          }
+        });
+        setLoading(false);
       }
-      notify("Your signup is complete. Sending login Credentials...");
-      //todo: send email
-      let data = {
-        email: res.email,
-        // password: res.data.password,
-        // userId: res.data.adminID,
-      };
-      dispatch(sendPassword(data)).then((res) =>
-        notify("Account Detais Sent. Login to continue.")
-      );
-      setLoading(false);
     });
   };
   return (
