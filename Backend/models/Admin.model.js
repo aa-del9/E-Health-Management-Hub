@@ -7,6 +7,7 @@ const {
   addQuery,
   findIfExistsQuery,
   getCredsWithEmailQuery,
+  deleteRow,
 } = require("../configs/queries/admin");
 // const knex = require("knex")({
 //   client: "pg",
@@ -82,14 +83,13 @@ const AdminCredModel = {
 };
 
 const createTables = () => {
-  console.log("here first");
   dbhelper.query(createCredTable, [], (err, result) => {
     if (err) {
       console.error("Error: ", err);
       // Handle the error, e.g., by sending a response or calling a callback with the error
     } else {
       // Process the query result, e.g., by sending it as a response or calling a callback with the result
-      console.log("Query result:", result.rows);
+      console.log("admin table created or exists");
     }
   });
 };
@@ -102,7 +102,7 @@ const findCred = (ID) => {
   });
 };
 
-const getCreds = (email) => {
+const getAdminCredsFromEmail = (email) => {
   console.log("email received:", email);
   return dbhelper.query(getCredsWithEmailQuery, [email]).then((result) => {
     console.log(result, "in db helper");
@@ -123,6 +123,14 @@ const addAdmin = (admin) => {
   const array = Object.values(admin);
   console.log(array);
   return dbhelper.query(addQuery, array).then((result) => {
+    console.log("admin added successfully");
+    return result;
+  });
+};
+
+const deleteAdmin = (email) => {
+  console.log("admin email received:", email);
+  return dbhelper.query(deleteRow, [email]).then((result) => {
     console.log(result, "in db helper");
     return result;
   });
@@ -134,5 +142,6 @@ module.exports = {
   createTables,
   findCred,
   addAdmin,
-  getCreds,
+  getAdminCredsFromEmail,
+  deleteAdmin,
 };

@@ -19,7 +19,7 @@ const findCredQuery = `SELECT id,password FROM doctors WHERE id = $1;`;
 const addQuery = `INSERT INTO doctors (
   name, phoneNum, email, age, gender, bloodGroup, DOB, address, education, department,fees)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`;
-
+const getCredsWithEmailQuery = `SELECT id,password FROM doctors WHERE email = $1;`;
 const getAllQuery = `SELECT * FROM doctors;`;
 const findIfExistsQuery = `SELECT email FROM doctors WHERE email = $1;`;
 module.exports = {
@@ -28,4 +28,5 @@ module.exports = {
   findCredQuery,
   getAllQuery,
   addQuery,
+  getCredsWithEmailQuery,
 };

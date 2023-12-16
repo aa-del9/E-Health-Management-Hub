@@ -20,10 +20,13 @@ const addQuery = `INSERT INTO admins (
 
 const findIfExistsQuery = `SELECT email FROM admins WHERE email = $1;`;
 
+const deleteRow = `DELETE FROM admins WHERE email = $1;`;
+
 module.exports = {
   createCredTable,
   findIfExistsQuery,
   findCredQuery,
   addQuery,
   getCredsWithEmailQuery,
+  deleteRow,
 };
