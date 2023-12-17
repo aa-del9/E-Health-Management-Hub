@@ -287,7 +287,8 @@ export const sendVerification = (data) => async (dispatch) => {
 export const mailCreds = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.EDIT_DOCTOR_REQUEST });
-    const res = axios.post(`http://127.0.0.1:3001/admin/mailCreds`, data);
+    const res = await axios.post(`http://127.0.0.1:3001/admin/mailCreds`, data);
+    console.log(res);
     return res.data;
   } catch (error) {
     console.log(error);

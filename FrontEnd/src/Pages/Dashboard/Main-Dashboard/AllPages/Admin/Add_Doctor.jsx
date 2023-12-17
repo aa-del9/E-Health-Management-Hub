@@ -49,7 +49,7 @@ const AddDoctor = () => {
         setLoading(false);
         return notify("Something went wrong, Please try Again");
       }
-
+      notify("Doctor Added, Sending Account Details...");
       let data = {
         email: res.email,
         userType: "doctor",

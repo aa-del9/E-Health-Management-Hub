@@ -42,7 +42,7 @@ const Add_Admin = () => {
         setLoading(false);
         return notify("Something went wrong, Please try Again");
       }
-      notify("Admin Added");
+      notify("Admin Added. Sending login details...");
       let data = {
         email: res.email,
         userType: "admin",

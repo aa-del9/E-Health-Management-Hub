@@ -183,7 +183,7 @@ router.post("/mailCreds", async (req, res) => {
         return res.send({ message: "error" });
       }
       console.log(info.messageId);
-      res.status(200).send({ message: "successful" });
+      return res.status(200).send({ message: "successful" });
     });
   } catch (error) {
     res.send({ message: "error" });
