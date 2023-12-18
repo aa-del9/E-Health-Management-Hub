@@ -27,9 +27,14 @@ const Doctor_Profile = () => {
 
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [appointmentModalOpen, setAppointmentModalOpen] = useState(false);
 
   const showModal = () => {
     setOpen(true);
+  };
+
+  const showAppointmentModal = () => {
+    setAppointmentModalOpen(true);
   };
 
   const handleOk = () => {
@@ -40,6 +45,11 @@ const Doctor_Profile = () => {
     }, 2000);
   };
 
+  const handleAppointmentOk = () => {
+    // Handle appointment submission or any related logic here
+    setAppointmentModalOpen(false);
+  };
+
   const [messageApi, contextHolder] = message.useMessage();
 
   const success = (text) => {
@@ -48,6 +58,10 @@ const Doctor_Profile = () => {
 
   const handleCancel = () => {
     setOpen(false);
+  };
+
+  const handleAppointmentCancel = () => {
+    setAppointmentModalOpen(false);
   };
 
   const [formData, setFormData] = useState({
@@ -112,6 +126,10 @@ const Doctor_Profile = () => {
                   <AiFillEdit />
                   Edit profile
                 </button>
+                <button onClick={showAppointmentModal}>
+                  {""}
+                  Set Appointments
+                </button>
               </div>
 
               <Modal
@@ -125,7 +143,7 @@ const Doctor_Profile = () => {
                     Cancel
                   </Button>,
                   <Button key="submit" onClick={handleFormSubmit}>
-                    Edit
+                    Save
                   </Button>,
                 ]}
               >
@@ -177,6 +195,46 @@ const Doctor_Profile = () => {
                     onChange={handleFormChange}
                     type="date"
                     placeholder="Date of birth"
+                  />
+                </form>
+              </Modal>
+              <Modal
+                title="Set Appointments"
+                open={appointmentModalOpen}
+                onOk={handleAppointmentOk}
+                onCancel={handleAppointmentCancel}
+              >
+                <form className="inputForm">
+                  <p>Morning Appointments</p>
+                  <input
+                    name="nurseName"
+                    value={formData.docName}
+                    onChange={handleFormChange}
+                    type="time"
+                    placeholder="8:00 am -- 2:00 pm:"
+                  />
+                  <input
+                    name="nurseName"
+                    value={formData.docName}
+                    onChange={handleFormChange}
+                    type="time"
+                    placeholder="8:00 am -- 2:00 pm:"
+                  />
+                  <p>Evening Appointments</p>
+                  <input
+                    name="nurseName"
+                    value={formData.docName}
+                    onChange={handleFormChange}
+                    type="time"
+                    placeholder="8:00 am -- 2:00 pm:"
+                  />
+                  <input
+                    name="nurseName"
+                    value={formData.docName}
+                    onChange={handleFormChange}
+                    type="time"
+                    inputMode="numeric"
+                    placeholder="8:00 am -- 2:00 pm:"
                   />
                 </form>
               </Modal>
@@ -233,5 +291,4 @@ const Doctor_Profile = () => {
     </>
   );
 };
-
 export default Doctor_Profile;

@@ -14,7 +14,7 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS doctors (
   availability TIME []
 );`;
 
-const findCredQuery = `SELECT id,password FROM doctors WHERE id = $1;`;
+const findCredQuery = `SELECT id,password FROM doccred WHERE id = $1;`;
 
 const addQuery = `INSERT INTO doctors (
   name, phoneNum, email, age, gender, bloodGroup, DOB, address, education, department,fees)
