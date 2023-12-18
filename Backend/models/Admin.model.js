@@ -8,6 +8,7 @@ const {
   findIfExistsQuery,
   getCredsWithEmailQuery,
   deleteRow,
+  countAdminQuery,
 } = require("../configs/queries/admin");
 // const knex = require("knex")({
 //   client: "pg",
@@ -110,6 +111,13 @@ const getAdminCredsFromEmail = (email) => {
   });
 };
 
+const countAdmin = () => {
+  return dbhelper.query(countAdminQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result[0];
+  });
+};
+
 const findIfExists = (email) => {
   console.log("email received to db:", email);
   return dbhelper.query(findIfExistsQuery, [email]).then((result) => {
@@ -144,4 +152,5 @@ module.exports = {
   addAdmin,
   getAdminCredsFromEmail,
   deleteAdmin,
+  countAdmin,
 };

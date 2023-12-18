@@ -43,6 +43,7 @@ VALUES (
 
 const findIfExistsQuery = `SELECT email FROM patients WHERE email = $1;`;
 const getAllQuery = `SELECT * FROM patient_details;`;
+const countPatientQuery = `SELECT COUNT(*) FROM patients;`;
 module.exports = {
   findIfExistsQuery,
   createTableQuery,
@@ -50,4 +51,5 @@ module.exports = {
   getAllQuery,
   addQuery,
   getCredsWithEmailQuery,
+  countPatientQuery,
 };

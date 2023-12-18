@@ -19,16 +19,16 @@ const AddDoctor = () => {
 
   const initData = {
     doctorName: "",
-    phoneNum: 0,
+    phoneNum: "",
     email: "",
-    age: 0,
+    age: "",
     gender: "",
     bloodGroup: "",
     DOB: "",
     address: "",
     education: "",
     department: "",
-    fees: 0,
+    fees: "",
   };
   const [doctorValue, setDoctorValue] = useState(initData);
 

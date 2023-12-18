@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const dbhelper = require("../configs/dbhelper");
+const { countReportQuery } = require("../configs/queries/report");
 
 const reportSchema = mongoose.Schema({
   docName: {
@@ -93,4 +95,11 @@ const reportSchema = mongoose.Schema({
 
 const ReportModel = mongoose.model("report", reportSchema);
 
-module.exports = { ReportModel };
+const countReport = () => {
+  console.log(countReportQuery);
+  return dbhelper.query(countReportQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+module.exports = { ReportModel, countReport };

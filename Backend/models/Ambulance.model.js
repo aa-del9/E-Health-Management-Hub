@@ -5,6 +5,7 @@ const {
   createTableQuery,
   addQuery,
   findIfExistsQuery,
+  countAmbulanceQuery,
 } = require("../configs/queries/ambulance");
 const ambulanceSchema = mongoose.Schema({
   type: {
@@ -54,6 +55,13 @@ const findIfExists = (numplate) => {
   });
 };
 
+const countAmbulance = () => {
+  return dbhelper.query(countAmbulanceQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result[0];
+  });
+};
+
 const addAmbulance = (ambulance) => {
   console.log("ambulance received:", ambulance);
   const array = Object.values(ambulance);
@@ -63,4 +71,10 @@ const addAmbulance = (ambulance) => {
     return result;
   });
 };
-module.exports = { AmbulanceModel, findIfExists, addAmbulance, createTable };
+module.exports = {
+  AmbulanceModel,
+  findIfExists,
+  addAmbulance,
+  createTable,
+  countAmbulance,
+};

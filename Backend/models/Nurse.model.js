@@ -7,6 +7,7 @@ const {
   addQuery,
   findIfExistsQuery,
   getCredsWithEmailQuery,
+  countPatientQuery,
 } = require("../configs/queries/patient");
 let x = false;
 const knex = require("knex")({
@@ -103,6 +104,13 @@ const createTable = () => {
   });
 };
 
+const countPatient = () => {
+  return dbhelper.query(countPatientQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result[0];
+  });
+};
+
 const findCred = (ID) => {
   console.log("id received:", ID);
   return dbhelper.query(findCredQuery, [ID]).then((result) => {
@@ -160,4 +168,5 @@ module.exports = {
   findCred,
   findIfExists,
   getPatientCredFromEmail,
+  countPatient,
 };

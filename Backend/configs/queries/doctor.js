@@ -15,7 +15,7 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS doctors (
 );`;
 
 const findCredQuery = `SELECT id,password FROM doctors WHERE id = $1;`;
-
+const countDoctorQuery = `SELECT COUNT(*) FROM doctors;`;
 const addQuery = `INSERT INTO doctors (
   name, phoneNum, email, age, gender, bloodGroup, DOB, address, education, department,fees)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`;
@@ -29,4 +29,5 @@ module.exports = {
   getAllQuery,
   addQuery,
   getCredsWithEmailQuery,
+  countDoctorQuery,
 };
