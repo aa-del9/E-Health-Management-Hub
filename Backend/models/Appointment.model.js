@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
 
+const dbhelper = require("../configs/dbhelper");
+
+const { countAppoinmentQuery } = require("../configs/queries/appointment");
+
 const appointmentSchema = mongoose.Schema({
   userType: {
     type: String,
@@ -18,7 +22,7 @@ const appointmentSchema = mongoose.Schema({
   mobile: {
     type: Number,
   },
-  
+
   email: {
     type: String,
   },
@@ -56,4 +60,11 @@ const appointmentSchema = mongoose.Schema({
 
 const AppointmentModel = mongoose.model("appointment", appointmentSchema);
 
-module.exports = { AppointmentModel };
+const countAppointment = () => {
+  console.log(countAppoinmentQuery);
+  return dbhelper.query(countAppoinmentQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result[0];
+  });
+};
+module.exports = { AppointmentModel, countAppointment };

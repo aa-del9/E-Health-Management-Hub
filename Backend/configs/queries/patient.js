@@ -16,7 +16,7 @@ const createTableQuery = `CREATE TABLE IF NOT EXISTS patients (
 );`;
 
 const findCredQuery = `SELECT id,password FROM patients WHERE id = $1;`;
-//todo: change columns
+const getCredsWithEmailQuery = `SELECT id,password FROM patients WHERE email = $1;`;
 const addQuery = `INSERT INTO patients (
     name,
     phonenum,
@@ -42,12 +42,14 @@ VALUES (
   `;
 
 const findIfExistsQuery = `SELECT email FROM patients WHERE email = $1;`;
-
 const getAllQuery = `SELECT * FROM patient_details;`;
+const countPatientQuery = `SELECT COUNT(*) FROM patients;`;
 module.exports = {
   findIfExistsQuery,
   createTableQuery,
   findCredQuery,
   getAllQuery,
   addQuery,
+  getCredsWithEmailQuery,
+  countPatientQuery,
 };

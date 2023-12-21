@@ -309,9 +309,7 @@ export const GetPatients = () => async (dispatch) => {
 export const GetAllData = () => async (dispatch) => {
   try {
     dispatch({ type: types.GET_ALLDATA_REQUEST });
-    const res = await axios.get(
-      `https://zany-gray-clam-gear.cyclic.app/hospitals`
-    );
+    const res = await axios.get(`http://127.0.0.1:3001/hospitals`);
     console.log(res.data);
     dispatch({
       type: types.GET_ALLDATA_SUCCESS,

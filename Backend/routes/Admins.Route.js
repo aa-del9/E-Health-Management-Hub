@@ -5,9 +5,13 @@ const {
   findIfExists,
   createTables,
   addAdmin,
-  getCreds,
+  getAdminCredsFromEmail,
+  deleteAdmin,
   findCred,
+  getCredFromEmail,
 } = require("../models/Admin.model");
+const { getDoctorCredFromEmail } = require("../models/Doctor.model");
+const { getPatientCredFromEmail } = require("../models/Nurse.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -111,36 +115,79 @@ router.delete("/:adminId", async (req, res) => {
   }
 });
 
-router.post("/password", async (req, res) => {
+router.post("/verification", async (req, res) => {
   //TODO
   //const { email, userId, password } = req.body;
   console.log(req.body);
-  const creds = await getCreds(req.body.email);
-  console.log(creds);
+  // const creds = await getCreds(req.body.email);
+  // console.log(creds);
+  const verificationCode = Math.floor(1000 + Math.random() * 9000);
   const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false, // true for 465, false for other ports
     auth: {
-      user: "aadel.sheikh34@gmail.com",
-      pass: "passingword1395",
+      user: process.env.SMTP_MAIL, // generated ethereal user
+      pass: process.env.SMTP_PASSWORD, // generated ethereal password
     },
   });
 
-  const mailOptions = {
-    from: "aadel.sheikh34@gmail.com",
-    to: "aadel.sheikh34@gmail.com",
+  var mailOptions = {
+    from: process.env.SMTP_MAIL,
+    to: req.body.email,
     subject: "Account ID and Password",
-    text: "This is your User Id : ${creds[0].id} and  Password : ${creds[0].password} .",
+    text: `Your verification code is: ${verificationCode} .`,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter.sendMail(mailOptions, async (error, info) => {
     if (error) {
-      return res.send(error);
+      console.log("error sending email", error);
+      return res.send({ message: "error" });
     }
     console.log(info.messageId);
-    return res.send("Password reset email sent", info.messageId);
+    res.status(200).send({ message: "successful", code: verificationCode });
   });
+});
+
+router.post("/mailCreds", async (req, res) => {
+  try {
+    console.log(req.body);
+    const user = req.body;
+    const creds =
+      user.userType === "admin"
+        ? await getAdminCredsFromEmail(req.body.email)
+        : user.userType === "doctor"
+        ? await getDoctorCredFromEmail(req.body.email)
+        : await getPatientCredFromEmail(req.body.email);
+    console.log("creds", creds);
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_MAIL, // generated user
+        pass: process.env.SMTP_PASSWORD, // generated password
+      },
+    });
+
+    var mailOptions = {
+      from: process.env.SMTP_MAIL,
+      to: user.email,
+      subject: "Account ID and Password",
+      text: `Your login id is ${creds[0].id} and password is ${creds[0].password}`,
+    };
+
+    transporter.sendMail(mailOptions, async (error, info) => {
+      if (error) {
+        console.log(error); //await deleteAdmin(req.body.email);
+        return res.send({ message: "error" });
+      }
+      console.log(info.messageId);
+      return res.status(200).send({ message: "successful" });
+    });
+  } catch (error) {
+    res.send({ message: "error" });
+  }
 });
 
 router.post("/forgot", async (req, res) => {
