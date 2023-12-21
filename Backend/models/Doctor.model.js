@@ -7,6 +7,7 @@ const {
   addQuery,
   findIfExistsQuery,
   getAllQuery,
+  updatePassQuery,
   getCredsWithEmailQuery,
   countDoctorQuery,
 } = require("../configs/queries/doctor");
@@ -148,6 +149,12 @@ const findById = (ID) => {
   });
 };
 
+const updatePass = (password, id) => {
+  return dbhelper.query(updatePassQuery, [password, id]).then((result) => {
+    console.log("in db helper", result);
+    return result;
+  });
+};
 const getDoctorCredFromEmail = (email) => {
   console.log("email received:", email);
   return dbhelper.query(getCredsWithEmailQuery, [email]).then((result) => {
@@ -164,6 +171,7 @@ module.exports = {
   findById,
   findIfExists,
   addDoctor,
+  updatePass,
   getDoctorCredFromEmail,
   countDoctor,
 };

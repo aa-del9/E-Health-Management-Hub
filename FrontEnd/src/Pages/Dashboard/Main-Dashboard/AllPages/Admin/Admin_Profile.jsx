@@ -3,7 +3,7 @@ import "../Doctor/CSS/Doctor_Profile.css";
 import { BiTime } from "react-icons/bi";
 import { GiMeditation } from "react-icons/gi";
 import { AiFillCalendar, AiFillEdit } from "react-icons/ai";
-import { MdBloodtype } from "react-icons/md";
+import { MdBloodtype, MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { BsHouseFill, BsGenderAmbiguous } from "react-icons/bs";
 import { MdOutlineCastForEducation } from "react-icons/md";
@@ -12,18 +12,24 @@ import Sidebar from "../../GlobalFiles/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, message, Modal } from "antd";
 import { UpdateDoctor, UpdateNurse } from "../../../../../Redux/auth/action";
-import { GetDoctorDetails } from "../../../../../Redux/Datas/action";
+import {
+  GetDoctorDetails,
+  GetAllData,
+} from "../../../../../Redux/Datas/action";
 import { Navigate } from "react-router-dom";
 import "./CSS/Admin_Profile.css";
 
 // *********************************************************
 const Admin_Profile = () => {
   const { data } = useSelector((store) => store.auth);
+  const { user } = useSelector((state) => state.auth);
   console.log("heree", data);
+  console.log(data?.user?.id);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(GetDoctorDetails());
+    dispatch(GetAllData());
   }, []);
 
   const [open, setOpen] = useState(false);
@@ -83,24 +89,25 @@ const Admin_Profile = () => {
           <div className="maindoctorProfile">
             <div className="firstBox">
               <div>
-                <img src={data?.user?.image} alt="docimg" />
+                <img src="../../../../../img/profile.png" alt="admin" />
               </div>
               <hr />
               <div className="singleitemdiv">
                 <GiMeditation className="singledivicons" />
-                <p>{data?.user?.adminName}</p>
+                <p>Name :</p>
+                <p>{data?.user[0]?.id}</p>
               </div>
               <div className="singleitemdiv">
-                <MdBloodtype className="singledivicons" />
-                <p>{data?.user?.bloodGroup}</p>
+                <MdEmail className="singledivicons" />
+                <p>{data?.user[0]?.bloodGroup}</p>
               </div>
               <div className="singleitemdiv">
                 <FaBirthdayCake className="singledivicons" />
-                <p>{data?.user?.DOB}</p>
+                <p>{data?.user[0]?.DOB}</p>
               </div>
               <div className="singleitemdiv">
                 <BsFillTelephoneFill className="singledivicons" />
-                <p>{data?.user?.mobile}</p>
+                <p>{data?.user[0]?.mobile}</p>
               </div>
               <div className="singleitemdiv">
                 <button onClick={showModal}>
@@ -155,7 +162,7 @@ const Admin_Profile = () => {
                 </div>
                 <div className="singleitemdiv">
                   <AiFillCalendar className="singledivicons" />
-                  <p>{data?.user?.age}</p>
+                  <p>{data?.user[0]?.age}</p>
                 </div>
 
                 <div className="singleitemdiv">

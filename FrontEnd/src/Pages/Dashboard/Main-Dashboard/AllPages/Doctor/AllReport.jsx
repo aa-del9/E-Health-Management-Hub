@@ -8,7 +8,7 @@ const AllReport = () => {
   const dispatch = useDispatch();
   const [Report, setReport] = useState();
   const { user } = useSelector((state) => state.auth);
-
+  console.log(user);
   // useEffect(() => {
 
   //   dispatch(GetAllReports()).then((res) => {
