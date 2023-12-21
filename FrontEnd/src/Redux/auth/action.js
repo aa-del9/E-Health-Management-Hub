@@ -277,10 +277,13 @@ export const UpdateDoctor = (id, data, token) => async (dispatch) => {
 };
 
 //update doctor
-export const sendPassword = (data) => async (dispatch) => {
+export const sendVerification = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.EDIT_DOCTOR_REQUEST });
-    const res = await axios.post(`http://127.0.0.1:3001/admin/password`, data);
+    const res = await axios.post(
+      `http://127.0.0.1:3001/admin/verification`,
+      data
+    );
     // console.log(res);
     return res.data;
   } catch (error) {
@@ -288,6 +291,16 @@ export const sendPassword = (data) => async (dispatch) => {
   }
 };
 
+export const mailCreds = (data) => async (dispatch) => {
+  try {
+    dispatch({ type: types.EDIT_DOCTOR_REQUEST });
+    const res = await axios.post(`http://127.0.0.1:3001/admin/mailCreds`, data);
+    console.log(res);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 //update doctor
 export const forgetPassword = (data) => async (dispatch) => {
   try {

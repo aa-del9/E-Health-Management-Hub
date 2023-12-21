@@ -36,6 +36,11 @@ const FrontPage = () => {
     { title: "Department", dataIndex: "department", key: "department" },
     { title: "Email", dataIndex: "email", key: "email" },
   ];
+  useEffect(() => {
+    dispatch(GetPatients());
+    dispatch(GetDoctorDetails());
+    dispatch(GetAllData());
+  }, []);
 
   const { patients } = useSelector((store) => store.data.patients);
   const { doctors } = useSelector((store) => store.data.doctors);
@@ -50,11 +55,6 @@ const FrontPage = () => {
   const {
     data: { user },
   } = useSelector((state) => state.auth);
-  useEffect(() => {
-    dispatch(GetPatients());
-    dispatch(GetDoctorDetails());
-    dispatch(GetAllData());
-  }, []);
 
   console.log("userType", user?.userType);
 

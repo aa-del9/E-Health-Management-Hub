@@ -3,11 +3,17 @@ import { ToastContainer, toast } from "react-toastify";
 import "./DSignup.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { CheckPatientExists } from "../../../../Redux/auth/action";
+import {
+  CheckPatientExists,
+  sendVerification,
+} from "../../../../Redux/auth/action";
 
 const notify = (text) => toast(text);
 
 const DSignup = () => {
+  const [code, setCode] = useState(0);
+  const [verification, setVerification] = useState(0);
+  const [isVisible, setVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let confirmationPassword;
@@ -18,29 +24,70 @@ const DSignup = () => {
     password: "",
   });
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    Handlechange(e);
+  };
+  const handleCode = (e) => {
+    setCode(parseInt(e.target.value));
+  };
+  const [email, setEmail] = useState("");
+
   const HandleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formValue.password, confirmationPassword);
-    if (confirmationPassword === formValue.password) {
-      console.log(formValue);
-      dispatch(CheckPatientExists(formValue)).then((res) => {
-        console.log(res);
-        if (res.message === "Patient already exists") {
-          setLoading(false);
-          notify("Patient Already Exists. Redirecting to Login Page");
-          setTimeout(() => {
-            return navigate("/");
-          }, 3000);
-        } else {
-          console.log(formValue.email);
-          return navigate("/adddetails", { state: formValue });
-        }
-      });
+    console.log("visible", isVisible);
+    if (!isVisible) {
+      console.log(formValue.password, confirmationPassword);
+      if (confirmationPassword === formValue.password) {
+        console.log(formValue);
+        dispatch(CheckPatientExists({ email: email })).then((res) => {
+          console.log(res);
+          if (res.message === "Patient already exists") {
+            setLoading(false);
+            notify("Patient Already Exists. Redirecting to Login Page");
+            setTimeout(() => {
+              return navigate("/");
+            }, 3000);
+          } else {
+            notify("Verifying Email...");
+            console.log(formValue.email);
+            dispatch(sendVerification({ email: email })).then((res) => {
+              console.log("Res", res);
+              if (res.message === "successful") {
+                notify(
+                  "Verification code sent on email. Please check your email"
+                );
+                setVerification(res.code);
+                console.log(verification);
+                setVisible(true);
+                setLoading(false);
+              } else if (res.message === "error") {
+                setLoading(false);
+                return notify("Something went wrong, Please try Again");
+              }
+            });
+          }
+        });
+      } else {
+        setLoading(false);
+        return notify("Passwords do not match");
+      }
+    } else {
+      if (verification === code) {
+        setLoading(false);
+        return navigate("/adddetails", { state: formValue });
+      } else {
+        setLoading(false);
+        return notify("Wrong Verification Code");
+      }
     }
   };
   const Handlechange = (e) => {
-    setFormValue({ ...formValue, [e.target.name]: e.target.value });
+    setFormValue({
+      ...formValue,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const checkPasswordsMatch = (e) => {
@@ -73,7 +120,7 @@ const DSignup = () => {
                 type="text"
                 name="email"
                 value={formValue.email}
-                onChange={Handlechange}
+                onChange={handleEmailChange}
                 required
               />
               <h3>Password</h3>
@@ -92,6 +139,19 @@ const DSignup = () => {
                 onBlur={checkPasswordsMatch}
                 required
               />
+              {isVisible ? (
+                <>
+                  <h3>Verification Code</h3>
+                  <input
+                    type="number"
+                    name="verification"
+                    value={code}
+                    onChange={handleCode}
+                    required
+                  />
+                </>
+              ) : null}
+
               <button type="submit">{loading ? "Loading..." : "Submit"}</button>
 
               {/* ********************************************************* */}

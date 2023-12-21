@@ -4,7 +4,7 @@ import nurse from "../../../../../img/nurseavatar.png";
 import { message, Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { NurseRegister, sendPassword } from "../../../../../Redux/auth/action";
+import { NurseRegister, mailCreds } from "../../../../../Redux/auth/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -58,7 +58,7 @@ const Add_Nurse = () => {
         password: res.data.password,
         userId: res.data.nurseID,
       };
-      dispatch(sendPassword(data)).then((res) => notify("Account Detais Sent"));
+      dispatch(mailCreds(data)).then((res) => notify("Account Detais Sent"));
       setLoading(false);
       setNurseValue(InitData);
     });

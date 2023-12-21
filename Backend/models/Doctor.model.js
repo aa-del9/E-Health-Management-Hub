@@ -8,6 +8,8 @@ const {
   findIfExistsQuery,
   getAllQuery,
   updatePassQuery,
+  getCredsWithEmailQuery,
+  countDoctorQuery,
 } = require("../configs/queries/doctor");
 
 const doctorSchema = mongoose.Schema({
@@ -122,6 +124,13 @@ const findIfExists = (email) => {
   });
 };
 
+const countDoctor = () => {
+  return dbhelper.query(countDoctorQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result[0];
+  });
+};
+
 const addDoctor = (doctor) => {
   console.log("doctor received:", doctor);
   const array = Object.values(doctor);
@@ -146,6 +155,13 @@ const updatePass = (password, id) => {
     return result;
   });
 };
+const getDoctorCredFromEmail = (email) => {
+  console.log("email received:", email);
+  return dbhelper.query(getCredsWithEmailQuery, [email]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
 
 module.exports = {
   DoctorModel,
@@ -156,4 +172,6 @@ module.exports = {
   findIfExists,
   addDoctor,
   updatePass,
+  getDoctorCredFromEmail,
+  countDoctor,
 };

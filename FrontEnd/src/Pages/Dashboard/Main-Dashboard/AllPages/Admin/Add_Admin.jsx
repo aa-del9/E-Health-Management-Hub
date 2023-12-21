@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AdminRegister, sendPassword } from "../../../../../Redux/auth/action";
+import { AdminRegister, mailCreds } from "../../../../../Redux/auth/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import admin from "../../../../../img/admin.jpg";
 import { ToastContainer, toast } from "react-toastify";
@@ -11,7 +11,7 @@ const notify = (text) => toast(text);
 const Add_Admin = () => {
   const { data } = useSelector((store) => store.auth);
 
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const InitData = {
     adminName: "",
@@ -31,25 +31,36 @@ const Add_Admin = () => {
 
   const HandleAdminSubmit = (e) => {
     e.preventDefault();
-    setloading(true);
+    setLoading(true);
 
     dispatch(AdminRegister(AdminValue)).then((res) => {
       if (res.message === "Admin already exists") {
-        setloading(false);
+        setLoading(false);
         return notify("Admin Already Exist");
       }
       if (res.message === "error") {
-        setloading(false);
+        setLoading(false);
         return notify("Something went wrong, Please try Again");
       }
-      notify("Admin Added");
+      notify("Admin Added. Sending login details...");
       let data = {
         email: res.email,
+        userType: "admin",
         // password: res.data.password,
         // userId: res.data.adminID,
       };
-      dispatch(sendPassword(data)).then((res) => notify("Account Detais Sent"));
-      setloading(false);
+      console.log(data);
+      dispatch(mailCreds(data)).then((res) => {
+        console.log(res);
+        if (res.message === "successful") {
+          setLoading(false);
+          return notify("Account Detais Sent");
+        } else if (res.message === "error") {
+          setLoading(false);
+          return notify("Something went wrong, Please try Again");
+        }
+      });
+      setLoading(false);
       setAdminValue(InitData);
     });
   };
