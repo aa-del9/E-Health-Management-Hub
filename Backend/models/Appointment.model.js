@@ -61,7 +61,6 @@ const appointmentSchema = mongoose.Schema({
 const AppointmentModel = mongoose.model("appointment", appointmentSchema);
 
 const countAppointment = () => {
-  console.log(countAppoinmentQuery);
   return dbhelper.query(countAppoinmentQuery, []).then((result) => {
     console.log(result, "in db helper");
     return result[0];

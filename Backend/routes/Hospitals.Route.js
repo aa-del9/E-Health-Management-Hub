@@ -13,20 +13,21 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const admins = await countAdmin();
-    console.log(admins);
     const patients = await countPatient();
     const ambulances = await countAmbulance();
-    //const reports = await countReport();
+    const reports = await countReport();
+    console.log(reports);
     const appointments = await countAppointment();
     const doctors = await countDoctor();
     let data = {
       admin: admins.count,
       patient: patients.count,
       ambulance: ambulances.count,
-      //report: reports.count,
+      report: reports.count,
       doctor: doctors.count,
       appointment: appointments.count,
     };
+    console.log(data);
     res.status(200).send({ data });
   } catch (error) {
     console.log(error);

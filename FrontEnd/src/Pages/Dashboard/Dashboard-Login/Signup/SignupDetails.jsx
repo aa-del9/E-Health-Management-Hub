@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 //import "./DSignup.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./DSignup.css";
 import { PatientSignup, mailCreds } from "../../../../Redux/auth/action";
 const notify = (text) => toast(text);
 const SignupDetails = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const creds = location.state;
@@ -45,6 +46,9 @@ const SignupDetails = () => {
           console.log("res", res);
           if (res.message === "successful") {
             notify("Account Detais Sent. Login to continue.");
+            setTimeout(() => {
+              return navigate("/");
+            }, 3000);
           } else if (res.message === "error") {
             setLoading(false);
             notify("Something went wrong, Please try Again");

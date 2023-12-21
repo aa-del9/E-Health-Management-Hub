@@ -3,11 +3,13 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import { FaAmbulance } from "react-icons/fa";
 import { GiNurseFemale } from "react-icons/gi";
 import { RiSecurePaymentLine } from "react-icons/ri";
+import { FaUsers } from "react-icons/fa";
 import { SlUserFollow } from "react-icons/sl";
 import { BsBookmarkPlus, BsFillBookmarkCheckFill } from "react-icons/bs";
 import { BiDetail } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { FaHospitalUser } from "react-icons/fa";
+
 import { TbReportMedical } from "react-icons/tb";
 import { MdBedroomChild } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -296,7 +298,7 @@ const Sidebar = () => {
                 to={"/patientdetails"}
               >
                 <div className="icon">
-                  {/* <TbListDetails className="mainIcon" /> */}
+                  <FaUsers className="mainIcon" />
                 </div>
                 <div
                   style={{ display: isOpen ? "block" : "none" }}
