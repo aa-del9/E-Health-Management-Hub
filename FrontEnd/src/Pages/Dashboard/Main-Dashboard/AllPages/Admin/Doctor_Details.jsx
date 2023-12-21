@@ -35,7 +35,7 @@ const Doctor_Details = () => {
     },
   ];
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

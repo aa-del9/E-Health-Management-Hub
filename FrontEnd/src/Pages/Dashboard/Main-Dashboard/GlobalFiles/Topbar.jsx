@@ -10,7 +10,7 @@ const Topbar = ({ onclick }) => {
     <>
       <div className="MainDiv">
         <div className="Hideshow">
-          <h2>HMS</h2>
+          <h2>E-Health Management Hub</h2>
         </div>
         <div className="SearchDiv">
           <input type="text" placeholder="Search Patient By Health Id...." />

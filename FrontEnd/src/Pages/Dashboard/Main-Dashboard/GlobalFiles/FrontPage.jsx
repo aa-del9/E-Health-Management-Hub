@@ -55,9 +55,9 @@ const FrontPage = () => {
   const {
     data: { user },
   } = useSelector((state) => state.auth);
-
+  console.log(user);
   console.log("userType", user?.userType);
-
+  //user?.isAuthenticated === false ? <Navigate to={"/"} /> : null;
   return (
     <div className="container">
       <Sidebar />

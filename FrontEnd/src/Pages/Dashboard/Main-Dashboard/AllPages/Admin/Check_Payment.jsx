@@ -17,7 +17,7 @@ const Check_Payment = () => {
     { title: "Total Cost", dataIndex: "Total_Cost", key: "Total Cost" },
   ];
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

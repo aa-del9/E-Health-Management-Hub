@@ -116,8 +116,7 @@ const Doctor_Profile = () => {
   };
 
   console.log("newPass", formData.newPass);
-
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

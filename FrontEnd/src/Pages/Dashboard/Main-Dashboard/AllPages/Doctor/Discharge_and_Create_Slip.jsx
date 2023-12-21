@@ -9,7 +9,7 @@ const notify = (text) => toast(text);
 
 const Discharge_and_Create_Slip = () => {
   const { data } = useSelector((store) => store.auth);
-
+  console.log(data);
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
@@ -82,7 +82,7 @@ const Discharge_and_Create_Slip = () => {
     }
   };
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

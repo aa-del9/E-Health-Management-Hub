@@ -72,7 +72,7 @@ const Admin_Profile = () => {
     handleOk();
   };
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

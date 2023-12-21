@@ -54,7 +54,7 @@ const Add_Ambulance = () => {
     });
   };
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

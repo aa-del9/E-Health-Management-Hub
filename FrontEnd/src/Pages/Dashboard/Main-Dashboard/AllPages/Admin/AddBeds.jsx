@@ -37,7 +37,7 @@ const AddBeds = () => {
     notify("Bed Added");
   };
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

@@ -31,7 +31,7 @@ const Check_Appointment = () => {
     disptach(GetAllAppointment());
   }, []);
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

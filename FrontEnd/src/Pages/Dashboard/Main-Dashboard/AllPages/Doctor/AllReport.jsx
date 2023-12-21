@@ -21,7 +21,7 @@ const AllReport = () => {
       let fetchedReports;
 
       try {
-        if (user?.userType === "Doctor") {
+        if (user?.userType === "doctor") {
           dispatch(GetAllReports()).then((res) => {
             fetchedReports = res;
             setReport(fetchedReports);

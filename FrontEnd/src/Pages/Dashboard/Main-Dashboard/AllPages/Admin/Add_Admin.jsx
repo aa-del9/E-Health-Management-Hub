@@ -65,7 +65,7 @@ const Add_Admin = () => {
     });
   };
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 

@@ -64,7 +64,7 @@ const Add_Nurse = () => {
     });
   };
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 
