@@ -73,7 +73,7 @@ export const DoctorLogin = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.LOGIN_DOCTOR_REQUEST });
     const res = await axios.post("http://127.0.0.1:3001/doctors/login", data);
-    console.log(res.data);
+    console.log("doctor", res.data);
     dispatch({
       type: types.LOGIN_DOCTOR_SUCCESS,
       payload: {
@@ -255,15 +255,22 @@ export const UpdateNurse = (data, id) => async (dispatch) => {
 };
 
 //update doctor
-export const UpdateDoctor = (data, id) => async (dispatch) => {
+export const UpdateDoctor = (id, data, token) => async (dispatch) => {
   try {
-    dispatch({ type: types.EDIT_DOCTOR_REQUEST });
-    const res = await axios.patch(
-      `https://zany-gray-clam-gear.cyclic.app/doctors/${id}`,
-      data
-    );
-    console.log(res);
-    dispatch({ type: types.EDIT_DOCTOR_SUCCESS, payload: res.data.user });
+    const res = await axios.patch(`http://127.0.0.1:3001/doctors/${id}`, data);
+    res.status === 200
+      ? dispatch({ type: types.EDIT_DOCTOR_REQUEST, payload: { token } })
+      : console.log("passing");
+    console.log(res.data);
+    dispatch({
+      type: types.EDIT_DOCTOR_SUCCESS,
+      payload: {
+        message: res.data.message,
+        user: res.data.user,
+        token: token,
+      },
+    });
+    return res.data;
   } catch (error) {
     console.log(error);
   }

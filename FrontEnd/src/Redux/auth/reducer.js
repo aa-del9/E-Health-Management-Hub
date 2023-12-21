@@ -31,6 +31,15 @@ export default function authReducer(state = initialState, { type, payload }) {
           user: payload.user,
         },
       };
+    case types.EDIT_DOCTOR_REQUEST:
+      return {
+        ...state,
+        data: {
+          isAuthenticated: true,
+          token: null,
+          user: null,
+        },
+      };
     case types.LOGIN_NURSE_ERROR ||
       types.LOGIN_ADMIN_ERROR ||
       types.LOGIN_DOCTOR_ERROR:
@@ -86,7 +95,9 @@ export default function authReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         data: {
-          user: payload,
+          isAuthenticated: payload.token ? true : false,
+          token: payload.token,
+          user: payload.user,
         },
       };
     case types.LOGIN_ADMIN_ERROR:

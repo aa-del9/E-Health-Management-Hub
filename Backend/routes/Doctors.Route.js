@@ -7,6 +7,7 @@ const {
   findById,
   findIfExists,
   addDoctor,
+  updatePass,
 } = require("../models/Doctor.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -64,7 +65,7 @@ router.post("/login", async (req, res) => {
       });
       res.send({
         message: "Successful",
-        user: { ...doctor, userType: "doctor" },
+        user: { ...doctor[0], userType: "doctor" },
         token: token,
       });
     } else {
@@ -78,19 +79,21 @@ router.post("/login", async (req, res) => {
 
 router.patch("/:doctorId", async (req, res) => {
   const id = req.params.doctorId;
-  const payload = req.body;
+  const password = req.body.password;
   try {
-    await DoctorModel.findByIdAndUpdate({ _id: id }, payload);
-    const doctor = await DoctorModel.findById(id);
-    if (!doctor) {
-      return res
-        .status(404)
-        .send({ message: `Doctor with id ${id} not found` });
+    await updatePass(password, id);
+    const doctor = await findById(id);
+    if (doctor[0].password === password) {
+      return res.status(200).send({
+        message: "password updated",
+        user: { ...doctor[0], userType: "doctor" },
+      });
+    } else {
+      return res.send({ message: `password not updated` });
     }
-    res.status(200).send({ message: `Doctor Updated`, user: doctor });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ error: "Something went wrong, unable to Update." });
+    res.status(400).send({ message: "error" });
   }
 });
 
