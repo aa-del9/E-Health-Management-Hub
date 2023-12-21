@@ -20,7 +20,7 @@ import "./CSS/Doctor_Profile.css";
 const Doctor_Profile = () => {
   const { data } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
-  console.log("DATA JANAB ", data);
+  console.log("user state", data);
 
   useEffect(() => {
     dispatch(GetDoctorDetails());

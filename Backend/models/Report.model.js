@@ -96,6 +96,7 @@ const reportSchema = mongoose.Schema({
 const ReportModel = mongoose.model("report", reportSchema);
 
 const countReport = () => {
+  console.log(countReportQuery);
   return dbhelper.query(countReportQuery, []).then((result) => {
     console.log(result, "in db helper");
     return result[0];
