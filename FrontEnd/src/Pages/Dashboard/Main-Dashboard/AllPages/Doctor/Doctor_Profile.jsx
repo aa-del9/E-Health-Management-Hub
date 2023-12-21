@@ -10,8 +10,8 @@ import { MdOutlineCastForEducation } from "react-icons/md";
 import { FaRegHospital, FaMapMarkedAlt, FaBirthdayCake } from "react-icons/fa";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, message, Modal } from "antd";
-import { UpdateDoctor, UpdateNurse } from "../../../../../Redux/auth/action";
+import { message, Modal } from "antd";
+import { UpdateDoctor } from "../../../../../Redux/auth/action";
 import { GetDoctorDetails } from "../../../../../Redux/Datas/action";
 import { Navigate } from "react-router-dom";
 import "./CSS/Doctor_Profile.css";
@@ -19,35 +19,37 @@ import "./CSS/Doctor_Profile.css";
 // *********************************************************
 const Doctor_Profile = () => {
   const { data } = useSelector((store) => store.auth);
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
+  console.log("DATA JANAB ", data);
 
   useEffect(() => {
-    disptach(GetDoctorDetails());
+    dispatch(GetDoctorDetails());
   }, []);
 
-  const [open, setOpen] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [appointmentModalOpen, setAppointmentModalOpen] = useState(false);
+  const [availabilityModalOpen, setAvailabilityModalOpen] = useState(false);
 
   const showModal = () => {
-    setOpen(true);
+    setFormData({
+      oldPass: "",
+      newPass: "",
+      confirmNewPass: "",
+    });
+    setDetailsOpen(true);
   };
 
-  const showAppointmentModal = () => {
-    setAppointmentModalOpen(true);
+  const showAvailabilityModal = () => {
+    setAvailabilityModalOpen(true);
   };
 
   const handleOk = () => {
     setConfirmLoading(true);
     setTimeout(() => {
-      setOpen(false);
+      setDetailsOpen(false);
+      setAvailabilityModalOpen(false);
       setConfirmLoading(false);
     }, 2000);
-  };
-
-  const handleAppointmentOk = () => {
-    // Handle appointment submission or any related logic here
-    setAppointmentModalOpen(false);
   };
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -55,34 +57,65 @@ const Doctor_Profile = () => {
   const success = (text) => {
     messageApi.success(text);
   };
-
-  const handleCancel = () => {
-    setOpen(false);
+  const error = (text) => {
+    messageApi.error(text);
   };
 
-  const handleAppointmentCancel = () => {
-    setAppointmentModalOpen(false);
+  const handleCancel = () => {
+    setDetailsOpen(false);
+    setAvailabilityModalOpen(false);
   };
 
   const [formData, setFormData] = useState({
-    docName: data.user.docName,
-    age: data.user.age,
-    gender: data.user.gender,
-    bloodGroup: data.user.bloodGroup,
-    education: data.user.education,
-    mobile: data.user.mobile,
-    DOB: data.user.DOB,
+    newPass: "",
+  });
+
+  const [formAvailability, setFormAvailability] = useState({
+    MAS: "",
+    MAE: "",
+    EAS: "",
+    EAE: "",
   });
 
   const handleFormChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormAvailability({
+      ...formAvailability,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleFormSubmit = () => {
-    disptach(UpdateDoctor(formData, data.user._id));
-    success("user updated");
+    data.user.password === formData.oldPass
+      ? data.user.password !== formData.newPass
+        ? formData.confirmNewPass === formData.newPass
+          ? (() => {
+              dispatch(
+                UpdateDoctor(
+                  data.user.id,
+                  { password: formData.newPass },
+                  data.token
+                )
+              ).then((res) => {
+                if (res.message === "password updated") {
+                  success("User updated");
+                  handleOk();
+                } else {
+                  error("Something went wrong.");
+                }
+              });
+            })()
+          : error("Passwords do not match")
+        : error("New password same as old")
+      : error("Incorrect Old Password");
+  };
+
+  const handleAvailabilityFormSubmit = () => {
+    success("Availability updated");
     handleOk();
   };
+
+  console.log("newPass", formData.newPass);
 
   if (data?.isAuthticated === false) {
     return <Navigate to={"/"} />;
@@ -124,113 +157,78 @@ const Doctor_Profile = () => {
                 <button onClick={showModal}>
                   {" "}
                   <AiFillEdit />
-                  Edit profile
+                  Change Password
                 </button>
-                <button onClick={showAppointmentModal}>
+                <button onClick={showAvailabilityModal}>
                   {""}
-                  Set Appointments
+                  Set Availabilitys
                 </button>
               </div>
 
               <Modal
-                title="Edit details"
-                open={open}
-                onOk={handleOk}
+                title="CHANGE PASSWORD"
+                open={detailsOpen}
+                onOk={handleFormSubmit}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
-                footer={[
-                  <Button key="back" onClick={handleCancel}>
-                    Cancel
-                  </Button>,
-                  <Button key="submit" onClick={handleFormSubmit}>
-                    Save
-                  </Button>,
-                ]}
               >
                 <form className="inputForm">
                   <input
-                    name="nurseName"
-                    value={formData.docName}
+                    name="oldPass"
+                    value={formData.oldPass}
                     onChange={handleFormChange}
-                    type="text"
-                    placeholder="Full name"
+                    type="password"
+                    placeholder="Old Password"
                   />
                   <input
-                    name="age"
-                    value={formData.age}
+                    name="newPass"
+                    type="password"
+                    value={formData.newPass}
                     onChange={handleFormChange}
-                    type="number"
-                    placeholder="Age"
-                  />
-                  <select name="gender" onChange={handleFormChange}>
-                    <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Others</option>
-                  </select>
-                  <input
-                    name="bloodGroup"
-                    value={formData.bloodGroup}
-                    onChange={handleFormChange}
-                    type="text"
-                    placeholder="Blood Group"
+                    placeholder="New Password"
                   />
                   <input
-                    name="education"
-                    value={formData.education}
+                    name="confirmNewPass"
+                    type="password"
+                    value={formData.confirmNewPass}
                     onChange={handleFormChange}
-                    type="text"
-                    placeholder="education"
-                  />
-                  <input
-                    name="mobile"
-                    value={formData.mobile}
-                    onChange={handleFormChange}
-                    type="number"
-                    placeholder="mobile"
-                  />
-                  <input
-                    name="DOB"
-                    value={formData.DOB}
-                    onChange={handleFormChange}
-                    type="date"
-                    placeholder="Date of birth"
+                    placeholder="Confirm New Password"
                   />
                 </form>
               </Modal>
               <Modal
-                title="Set Appointments"
-                open={appointmentModalOpen}
-                onOk={handleAppointmentOk}
-                onCancel={handleAppointmentCancel}
+                title="Set Availabilitys"
+                open={availabilityModalOpen}
+                onOk={handleAvailabilityFormSubmit}
+                onCancel={handleCancel}
               >
                 <form className="inputForm">
-                  <p>Morning Appointments</p>
+                  <p>Morning Availabilitys</p>
                   <input
-                    name="nurseName"
-                    value={formData.docName}
+                    name="MAS"
+                    value={formAvailability.MAS}
                     onChange={handleFormChange}
                     type="time"
                     placeholder="8:00 am -- 2:00 pm:"
                   />
                   <input
-                    name="nurseName"
-                    value={formData.docName}
+                    name="MAE"
+                    value={formAvailability.MAE}
                     onChange={handleFormChange}
                     type="time"
                     placeholder="8:00 am -- 2:00 pm:"
                   />
-                  <p>Evening Appointments</p>
+                  <p>Evening Availabilitys</p>
                   <input
-                    name="nurseName"
-                    value={formData.docName}
+                    name="EAS"
+                    value={formAvailability.EAS}
                     onChange={handleFormChange}
                     type="time"
                     placeholder="8:00 am -- 2:00 pm:"
                   />
                   <input
-                    name="nurseName"
-                    value={formData.docName}
+                    name="EAE"
+                    value={formAvailability.EAE}
                     onChange={handleFormChange}
                     type="time"
                     inputMode="numeric"

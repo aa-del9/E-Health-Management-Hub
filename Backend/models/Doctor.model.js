@@ -7,6 +7,7 @@ const {
   addQuery,
   findIfExistsQuery,
   getAllQuery,
+  updatePassQuery,
 } = require("../configs/queries/doctor");
 
 const doctorSchema = mongoose.Schema({
@@ -139,6 +140,13 @@ const findById = (ID) => {
   });
 };
 
+const updatePass = (password, id) => {
+  return dbhelper.query(updatePassQuery, [password, id]).then((result) => {
+    console.log("in db helper", result);
+    return result;
+  });
+};
+
 module.exports = {
   DoctorModel,
   docModel,
@@ -147,4 +155,5 @@ module.exports = {
   findById,
   findIfExists,
   addDoctor,
+  updatePass,
 };
