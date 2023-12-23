@@ -23,6 +23,8 @@ const findIfExistsQuery = `SELECT email FROM admins WHERE email = $1;`;
 
 const deleteRow = `DELETE FROM admins WHERE email = $1;`;
 
+const updatePassQuery = ` UPDATE admins SET password = $1 WHERE id = $2;`;
+
 module.exports = {
   createCredTable,
   findIfExistsQuery,
@@ -31,4 +33,5 @@ module.exports = {
   getCredsWithEmailQuery,
   deleteRow,
   countAdminQuery,
+  updatePassQuery,
 };

@@ -8,6 +8,7 @@ const {
   findCred,
   getCredFromEmail,
   findIfExists,
+  updatePass,
 } = require("../models/Nurse.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -51,7 +52,7 @@ router.post("/login", async (req, res) => {
       });
       res.send({
         message: "Successful",
-        user: { ...patient, userType: "patient" },
+        user: { ...patient[0], userType: "patient" },
         token: token,
       });
     } else {
@@ -83,17 +84,22 @@ router.post("/check", async (req, res) => {
 
 router.patch("/:nurseId", async (req, res) => {
   const id = req.params.nurseId;
-  const payload = req.body;
+  // const payload = req.body;
+  const password = req.body.password;
   try {
-    await NurseModel.findByIdAndUpdate({ _id: id }, payload);
-    const nurse = await NurseModel.findById(id);
-    if (!nurse) {
-      return res.status(404).send({ message: `Nurse with id ${id} not found` });
+    await updatePass(password, id);
+    const patient = await findCred(id);
+    if (patient[0].password === password) {
+      return res.status(200).send({
+        message: "password updated",
+        user: { ...patient[0], userType: "patient" },
+      });
+    } else {
+      return res.status(404).send({ message: `password not updated` });
     }
-    res.status(200).send({ message: `Nurse Updated`, user: nurse });
   } catch (error) {
     console.log(error);
-    res.status(400).send({ error: "Something went wrong, unable to Update." });
+    res.status(400).send({ error: "Serror" });
   }
 });
 

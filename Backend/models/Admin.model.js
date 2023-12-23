@@ -9,6 +9,7 @@ const {
   getCredsWithEmailQuery,
   deleteRow,
   countAdminQuery,
+  updatePassQuery,
 } = require("../configs/queries/admin");
 // const knex = require("knex")({
 //   client: "pg",
@@ -103,6 +104,13 @@ const findCred = (ID) => {
   });
 };
 
+const updatePass = (password, id) => {
+  return dbhelper.query(updatePassQuery, [password, id]).then((result) => {
+    console.log("in db helper", result);
+    return result;
+  });
+};
+
 const getAdminCredsFromEmail = (email) => {
   console.log("email received:", email);
   return dbhelper.query(getCredsWithEmailQuery, [email]).then((result) => {
@@ -153,4 +161,5 @@ module.exports = {
   getAdminCredsFromEmail,
   deleteAdmin,
   countAdmin,
+  updatePass,
 };

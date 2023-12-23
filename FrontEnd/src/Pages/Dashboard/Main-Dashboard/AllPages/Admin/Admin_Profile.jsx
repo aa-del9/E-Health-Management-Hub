@@ -11,7 +11,7 @@ import { FaRegHospital, FaMapMarkedAlt, FaBirthdayCake } from "react-icons/fa";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, message, Modal } from "antd";
-import { UpdateDoctor, UpdateNurse } from "../../../../../Redux/auth/action";
+import { UpdateAdmin } from "../../../../../Redux/auth/action";
 import {
   GetDoctorDetails,
   GetAllData,
@@ -22,10 +22,7 @@ import "./CSS/Admin_Profile.css";
 // *********************************************************
 const Admin_Profile = () => {
   const { data } = useSelector((store) => store.auth);
-  const { user } = useSelector((state) => state.auth);
-  console.log("heree", data);
-  console.log(data?.user?.id);
-
+  console.log("ADMIN DATA JANAB ", data);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,6 +33,11 @@ const Admin_Profile = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const showModal = () => {
+    setFormData({
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    });
     setOpen(true);
   };
 
@@ -53,12 +55,15 @@ const Admin_Profile = () => {
     messageApi.success(text);
   };
 
+  const error = (text) => {
+    messageApi.error(text);
+  };
+
   const handleCancel = () => {
     setOpen(false);
   };
 
   const [formData, setFormData] = useState({
-    currentPassword: "",
     newPassword: "",
   });
 
@@ -66,13 +71,33 @@ const Admin_Profile = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  console.log("admin new pass ", formData.newPassword);
   const handleFormSubmit = () => {
-    dispatch(UpdateDoctor(formData, data.user._id));
-    success("user updated");
-    handleOk();
+    data.user.password === formData.oldPassword
+      ? data.user.password !== formData.newPassword
+        ? formData.confirmNewPassword === formData.newPassword
+          ? (() => {
+              dispatch(
+                UpdateAdmin(
+                  data.user.id,
+                  { password: formData.newPassword },
+                  data.token
+                )
+              ).then((res) => {
+                if (res.message === "password updated") {
+                  success("User updated");
+                  handleOk();
+                } else {
+                  error("Something went wrong.");
+                }
+              });
+            })()
+          : error("Passwords do not match")
+        : error("New password same as old")
+      : error("Incorrect Old Password");
   };
 
-  if (data?.isAuthticated === false) {
+  if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
 
@@ -118,34 +143,33 @@ const Admin_Profile = () => {
               </div>
 
               <Modal
-                title="Change Password"
+                title="CHANGE PASSWORD"
                 open={open}
-                onOk={handleOk}
+                onOk={handleFormSubmit}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
-                footer={[
-                  <Button key="back" onClick={handleCancel}>
-                    Cancel
-                  </Button>,
-                  <Button key="submit" onClick={handleFormSubmit}>
-                    Confirm
-                  </Button>,
-                ]}
               >
                 <form className="inputForm">
-                  <p>Current password</p>
                   <input
-                    name="currentPassword"
-                    value={formData.mobile}
+                    name="oldPassword"
+                    value={formData.oldPassword}
                     onChange={handleFormChange}
                     type="password"
+                    placeholder="Old Password"
                   />
-                  <p>New password</p>
                   <input
                     name="newPassword"
-                    value={formData.mobile}
-                    onChange={handleFormChange}
                     type="password"
+                    value={formData.newPassword}
+                    onChange={handleFormChange}
+                    placeholder="New Password"
+                  />
+                  <input
+                    name="confirmNewPassword"
+                    type="password"
+                    value={formData.confirmNewPassword}
+                    onChange={handleFormChange}
+                    placeholder="Confirm New Password"
                   />
                 </form>
               </Modal>
