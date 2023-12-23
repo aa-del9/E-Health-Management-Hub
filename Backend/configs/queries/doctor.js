@@ -25,6 +25,9 @@ const updatePassQuery = ` UPDATE doctors SET password = $1 WHERE id = $2;`;
 const getCredsWithEmailQuery = `SELECT id,password FROM doctors WHERE email = $1;`;
 const getAllQuery = `SELECT * FROM doctors;`;
 const findIfExistsQuery = `SELECT email FROM doctors WHERE email = $1;`;
+
+const addAvailableTimesQuery = `UPDATE doctors SET availability = $1 WHERE id = $2`;
+
 module.exports = {
   findIfExistsQuery,
   createCredTable,
@@ -34,4 +37,5 @@ module.exports = {
   updatePassQuery,
   getCredsWithEmailQuery,
   countDoctorQuery,
+  addAvailableTimesQuery,
 };

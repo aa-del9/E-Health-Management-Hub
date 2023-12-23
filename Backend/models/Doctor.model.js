@@ -10,6 +10,7 @@ const {
   updatePassQuery,
   getCredsWithEmailQuery,
   countDoctorQuery,
+  addAvailableTimesQuery,
 } = require("../configs/queries/doctor");
 
 const doctorSchema = mongoose.Schema({
@@ -163,6 +164,16 @@ const getDoctorCredFromEmail = (email) => {
   });
 };
 
+const addAvailableTimes = (id, availability) => {
+  console.log("availability", availability);
+  return dbhelper
+    .query(addAvailableTimesQuery, [availability, id])
+    .then((result) => {
+      console.log(result, "in db helper");
+      return result;
+    });
+};
+
 module.exports = {
   DoctorModel,
   docModel,
@@ -174,4 +185,5 @@ module.exports = {
   updatePass,
   getDoctorCredFromEmail,
   countDoctor,
+  addAvailableTimes,
 };

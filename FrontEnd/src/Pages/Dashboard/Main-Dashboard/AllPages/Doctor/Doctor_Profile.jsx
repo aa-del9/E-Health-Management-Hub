@@ -15,6 +15,7 @@ import { UpdateDoctor } from "../../../../../Redux/auth/action";
 import { GetDoctorDetails } from "../../../../../Redux/Datas/action";
 import { Navigate } from "react-router-dom";
 import "./CSS/Doctor_Profile.css";
+import { availabilityRegister } from "../../../../../Redux/auth/action";
 
 // *********************************************************
 const Doctor_Profile = () => {
@@ -71,6 +72,7 @@ const Doctor_Profile = () => {
   });
 
   const [formAvailability, setFormAvailability] = useState({
+    id: data.user.id,
     MAS: "",
     MAE: "",
     EAS: "",
@@ -110,9 +112,18 @@ const Doctor_Profile = () => {
       : error("Incorrect Old Password");
   };
 
-  const handleAvailabilityFormSubmit = () => {
-    success("Availability updated");
-    handleOk();
+  const handleAvailabilityFormSubmit = (e) => {
+    e.preventDefault();
+    setConfirmLoading(true);
+    dispatch(availabilityRegister(formAvailability)).then((res) => {
+      console.log("availbility res", res);
+      if (res.message === "Successful") {
+        success("Availability updated");
+        handleOk();
+      } else {
+        error("something went wrong");
+      }
+    });
   };
 
   console.log("newPass", formData.newPass);

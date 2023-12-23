@@ -8,6 +8,7 @@ const {
   findIfExists,
   addDoctor,
   updatePass,
+  addAvailableTimes,
 } = require("../models/Doctor.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
@@ -73,6 +74,58 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     console.log({ message: "Error" });
+    console.log(error);
+  }
+});
+
+router.post("/availability", async (req, res) => {
+  console.log(req.body);
+  const docId = req.body.id;
+  const startMorningTime = req.body.MAS;
+  const endMorningTime = req.body.MAE;
+  const startEveningTime = req.body.EAS;
+  const endEveningTime = req.body.EAE;
+  try {
+    const doctor = await findById(docId);
+    if (doctor.length > 0) {
+      const times = [];
+      let currentTime = startMorningTime;
+
+      while (currentTime <= endMorningTime) {
+        times.push(currentTime);
+        const [hours, minutes] = currentTime.split(":");
+        const totalMinutes = parseInt(hours) * 60 + parseInt(minutes);
+        const newTime = totalMinutes + 15;
+        const newHours = Math.floor(newTime / 60);
+        const newMinutes = newTime % 60;
+        currentTime = `${newHours.toString().padStart(2, "0")}:${newMinutes
+          .toString()
+          .padStart(2, "0")}`;
+      }
+      currentTime = startEveningTime;
+      while (currentTime <= endEveningTime) {
+        times.push(currentTime);
+        const [hours, minutes] = currentTime.split(":");
+        const totalMinutes = parseInt(hours) * 60 + parseInt(minutes);
+        const newTime = totalMinutes + 15;
+        const newHours = Math.floor(newTime / 60);
+        const newMinutes = newTime % 60;
+        currentTime = `${newHours.toString().padStart(2, "0")}:${newMinutes
+          .toString()
+          .padStart(2, "0")}`;
+        console.log(currentTime);
+      }
+      console.log(times);
+      await addAvailableTimes(docId, times);
+      res.send({
+        message: "Successful",
+        user: { ...doctor[0], userType: "doctor" },
+      });
+    } else {
+      res.status(404).send({ message: "Doctor not found" });
+    }
+  } catch (error) {
+    console.log({ message: "Available times error" });
     console.log(error);
   }
 });

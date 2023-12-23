@@ -228,6 +228,27 @@ export const AmbulanceRegister = (data) => async (dispatch) => {
   }
 };
 
+export const availabilityRegister = (data) => async (dispatch) => {
+  try {
+    console.log("ava data", data);
+    dispatch({ type: types.ADD_AVAILABLETIMES_REQUEST });
+    const res = await axios.post(
+      "http://127.0.0.1:3001/doctors/availability",
+      data
+    );
+    console.log(data);
+    console.log(res);
+    return res.data;
+  } catch (error) {
+    dispatch({
+      type: types.ADD_AVAILABLETIMES_ERROR,
+      payload: {
+        message: error,
+      },
+    });
+  }
+};
+
 // logout user
 export const authLogout = () => async (dispatch) => {
   try {
