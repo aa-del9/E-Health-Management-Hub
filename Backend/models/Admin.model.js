@@ -10,6 +10,7 @@ const {
   deleteRow,
   countAdminQuery,
   updatePassQuery,
+  getAllQuery,
 } = require("../configs/queries/admin");
 // const knex = require("knex")({
 //   client: "pg",
@@ -82,6 +83,13 @@ const AdminModel = mongoose.model("admin", adminSchema);
 const AdminCredModel = {
   id: 0,
   password: "",
+};
+
+const getAllAdmins = () => {
+  return dbhelper.query(getAllQuery).then((result) => {
+    // console.log("in db helper", result);
+    return result;
+  });
 };
 
 const createTables = () => {
@@ -162,4 +170,5 @@ module.exports = {
   deleteAdmin,
   countAdmin,
   updatePass,
+  getAllAdmins,
 };

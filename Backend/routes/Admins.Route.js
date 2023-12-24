@@ -10,6 +10,7 @@ const {
   findCred,
   getCredFromEmail,
   updatePass,
+  getAllAdmins,
 } = require("../models/Admin.model");
 const { getDoctorCredFromEmail } = require("../models/Doctor.model");
 const { getPatientCredFromEmail } = require("../models/Nurse.model");
@@ -25,7 +26,10 @@ router.get("/", async (req, res) => {
   try {
     //const admins = await AdminModel.find();
     await createTables();
-    res.status(200).send("admin table exists or created");
+    const admins = await getAllAdmins();
+    console.log(admins);
+    res.status(200).send(admins);
+    // res.status(200).send("admin table exists or created");
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });

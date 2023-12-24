@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import "../Doctor/CSS/Doctor_Profile.css";
-import { BiTime } from "react-icons/bi";
-import { GiMeditation } from "react-icons/gi";
+import { BiDetail, BiTime } from "react-icons/bi";
+import { GiAges, GiMeditation } from "react-icons/gi";
 import { AiFillCalendar, AiFillEdit } from "react-icons/ai";
-import { MdBloodtype } from "react-icons/md";
+import { MdBloodtype, MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { BsHouseFill, BsGenderAmbiguous } from "react-icons/bs";
 import { MdOutlineCastForEducation } from "react-icons/md";
-import { FaRegHospital, FaMapMarkedAlt, FaBirthdayCake } from "react-icons/fa";
+import {
+  FaRegHospital,
+  FaMapMarkedAlt,
+  FaBirthdayCake,
+  FaClinicMedical,
+} from "react-icons/fa";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { message, Modal } from "antd";
 import { updatePatient } from "../../../../../Redux/auth/action";
 import "./CSS/Profiles.css";
-import { GetAllData } from "../../../../../Redux/Datas/action";
+import {
+  GetPatientDetails,
+  GetPatients,
+} from "../../../../../Redux/Datas/action";
+import { TbGenderBigender } from "react-icons/tb";
 
 const Nurse_Profile = () => {
   const { data } = useSelector((store) => store.auth);
@@ -22,8 +31,14 @@ const Nurse_Profile = () => {
   console.log("PATIENT DATA JANAB ", data);
   const dispatch = useDispatch();
 
+  const { patients } = useSelector((store) => store.data.patients);
+
+  console.log("PATIENTS", patients);
+  const patient = patients.find((patient) => data.user.email === patient.email);
+  console.log(patient);
+
   useEffect(() => {
-    dispatch(GetAllData());
+    dispatch(GetPatients());
   }, []);
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -93,6 +108,15 @@ const Nurse_Profile = () => {
       : error("Incorrect Old Password");
   };
 
+  const dobString = patient.dob;
+  const dobDate = new Date(dobString);
+
+  const formattedDob = dobDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
   if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
   }
@@ -110,31 +134,29 @@ const Nurse_Profile = () => {
           <div className="maindoctorProfile">
             <div className="firstBox doctorfirstdiv">
               <div>
-                <img src="../../../../../img/profile.png" alt="docimg" />
+                <img src="../../../../../img/profile.png" alt="patientimg" />
               </div>
               <hr />
               <div className="singleitemdiv">
                 <GiMeditation className="singledivicons" />
-                <p>{data?.user.name}</p>
-              </div>
-              <div className="singleitemdiv">
-                <MdBloodtype className="singledivicons" />
-                <p>{data?.user.bloodGroup}</p>
-              </div>
-              <div className="singleitemdiv">
-                <FaBirthdayCake className="singledivicons" />
-                <p>{data?.user.DOB}</p>
+                <p>{patient.name}</p>
               </div>
               <div className="singleitemdiv">
                 <BsFillTelephoneFill className="singledivicons" />
-                <p>{data?.user.mobile}</p>
+
+                <p>{patient.phonenum}</p>
               </div>
               <div className="singleitemdiv">
-                <button onClick={showModal}>
-                  {" "}
-                  <AiFillEdit />
-                  Change Password
-                </button>
+                <MdEmail className="singledivicons" />
+                <p>{patient.email}</p>
+              </div>
+              <div className="singleitemdiv">
+                <FaBirthdayCake className="singledivicons" />
+
+                <p>{formattedDob}</p>
+              </div>
+              <div className="singleitemdiv">
+                <button onClick={showModal}> Change Password</button>
               </div>
 
               <Modal
@@ -176,21 +198,21 @@ const Nurse_Profile = () => {
                   Other Info
                 </h2>
                 <div className="singleitemdiv">
-                  <BsGenderAmbiguous className="singledivicons" />
-                  <p>{data?.user[0]?.gender}</p>
+                  <TbGenderBigender className="singledivicons" />
+                  <p>{patient.gender}</p>
                 </div>
                 <div className="singleitemdiv">
-                  <AiFillCalendar className="singledivicons" />
-                  <p>{data?.user[0]?.age}</p>
+                  <GiAges className="singledivicons" />
+                  <p>{patient.age}</p>
                 </div>
 
                 <div className="singleitemdiv">
-                  <MdOutlineCastForEducation className="singledivicons" />
-                  <p>{data?.user[0]?.education}</p>
+                  <MdBloodtype className="singledivicons" />
+                  <p>{patient.bloodgroup}</p>
                 </div>
                 <div className="singleitemdiv">
                   <BsHouseFill className="singledivicons" />
-                  <p>{data?.user[0]?.address}</p>
+                  <p>{patient.address}</p>
                 </div>
               </div>
               {/* ***********  Third Div ******************** */}
@@ -204,13 +226,13 @@ const Nurse_Profile = () => {
                 </div>
                 <div className="singleitemdiv">
                   <FaRegHospital className="singledivicons" />
-                  <p>Apollo hospitals</p>
+                  <p>AZIZ FATIMA HOSPITAL</p>
                 </div>
                 <div className="singleitemdiv">
                   <FaMapMarkedAlt className="singledivicons" />
                   <p>
-                    Sri Aurobindo Marg, Ansari Nagar, Ansari Nagar East, New
-                    Delhi.
+                    Faisalabad - Sheikhupura Road, Gulistan Colony Faisalabad,
+                    Punjab
                   </p>
                 </div>
               </div>
