@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CommonProblem } from "./MixedObjectData";
 import "./CSS/Book_appointment.css";
-import { useDispatch } from "react-redux";
-import { AddPatients, CreateBooking } from "../../../../../Redux/Datas/action";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  CreateBooking,
+  GetDoctorDetails,
+} from "../../../../../Redux/Datas/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,45 +14,61 @@ const notify = (text) => toast(text);
 const Book_Appointment = () => {
   const dispatch = useDispatch();
   const [Loading, setLoading] = useState(false);
-
+  const {
+    data: { user },
+  } = useSelector((state) => state.auth);
+  const [chosenDoctor, setChosenDoctor] = useState(null);
   const InitValue = {
-    patientName: "",
-    age: "",
-    gender: "",
-    mobile: "",
-    disease: "",
-    address: "",
-    email: "",
-    department: "",
+    patientId: user.id,
+    docemail: "",
     date: "",
     time: "",
   };
 
-  const [BookAppoint, setBookAppoint] = useState(InitValue);
+  const handleDoctor = (e) => {
+    console.log(e.target.value);
+    const doctor =
+      e.target.value !== ""
+        ? doctors.find((doctor) => doctor.name === e.target.value)
+        : null;
+    setChosenDoctor(doctor);
+    setBookAppoint({ ...BookAppoint, docemail: doctor.email });
+    console.log("chosen", chosenDoctor);
+  };
 
+  const { doctors } = useSelector((store) => store.data.doctors);
+  const [BookAppoint, setBookAppoint] = useState(InitValue);
+  useEffect(() => {
+    dispatch(GetDoctorDetails());
+  }, []);
   const HandleAppointment = (e) => {
+    console.log(e.target.name, e.target.value);
     setBookAppoint({ ...BookAppoint, [e.target.name]: e.target.value });
   };
 
-  const HandleOnsubmitAppointment = (e) => {
+  const HandleDepartment = (e) => {
+    setBookAppoint({ ...BookAppoint, department: e.target.value });
+    setChosenDoctor(null);
+  };
+  const HandleOnSubmitAppointment = (e) => {
+    console.log(BookAppoint);
     e.preventDefault();
-
-    if (BookAppoint.gender === "" || BookAppoint.department === "") {
-      return notify("Please fill all the Details");
-    }
     setLoading(true);
-    dispatch(AddPatients({ ...BookAppoint, patientId: Date.now() })).then(
-      (res) => {
-        let data = {
-          ...BookAppoint,
-          patientId: res.id,
-        };
-        dispatch(CreateBooking(data));
-        notify("Appointment Booked");
+    delete BookAppoint.department;
+    console.log(BookAppoint);
+    dispatch(CreateBooking(BookAppoint)).then((res) => {
+      console.log(res);
+      if (res.message === "Successful") {
         setLoading(false);
-        setBookAppoint(InitValue);
+        notify("Appointment Booked");
+      } else {
+        setLoading(false);
+        notify("Something went wrong. Please try again");
       }
-    );
+      setBookAppoint(InitValue);
+    });
+    setLoading(false);
+    setBookAppoint(InitValue);
   };
 
   return (
@@ -60,120 +79,8 @@ const Book_Appointment = () => {
         <div className="AfterSideBar">
           <div className="Main_Add_Doctor_div">
             <h1>Book Appointment</h1>
-            <form onSubmit={HandleOnsubmitAppointment}>
-              {/* Name PlaceHolder */}
-              <div>
-                <label>Patient Name</label>
-                <div className="inputdiv">
-                  <input
-                    type="text"
-                    placeholder="First Name"
-                    name="patientName"
-                    value={BookAppoint.patientName}
-                    onChange={HandleAppointment}
-                    required
-                  />
-                </div>
-              </div>
-              {/* AGE PLACEHOLDER  */}
-              <div>
-                <label>Age</label>
-                <div className="inputdiv">
-                  <input
-                    type="number"
-                    placeholder="Age"
-                    name="age"
-                    value={BookAppoint.age}
-                    onChange={HandleAppointment}
-                    required
-                  />
-                </div>
-              </div>
-              {/* GENDER PLACEHOLDER  */}
-              <div>
-                <label>Gender</label>
-                <div className="inputdiv">
-                  <select
-                    name="gender"
-                    value={BookAppoint.gender}
-                    onChange={HandleAppointment}
-                    required
-                  >
-                    <option value="Choose Blood Group">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-              </div>
-              {/* MOBILE PLACEHOLDER */}
-              <div>
-                <label>Contact Number</label>
-                <div className="inputdiv">
-                  <input
-                    type="number"
-                    placeholder="Number"
-                    name="mobile"
-                    value={BookAppoint.mobile}
-                    onChange={HandleAppointment}
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <label>Email</label>
-                <div className="inputdiv">
-                  <input
-                    type="email"
-                    placeholder="example@email.com"
-                    name="email"
-                    value={BookAppoint.email}
-                    onChange={HandleAppointment}
-                    required
-                  />
-                </div>
-              </div>
-              {/* PROBLEM PLACEHOLDER */}
-              <div>
-                <label>Type of Disease</label>
-                <div className="inputdiv">
-                  <select
-                    name="disease"
-                    value={BookAppoint.disease}
-                    onChange={(e) => {
-                      HandleAppointment(e);
-                    }}
-                    required
-                  >
-                    <option value="Choose Blood Group">Select Disease</option>
-                    {CommonProblem.map((ele, i) => {
-                      return (
-                        <option key={i} value={ele.title}>
-                          {ele.title}
-                        </option>
-                      );
-                    })}
-                  </select>
-                </div>
-              </div>
-
-              {/* ENTER SAMPLE DISEASE */}
-
-              {/* ADDRESS SECTION  */}
-
-              <div>
-                <label>Address</label>
-                <div className="inputdiv">
-                  <input
-                    type="text"
-                    placeholder="Address line 1"
-                    name="address"
-                    value={BookAppoint.address}
-                    onChange={HandleAppointment}
-                    required
-                  />
-                </div>
-              </div>
+            <h2>Choose a Doctor</h2>
+            <form onSubmit={HandleOnSubmitAppointment}>
               {/* DEPARTMENT SECTION */}
 
               <div>
@@ -182,7 +89,7 @@ const Book_Appointment = () => {
                   <select
                     name="department"
                     value={BookAppoint.department}
-                    onChange={HandleAppointment}
+                    onChange={HandleDepartment}
                     required
                   >
                     <option value="">Select</option>
@@ -197,6 +104,53 @@ const Book_Appointment = () => {
                   </select>
                 </div>
               </div>
+              <div>
+                <label>Doctor</label>
+                <div className="inputdiv">
+                  <select
+                    name="doctor"
+                    value={BookAppoint.docname}
+                    onChange={handleDoctor}
+                    required
+                  >
+                    <option value="">Select</option>
+                    {doctors.map((doctor) =>
+                      doctor.department === BookAppoint.department ? (
+                        <option key={doctor.name} value={doctor.name}>
+                          {doctor.name}
+                        </option>
+                      ) : null
+                    )}
+                  </select>
+                </div>
+              </div>
+              {/* Fees PlaceHolder */}
+              <div>
+                <label>Fees</label>
+                <div className="inputdiv">
+                  <input
+                    type="number"
+                    placeholder="Fees"
+                    name="fees"
+                    value={chosenDoctor?.fees || ""}
+                    readOnly
+                  />
+                </div>
+              </div>
+
+              {/* Problem PlaceHolder */}
+              <div>
+                <label>Problem</label>
+                <div className="inputdiv">
+                  <input
+                    type="text"
+                    placeholder="Problem"
+                    name="problem"
+                    onChange={HandleAppointment}
+                    value={BookAppoint.docname}
+                  />
+                </div>
+              </div>
               {/* APPOINTMENT DATE  */}
               <div className="dateofAppointment">
                 <p>Date and Time </p>
@@ -209,14 +163,22 @@ const Book_Appointment = () => {
                     onChange={HandleAppointment}
                     required
                   />
-                  <input
-                    type={"time"}
-                    placeholder="Choose Time"
+
+                  <select
                     name="time"
                     value={BookAppoint.time}
                     onChange={HandleAppointment}
                     required
-                  />
+                  >
+                    <option value="">Select Time</option>
+                    {chosenDoctor !== null
+                      ? chosenDoctor?.availability.map((time) => (
+                          <option key={time} value={time}>
+                            {time}
+                          </option>
+                        ))
+                      : null}
+                  </select>
                 </div>
               </div>
 

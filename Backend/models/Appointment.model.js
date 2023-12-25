@@ -2,7 +2,14 @@ const mongoose = require("mongoose");
 
 const dbhelper = require("../configs/dbhelper");
 
-const { countAppoinmentQuery } = require("../configs/queries/appointment");
+const {
+  countAppoinmentQuery,
+  createAppointmentQuery,
+  getAppointmentFromPatientQuery,
+  getAppointmentFromDoctorQuery,
+  deleteAppointmentQuery,
+  findByIDQuery,
+} = require("../configs/queries/appointment");
 
 const appointmentSchema = mongoose.Schema({
   userType: {
@@ -66,4 +73,48 @@ const countAppointment = () => {
     return result[0];
   });
 };
-module.exports = { AppointmentModel, countAppointment };
+
+const findById = (id) => {
+  return dbhelper.query(findByIDQuery, [id]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+
+const deleteAppointment = (id) => {
+  return dbhelper.query(deleteAppointmentQuery, [id]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+
+const getAppointmentFromPatient = (id) => {
+  return dbhelper.query(getAppointmentFromPatientQuery, [id]).then((result) => {
+    //console.log(result, "in db helper");
+    return result;
+  });
+};
+
+const getAppointmentFromDoctor = (id) => {
+  return dbhelper.query(getAppointmentFromDoctorQuery, [id]).then((result) => {
+    // console.log(result, "in db helper");
+    return result;
+  });
+};
+const createAppointment = (data) => {
+  const array = Object.values(data);
+  console.log(array);
+  return dbhelper.query(createAppointmentQuery, array).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+module.exports = {
+  getAppointmentFromPatient,
+  createAppointment,
+  AppointmentModel,
+  countAppointment,
+  getAppointmentFromDoctor,
+  deleteAppointment,
+  findById,
+};

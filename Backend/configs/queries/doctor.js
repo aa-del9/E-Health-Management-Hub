@@ -28,6 +28,7 @@ const findIfExistsQuery = `SELECT email FROM doctors WHERE email = $1;`;
 
 const addAvailableTimesQuery = `UPDATE doctors SET availability = $1 WHERE id = $2`;
 
+const getDoctorsByDepartment = `SELECT id,name FROM doctors WHERE department = $1;`;
 module.exports = {
   findIfExistsQuery,
   createCredTable,
@@ -38,4 +39,5 @@ module.exports = {
   getCredsWithEmailQuery,
   countDoctorQuery,
   addAvailableTimesQuery,
+  getDoctorsByDepartment,
 };

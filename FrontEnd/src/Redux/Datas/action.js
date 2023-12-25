@@ -192,10 +192,11 @@ export const CreateBooking = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.CREATE_BOOKING_REQUEST });
     const res = await axios.post(
-      `https://zany-gray-clam-gear.cyclic.app/appointments/create`,
+      `http://127.0.0.1:3001/appointments/create`,
       data
     );
     console.log(res);
+    return res.data;
     // dispatch({ type: types.CREATE_BOOKING_SUCCESS, payload: res.data.postData });
   } catch (error) {
     console.log(error);
@@ -362,20 +363,37 @@ export const GetAllAppointment = () => async (dispatch) => {
     console.log(error);
   }
 };
+// GET ALL APPOINTMENT DETAILS
+export const GetAppointments = (userType, id) => async (dispatch) => {
+  try {
+    dispatch({ type: types.GET_APPOINTMENT_DETAILS_REQUEST });
+    const res = await axios.get(
+      `http://127.0.0.1:3001/appointments/${userType}/${id}`
+    );
+    console.log("res", res.data);
+    // return res.data;
+    const appointments = { appointments: res.data.data };
+    dispatch({
+      type: types.GET_APPOINTMENT_DETAILS_SUCCESS,
+      payload: appointments,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // DELETE APPOINTMENTS
 export const DeleteAppointment = (id) => async (dispatch) => {
   try {
     dispatch({ type: types.DELETE_APPOINTMENT_REQUEST });
-    const res = await axios.delete(
-      `https://zany-gray-clam-gear.cyclic.app/appointments/${id}`
-    );
+    const res = await axios.delete(`http://127.0.0.1:3001/appointments/${id}`);
     console.log(res.data);
     // return res.data;
     dispatch({
       type: types.DELETE_APPOINTMENT_SUCCESS,
       payload: id,
     });
+    return res.data;
   } catch (error) {
     console.log(error);
   }

@@ -59,255 +59,185 @@ const Sidebar = () => {
                 DashBoard
               </div>
             </Link>
-            {user?.userType === "patient" ? ( //nurse changed to patient as changing whole nurse panel to patient
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/nurseprofile"}
-              >
-                <div className="icon">
-                  <CgProfile className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Profile
-                </div>
-              </Link>
-            ) : null}
             {user?.userType === "patient" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/addpatient"}
-              >
-                <div className="icon">
-                  <FaHospitalUser className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
+              <>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/nurseprofile"}
                 >
-                  Add Patient
-                </div>
-              </Link>
-            ) : null}
-            {user?.userType === "patient" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/bookappointment"}
-              >
-                <div className="icon">
-                  <BsBookmarkPlus className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
+                  <div className="icon">
+                    <CgProfile className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Profile
+                  </div>
+                </Link>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/bookappointment"}
                 >
-                  Appointments
-                </div>
-              </Link>
+                  <div className="icon">
+                    <BsBookmarkPlus className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Book Appointment
+                  </div>
+                </Link>
+              </>
             ) : null}
             {user?.userType === "admin" ? (
-              <Link className="link" activeclassname="active" to={"/addoctor"}>
-                <div className="icon">
-                  <AiOutlineUserAdd className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
+              <>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/addoctor"}
                 >
-                  Add Doctor
-                </div>
-              </Link>
+                  <div className="icon">
+                    <AiOutlineUserAdd className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Add Doctor
+                  </div>
+                </Link>
+                <Link className="link" activeclassname="active" to={"/admin"}>
+                  <div className="icon">
+                    <RiAdminLine
+                      className="mainIcon"
+                      style={{ color: "white" }}
+                    />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Add Admin
+                  </div>
+                </Link>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/addambulance"}
+                >
+                  <div className="icon">
+                    <FaAmbulance className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Add AMBU
+                  </div>
+                </Link>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/adminprofile"}
+                >
+                  <div className="icon">
+                    <SlUserFollow className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Profile
+                  </div>
+                </Link>
+              </>
             ) : null}
-            {/* {user?.userType === "admin" ? (
-              <Link className="link" activeclassname="active" to={"/addnurse"}>
-                <div className="icon">
-                  <GiNurseFemale className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Add Nurse
-                </div>
-              </Link>
-            ) : null} */}
-            {user?.userType === "admin" ? (
-              <Link className="link" activeclassname="active" to={"/admin"}>
-                <div className="icon">
-                  <RiAdminLine
-                    className="mainIcon"
-                    style={{ color: "white" }}
-                  />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Add Admin
-                </div>
-              </Link>
-            ) : null}
-            {/* {user?.userType === "admin" ? (
-              <Link className="link" activeclassname="active" to={"/addbeds"}>
-                <div className="icon">
-                  <TbBed className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Add Beds
-                </div>
-              </Link>
-            ) : null} */}
-            {user?.userType === "admin" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/addambulance"}
-              >
-                <div className="icon">
-                  <FaAmbulance className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Add AMBU
-                </div>
-              </Link>
-            ) : null}
-            {/* {user?.userType === "admin" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/checkpayment"}
-              >
-                <div className="icon">
-                  <RiSecurePaymentLine className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Payments
-                </div>
-              </Link>
-            ) : null} */}
             {user?.userType === "doctor" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/doctorprofile"}
-              >
-                <div className="icon">
-                  <SlUserFollow className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
+              <>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/doctorprofile"}
                 >
-                  Profile
-                </div>
-              </Link>
-            ) : null}
-            {user?.userType === "admin" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/adminprofile"}
-              >
-                <div className="icon">
-                  <SlUserFollow className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
+                  <div className="icon">
+                    <SlUserFollow className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Profile
+                  </div>
+                </Link>
+
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/createslip"}
                 >
-                  Profile
-                </div>
-              </Link>
+                  <div className="icon">
+                    <BiDetail className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Create Report
+                  </div>
+                </Link>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/patientdetails"}
+                >
+                  <div className="icon">
+                    <FaUsers className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Patients
+                  </div>
+                </Link>
+              </>
             ) : null}
-            {/* <Link className="link" activeclassname="active" to={"/rooms"}>
-              <div className="icon">
-                <MdBedroomChild className="mainIcon" />
-              </div>
-              <div
-                style={{ display: isOpen ? "block" : "none" }}
-                className="link_text"
-              >
-                Beds
-              </div>
-            </Link> */}
+
             {user?.userType !== "admin" ? (
-              <Link className="link" activeclassname="active" to={"/reports"}>
-                <div className="icon">
-                  <TbReportMedical className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
+              <>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/checkappointment"}
                 >
-                  Reports
-                </div>
-              </Link>
+                  <div className="icon">
+                    <BsFillBookmarkCheckFill className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    My Appointments
+                  </div>
+                </Link>
+                <Link className="link" activeclassname="active" to={"/reports"}>
+                  <div className="icon">
+                    <TbReportMedical className="mainIcon" />
+                  </div>
+                  <div
+                    style={{ display: isOpen ? "block" : "none" }}
+                    className="link_text"
+                  >
+                    Reports
+                  </div>
+                </Link>
+              </>
             ) : null}
-            {user?.userType === "doctor" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/checkappointment"}
-              >
-                <div className="icon">
-                  <BsFillBookmarkCheckFill className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Appointments
-                </div>
-              </Link>
-            ) : null}
-            {user?.userType === "doctor" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/createslip"}
-              >
-                <div className="icon">
-                  <BiDetail className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Create Report
-                </div>
-              </Link>
-            ) : null}
-            {user?.userType === "doctor" ? (
-              <Link
-                className="link"
-                activeclassname="active"
-                to={"/patientdetails"}
-              >
-                <div className="icon">
-                  <FaUsers className="mainIcon" />
-                </div>
-                <div
-                  style={{ display: isOpen ? "block" : "none" }}
-                  className="link_text"
-                >
-                  Patients
-                </div>
-              </Link>
-            ) : null}
+
             <Link
               className="LogOutPath link"
               onClick={() => {
