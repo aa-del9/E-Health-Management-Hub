@@ -41,6 +41,7 @@ export default function dataReducer(state = initialState, { type, payload }) {
       };
 
     case types.GET_ADMIN_SUCCESS:
+      console.log(payload);
       return {
         ...state,
         loading: false,

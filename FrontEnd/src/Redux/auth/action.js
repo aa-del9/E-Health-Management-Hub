@@ -181,16 +181,17 @@ export const AdminRegister = (data) => async (dispatch) => {
     dispatch({ type: types.REGISTER_ADMIN_REQUEST });
     const res = await axios.post("http://127.0.0.1:3001/admin/register", data);
     // console.log(res);
+
+    dispatch({
+      type: types.REGISTER_ADMIN_SUCCESS,
+      payload: {
+        message: res.data.message,
+        user: res.data.user,
+        // token: res.data.token,
+        report: res.data.report,
+      },
+    });
     return res.data;
-    // dispatch({
-    //   type: types.REGISTER_ADMIN_SUCCESS,
-    //   payload: {
-    //     message: res.data.message,
-    //     user: res.data.user,
-    //     // token: res.data.token,
-    //     report: res.data.report,
-    //   },
-    // });
   } catch (error) {
     dispatch({
       type: types.REGISTER_ADMIN_ERROR,
@@ -342,7 +343,7 @@ export const sendVerification = (data) => async (dispatch) => {
 
 export const mailCreds = (data) => async (dispatch) => {
   try {
-    dispatch({ type: types.EDIT_DOCTOR_REQUEST });
+    //dispatch({ type: types.EDIT_DOCTOR_REQUEST });
     const res = await axios.post(`http://127.0.0.1:3001/admin/mailCreds`, data);
     console.log(res);
     return res.data;

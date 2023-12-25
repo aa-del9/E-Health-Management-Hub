@@ -1,17 +1,22 @@
 const createCredTable = `CREATE TABLE IF NOT EXISTS doctors (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255),
-  phoneNum BIGINT,
-  email VARCHAR(255),
-  password VARCHAR(255) NOT NULL,
-  age INTEGER,
-  gender CHAR(1),
-  bloodGroup VARCHAR(255),
-  DOB DATE,
-  address VARCHAR(255),
-  education VARCHAR(255), 
-  department VARCHAR(255),
-  availability TIME []
+  name VARCHAR(255) NOT NULL,
+  phoneNum BIGINT NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL DEFAULT 'Doctor@123',
+  age INTEGER NOT NULL,
+  gender CHAR(1) NOT NULL,
+  bloodGroup VARCHAR(3) NOT NULL,
+  DOB DATE NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  education VARCHAR(255) NOT NULL,
+  department VARCHAR(255) NOT NULL,
+  availability TIME [] NOT NULL DEFAULT ARRAY ['10:00'::TIME, '10:15'::TIME, '10:30'::TIME, '10:45'::TIME, 
+        '11:00'::TIME, '11:15'::TIME, '11:30'::TIME, '11:45'::TIME, 
+        '14:00'::TIME, '14:15'::TIME, '14:30'::TIME, '14:45'::TIME, 
+        '15:00'::TIME, '15:15'::TIME, '15:30'::TIME, '15:45'::TIME, 
+        '16:00'::TIME],
+  fees INT NOT NULL
 );`;
 
 const findCredQuery = `SELECT id,password,email FROM doctors WHERE id = $1;`;

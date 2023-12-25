@@ -35,8 +35,9 @@ const Book_Appointment = () => {
     setBookAppoint({ ...BookAppoint, docemail: doctor.email });
     console.log("chosen", chosenDoctor);
   };
-
+  console.log("chosen", chosenDoctor);
   const { doctors } = useSelector((store) => store.data.doctors);
+  console.log(doctors);
   const [BookAppoint, setBookAppoint] = useState(InitValue);
   useEffect(() => {
     dispatch(GetDoctorDetails());

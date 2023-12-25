@@ -1,16 +1,14 @@
 const createTableQuery = `CREATE TABLE IF NOT EXISTS patients (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(255),
-  phoneNum BIGINT,
-  email VARCHAR(255),
-  password VARCHAR(255),
-  age INT,
+  name VARCHAR(255) NOT NULL,
+  phoneNum BIGINT NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  age INT NOT NULL,
   gender CHAR(1),
-  bloodGroup CHAR(2),
+  bloodGroup VARCHAR(3),
   DOB DATE,
   address VARCHAR(255),
-  disease VARCHAR(50),
-  details VARCHAR(255),
   docID INT,
   FOREIGN KEY (docID) REFERENCES doctors(id)
 );`;

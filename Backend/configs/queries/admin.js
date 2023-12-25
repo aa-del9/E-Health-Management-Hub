@@ -1,13 +1,13 @@
 const createCredTable = `CREATE TABLE IF NOT EXISTS admins (
-  name VARCHAR(255),
   id SERIAL PRIMARY KEY,
-  phoneNum BIGINT,
-  email VARCHAR(255),
-  password VARCHAR(255) NOT NULL,
-  age INTEGER,
-  gender CHAR(1),
+  name VARCHAR(255) NOT NULL,
+  phoneNum BIGINT NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL DEFAULT 'Admin@123',
+  age INTEGER NOT NULL,
+  gender CHAR(1) NOT NULL,
   DOB DATE,
-  address VARCHAR(255)
+  ADDRESS VARCHAR(255) NOT NULL
 );`;
 
 const countAdminQuery = `SELECT COUNT(*) FROM admins;`;
@@ -25,7 +25,7 @@ const deleteRow = `DELETE FROM admins WHERE email = $1;`;
 
 const updatePassQuery = ` UPDATE admins SET password = $1 WHERE id = $2;`;
 
-const getAllQuery = `SELECT * FROM admin_details;`;
+const getAllQuery = `SELECT * FROM admins;`;
 
 module.exports = {
   createCredTable,

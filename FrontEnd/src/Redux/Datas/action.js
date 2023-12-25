@@ -52,7 +52,7 @@ export const GetAdminDetails = () => async (dispatch) => {
   try {
     dispatch({ type: types.GET_ADMIN_REQUEST });
     const res = await axios.get("http://127.0.0.1:3001/admin/");
-
+    console.log(res.data);
     const admins = { admins: res.data };
     dispatch({
       type: types.GET_ADMIN_SUCCESS,

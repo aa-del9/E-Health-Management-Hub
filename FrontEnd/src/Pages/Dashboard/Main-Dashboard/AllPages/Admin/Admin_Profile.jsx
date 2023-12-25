@@ -27,7 +27,6 @@ const Admin_Profile = () => {
   console.log(data?.user?.id);
 
   const dispatch = useDispatch();
-
   const { admins } = useSelector((store) => store.data.admins);
   console.log("admins", admins);
   const admin = admins.find((admin) => data.user.email === admin.email);
