@@ -9,6 +9,8 @@ const {
   deleteAdmin,
   findCred,
   getCredFromEmail,
+  updatePass,
+  getAllAdmins,
 } = require("../models/Admin.model");
 const { getDoctorCredFromEmail } = require("../models/Doctor.model");
 const { getPatientCredFromEmail } = require("../models/Nurse.model");
@@ -24,7 +26,10 @@ router.get("/", async (req, res) => {
   try {
     //const admins = await AdminModel.find();
     await createTables();
-    res.status(200).send("admin table exists or created");
+    const admins = await getAllAdmins();
+    console.log(admins);
+    res.status(200).send(admins);
+    // res.status(200).send("admin table exists or created");
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
@@ -88,16 +93,22 @@ router.post("/login", async (req, res) => {
 
 router.patch("/:adminId", async (req, res) => {
   const id = req.params.adminId;
-  const payload = req.body;
+  // const payload = req.body;
+  const password = req.body.password;
   try {
-    const admin = await AdminModel.findByIdAndUpdate({ _id: id }, payload);
-    if (!admin) {
-      res.status(404).send({ msg: `Admin with id ${id} not found` });
+    await updatePass(password, id);
+    const admin = await findCred(id);
+    if (admin[0].password === password) {
+      return res.status(200).send({
+        message: "password updated",
+        user: { ...admin[0], userType: "admin" },
+      });
+    } else {
+      return res.status(404).send({ message: `password not updated` });
     }
-    res.status(200).send(`Admin with id ${id} updated`);
   } catch (error) {
     console.log(error);
-    res.status(400).send({ error: "Something went wrong, unable to Update." });
+    res.status(400).send({ error: "Serror" });
   }
 });
 

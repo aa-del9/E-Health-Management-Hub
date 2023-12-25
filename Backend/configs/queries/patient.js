@@ -15,7 +15,7 @@ const createTableQuery = `CREATE TABLE IF NOT EXISTS patients (
   FOREIGN KEY (docID) REFERENCES doctors(id)
 );`;
 
-const findCredQuery = `SELECT id,password FROM patients WHERE id = $1;`;
+const findCredQuery = `SELECT id,password,email FROM patients WHERE id = $1;`;
 const getCredsWithEmailQuery = `SELECT id,password FROM patients WHERE email = $1;`;
 const addQuery = `INSERT INTO patients (
     name,
@@ -44,6 +44,8 @@ VALUES (
 const findIfExistsQuery = `SELECT email FROM patients WHERE email = $1;`;
 const getAllQuery = `SELECT * FROM patient_details;`;
 const countPatientQuery = `SELECT COUNT(*) FROM patients;`;
+const updatePassQuery = ` UPDATE patients SET password = $1 WHERE id = $2;`;
+
 module.exports = {
   findIfExistsQuery,
   createTableQuery,
@@ -52,4 +54,5 @@ module.exports = {
   addQuery,
   getCredsWithEmailQuery,
   countPatientQuery,
+  updatePassQuery,
 };

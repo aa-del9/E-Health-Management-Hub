@@ -39,6 +39,14 @@ export default function dataReducer(state = initialState, { type, payload }) {
         loading: false,
         doctors: payload,
       };
+
+    case types.GET_ADMIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        admins: payload,
+      };
+
     case types.GET_ALLDATA_SUCCESS:
       return {
         ...state,

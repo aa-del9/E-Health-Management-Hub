@@ -48,6 +48,26 @@ export const GetDoctorDetails = () => async (dispatch) => {
   }
 };
 
+export const GetAdminDetails = () => async (dispatch) => {
+  try {
+    dispatch({ type: types.GET_ADMIN_REQUEST });
+    const res = await axios.get("http://127.0.0.1:3001/admin/");
+
+    const admins = { admins: res.data };
+    dispatch({
+      type: types.GET_ADMIN_SUCCESS,
+      payload: admins,
+    });
+  } catch (error) {
+    dispatch({
+      type: types.GET_ADMIN_ERROR,
+      payload: {
+        message: error,
+      },
+    });
+  }
+};
+
 // GET DOCTOR DETAILS
 // export const GetAdminDetails = () => async (dispatch) => {
 //   try {
@@ -301,7 +321,12 @@ export const GetPatients = () => async (dispatch) => {
       payload: patients,
     });
   } catch (error) {
-    console.log(error);
+    dispatch({
+      type: types.GET_PATIENT_ERROR,
+      payload: {
+        message: error,
+      },
+    });
   }
 };
 

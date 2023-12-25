@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../Doctor/CSS/Doctor_Profile.css";
-import { BiTime } from "react-icons/bi";
+import { BiMoney, BiTime } from "react-icons/bi";
 import { GiMeditation } from "react-icons/gi";
-import { AiFillCalendar, AiFillEdit } from "react-icons/ai";
-import { MdBloodtype } from "react-icons/md";
+import { AiFillCalendar, AiFillClockCircle, AiFillEdit } from "react-icons/ai";
+import { MdBloodtype, MdCastForEducation, MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { BsHouseFill, BsGenderAmbiguous } from "react-icons/bs";
 import { MdOutlineCastForEducation } from "react-icons/md";
@@ -15,6 +15,7 @@ import { UpdateDoctor } from "../../../../../Redux/auth/action";
 import { GetDoctorDetails } from "../../../../../Redux/Datas/action";
 import { Navigate } from "react-router-dom";
 import "./CSS/Doctor_Profile.css";
+import { availabilityRegister } from "../../../../../Redux/auth/action";
 
 // *********************************************************
 const Doctor_Profile = () => {
@@ -22,6 +23,12 @@ const Doctor_Profile = () => {
   const dispatch = useDispatch();
   console.log("user state", data);
 
+  console.log("DATA JANAB ", data);
+  const { doctors } = useSelector((store) => store.data.doctors);
+
+  console.log("doctors", doctors);
+  const doctor = doctors.find((doctor) => data.user.email === doctor.email);
+  console.log(doctor);
   useEffect(() => {
     dispatch(GetDoctorDetails());
   }, []);
@@ -71,6 +78,7 @@ const Doctor_Profile = () => {
   });
 
   const [formAvailability, setFormAvailability] = useState({
+    id: data.user.id,
     MAS: "",
     MAE: "",
     EAS: "",
@@ -110,13 +118,53 @@ const Doctor_Profile = () => {
       : error("Incorrect Old Password");
   };
 
-  const handleAvailabilityFormSubmit = () => {
-    success("Availability updated");
-    handleOk();
+  const handleAvailabilityFormSubmit = (e) => {
+    e.preventDefault();
+    setConfirmLoading(true);
+    dispatch(availabilityRegister(formAvailability)).then((res) => {
+      console.log("availbility res", res);
+      if (res.message === "Successful") {
+        success("Availability updated");
+        handleOk();
+      } else {
+        error("something went wrong");
+      }
+    });
   };
 
   console.log("newPass", formData.newPass);
-  if (data?.isAuthenticated === false) {
+
+  const dobString = doctor.dob;
+  const dobDate = new Date(dobString);
+
+  const formattedDob = dobDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
+  function filterAvailability(availability) {
+    const result = [];
+    // Display the first entry
+    result.push(availability[0]);
+
+    for (let i = 0; i < availability.length - 1; i++) {
+      const time1 = new Date(`1970-01-01T${availability[i]}`);
+      const time2 = new Date(`1970-01-01T${availability[i + 1]}`);
+      const timeDifference = (time2 - time1) / (1000 * 60); // Difference in minutes
+
+      if (timeDifference > 15) {
+        result.push(availability[i], availability[i + 1]);
+      }
+    }
+
+    // Display the last entry
+    result.push(availability[availability.length - 1]);
+
+    return result;
+  }
+
+  if (data?.isAuthticated === false) {
     return <Navigate to={"/"} />;
   }
 
@@ -138,26 +186,23 @@ const Doctor_Profile = () => {
               <hr />
               <div className="singleitemdiv">
                 <GiMeditation className="singledivicons" />
-                <p>{data?.user?.docName}</p>
-              </div>
-              <div className="singleitemdiv">
-                <MdBloodtype className="singledivicons" />
-                <p>{data?.user?.bloodGroup}</p>
-              </div>
-              <div className="singleitemdiv">
-                <FaBirthdayCake className="singledivicons" />
-                <p>{data?.user?.DOB}</p>
+                {/* <p>Name :</p> */}
+                <p>{doctor.name}</p>
               </div>
               <div className="singleitemdiv">
                 <BsFillTelephoneFill className="singledivicons" />
-                <p>{data?.user?.mobile}</p>
+                <p>{doctor.phonenum}</p>
               </div>
               <div className="singleitemdiv">
-                <button onClick={showModal}>
-                  {" "}
-                  <AiFillEdit />
-                  Change Password
-                </button>
+                <MdEmail className="singledivicons" />
+                <p>{doctor.email}</p>
+              </div>
+              <div className="singleitemdiv">
+                <FaBirthdayCake className="singledivicons" />
+                <p>{formattedDob}</p>
+              </div>
+              <div className="singleitemdiv">
+                <button onClick={showModal}> Change Password</button>
                 <button onClick={showAvailabilityModal}>
                   {""}
                   Set Availabilitys
@@ -243,21 +288,42 @@ const Doctor_Profile = () => {
                   Other Info
                 </h2>
                 <div className="singleitemdiv">
-                  <BsGenderAmbiguous className="singledivicons" />
-                  <p>{data?.user?.gender}</p>
+                  <BiMoney className="singledivicons" />
+                  <p>{doctor.fees}</p>
                 </div>
                 <div className="singleitemdiv">
-                  <AiFillCalendar className="singledivicons" />
-                  <p>{data?.user?.age}</p>
+                  <AiFillClockCircle className="singledivicons" />
+                  {/* <p>{`${doctor.availability[0]} - ${
+                    doctor.availability[doctor.availability.length - 1]
+                  }`}</p> */}
+                  <div>
+                    <p>{filterAvailability(doctor.availability).join(" - ")}</p>
+                  </div>
                 </div>
 
                 <div className="singleitemdiv">
-                  <MdOutlineCastForEducation className="singledivicons" />
-                  <p>{data?.user?.education}</p>
+                  <MdCastForEducation className="singledivicons" />
+                  <p>{doctor.department}</p>
                 </div>
-                <div className="singleitemdiv">
+                {/* <div className="singleitemdiv">
                   <BsHouseFill className="singledivicons" />
-                  <p>{data?.user?.address}</p>
+                  <p>{doctor.address}</p>
+                </div> */}
+                <div className="singleitemdiv">
+                  <BsHouseFill
+                    className="singledivicons"
+                    style={{ marginBottom: "30px", color: "orange" }}
+                  />
+                  <p
+                    style={{
+                      marginLeft: "10px",
+                      fontSize: "1.2rem",
+                      color: "#555",
+                      marginBottom: "30px",
+                    }}
+                  >
+                    {doctor.address}
+                  </p>
                 </div>
               </div>
               {/* ***********  Third Div ******************** */}
@@ -271,13 +337,13 @@ const Doctor_Profile = () => {
                 </div>
                 <div className="singleitemdiv">
                   <FaRegHospital className="singledivicons" />
-                  <p>Apollo hospitals</p>
+                  <p>AZIZ FATIMA HOSPITAL</p>
                 </div>
                 <div className="singleitemdiv">
                   <FaMapMarkedAlt className="singledivicons" />
                   <p>
-                    Sri Aurobindo Marg, Ansari Nagar, Ansari Nagar East, New
-                    Delhi.
+                    Faisalabad - Sheikhupura Road, Gulistan Colony Faisalabad,
+                    Punjab
                   </p>
                 </div>
               </div>

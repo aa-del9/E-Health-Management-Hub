@@ -228,6 +228,27 @@ export const AmbulanceRegister = (data) => async (dispatch) => {
   }
 };
 
+export const availabilityRegister = (data) => async (dispatch) => {
+  try {
+    console.log("ava data", data);
+    dispatch({ type: types.ADD_AVAILABLETIMES_REQUEST });
+    const res = await axios.post(
+      "http://127.0.0.1:3001/doctors/availability",
+      data
+    );
+    console.log(data);
+    console.log(res);
+    return res.data;
+  } catch (error) {
+    dispatch({
+      type: types.ADD_AVAILABLETIMES_ERROR,
+      payload: {
+        message: error,
+      },
+    });
+  }
+};
+
 // logout user
 export const authLogout = () => async (dispatch) => {
   try {
@@ -240,15 +261,22 @@ export const authLogout = () => async (dispatch) => {
 };
 
 //update nurse
-export const UpdateNurse = (data, id) => async (dispatch) => {
+export const updatePatient = (id, data, token) => async (dispatch) => {
   try {
-    dispatch({ type: types.EDIT_NURSE_REQUEST });
-    const res = await axios.patch(
-      `https://zany-gray-clam-gear.cyclic.app/nurses/${id}`,
-      data
-    );
-    console.log(res);
-    dispatch({ type: types.EDIT_NURSE_SUCCESS, payload: res.data.user });
+    const res = await axios.patch(`http://127.0.0.1:3001/nurses/${id}`, data);
+    res.status === 200
+      ? dispatch({ type: types.EDIT_PATIENT_REQUEST, payload: { token } })
+      : console.log("passing");
+    console.log(res.data);
+    dispatch({
+      type: types.EDIT_PATIENT_SUCCESS,
+      payload: {
+        message: res.data.message,
+        user: res.data.user,
+        token: token,
+      },
+    });
+    return res.data;
   } catch (error) {
     console.log(error);
   }
@@ -264,6 +292,27 @@ export const UpdateDoctor = (id, data, token) => async (dispatch) => {
     console.log(res.data);
     dispatch({
       type: types.EDIT_DOCTOR_SUCCESS,
+      payload: {
+        message: res.data.message,
+        user: res.data.user,
+        token: token,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const UpdateAdmin = (id, data, token) => async (dispatch) => {
+  try {
+    const res = await axios.patch(`http://127.0.0.1:3001/admin/${id}`, data);
+    res.status === 200
+      ? dispatch({ type: types.EDIT_ADMIN_REQUEST, payload: { token } })
+      : console.log("passing");
+    console.log(res.data);
+    dispatch({
+      type: types.EDIT_ADMIN_SUCCESS,
       payload: {
         message: res.data.message,
         user: res.data.user,

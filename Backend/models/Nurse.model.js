@@ -8,6 +8,7 @@ const {
   findIfExistsQuery,
   getCredsWithEmailQuery,
   countPatientQuery,
+  updatePassQuery,
 } = require("../configs/queries/patient");
 let x = false;
 const knex = require("knex")({
@@ -150,6 +151,13 @@ const addPatient = (patient) => {
   });
 };
 
+const updatePass = (password, id) => {
+  return dbhelper.query(updatePassQuery, [password, id]).then((result) => {
+    console.log("in db helper", result);
+    return result;
+  });
+};
+
 // // Create the nurses table
 // db.none(nurseSchema)
 //   .then(() => {
@@ -169,4 +177,5 @@ module.exports = {
   findIfExists,
   getPatientCredFromEmail,
   countPatient,
+  updatePass,
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../Doctor/CSS/Doctor_Profile.css";
 import { BiTime } from "react-icons/bi";
-import { GiMeditation } from "react-icons/gi";
+import { GiAges, GiMeditation } from "react-icons/gi";
 import { AiFillCalendar, AiFillEdit } from "react-icons/ai";
 import { MdBloodtype, MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
@@ -11,10 +11,11 @@ import { FaRegHospital, FaMapMarkedAlt, FaBirthdayCake } from "react-icons/fa";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, message, Modal } from "antd";
-import { UpdateDoctor, UpdateNurse } from "../../../../../Redux/auth/action";
+import { UpdateAdmin } from "../../../../../Redux/auth/action";
 import {
   GetDoctorDetails,
   GetAllData,
+  GetAdminDetails,
 } from "../../../../../Redux/Datas/action";
 import { Navigate } from "react-router-dom";
 import "./CSS/Admin_Profile.css";
@@ -22,20 +23,32 @@ import "./CSS/Admin_Profile.css";
 // *********************************************************
 const Admin_Profile = () => {
   const { data } = useSelector((store) => store.auth);
-  const { user } = useSelector((state) => state.auth);
   console.log("heree", data);
   console.log(data?.user?.id);
 
   const dispatch = useDispatch();
 
+  const { admins } = useSelector((store) => store.data.admins);
+  console.log("admins", admins);
+  const admin = admins.find((admin) => data.user.email === admin.email);
+  console.log(admin);
+
+  console.log("User ID:", data.user.id);
+  console.log("Admin ID:", admin ? admin.id : "Admin not found");
+
   useEffect(() => {
-    dispatch(GetAllData());
+    dispatch(GetAdminDetails());
   }, []);
 
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const showModal = () => {
+    setFormData({
+      oldPassword: "",
+      newPassword: "",
+      confirmNewPassword: "",
+    });
     setOpen(true);
   };
 
@@ -53,12 +66,15 @@ const Admin_Profile = () => {
     messageApi.success(text);
   };
 
+  const error = (text) => {
+    messageApi.error(text);
+  };
+
   const handleCancel = () => {
     setOpen(false);
   };
 
   const [formData, setFormData] = useState({
-    currentPassword: "",
     newPassword: "",
   });
 
@@ -66,11 +82,40 @@ const Admin_Profile = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  console.log("admin new pass ", formData.newPassword);
   const handleFormSubmit = () => {
-    dispatch(UpdateDoctor(formData, data.user._id));
-    success("user updated");
-    handleOk();
+    data.user.password === formData.oldPassword
+      ? data.user.password !== formData.newPassword
+        ? formData.confirmNewPassword === formData.newPassword
+          ? (() => {
+              dispatch(
+                UpdateAdmin(
+                  data.user.id,
+                  { password: formData.newPassword },
+                  data.token
+                )
+              ).then((res) => {
+                if (res.message === "password updated") {
+                  success("User updated");
+                  handleOk();
+                } else {
+                  error("Something went wrong.");
+                }
+              });
+            })()
+          : error("Passwords do not match")
+        : error("New password same as old")
+      : error("Incorrect Old Password");
   };
+
+  const dobString = admin.dob;
+  const dobDate = new Date(dobString);
+
+  const formattedDob = dobDate.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
 
   if (data?.isAuthenticated === false) {
     return <Navigate to={"/"} />;
@@ -94,58 +139,57 @@ const Admin_Profile = () => {
               <hr />
               <div className="singleitemdiv">
                 <GiMeditation className="singledivicons" />
-                <p>Name :</p>
-                <p>{data?.user[0]?.id}</p>
-              </div>
-              <div className="singleitemdiv">
-                <MdEmail className="singledivicons" />
-                <p>{data?.user[0]?.bloodGroup}</p>
-              </div>
-              <div className="singleitemdiv">
-                <FaBirthdayCake className="singledivicons" />
-                <p>{data?.user[0]?.DOB}</p>
+                <p>{admin.name}</p>
               </div>
               <div className="singleitemdiv">
                 <BsFillTelephoneFill className="singledivicons" />
-                <p>{data?.user[0]?.mobile}</p>
+                <p>{admin.phonenum}</p>
+              </div>
+              <div className="singleitemdiv">
+                <MdEmail className="singledivicons" />
+
+                <p>{admin.email}</p>
+              </div>
+              <div className="singleitemdiv">
+                <FaBirthdayCake className="singledivicons" />
+                {<p>{formattedDob}</p>}
               </div>
               <div className="singleitemdiv">
                 <button onClick={showModal}>
                   {" "}
-                  <AiFillEdit />
+                  {/* <AiFillEdit /> */}
                   Change Password
                 </button>
               </div>
 
               <Modal
-                title="Change Password"
+                title="CHANGE PASSWORD"
                 open={open}
-                onOk={handleOk}
+                onOk={handleFormSubmit}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
-                footer={[
-                  <Button key="back" onClick={handleCancel}>
-                    Cancel
-                  </Button>,
-                  <Button key="submit" onClick={handleFormSubmit}>
-                    Confirm
-                  </Button>,
-                ]}
               >
                 <form className="inputForm">
-                  <p>Current password</p>
                   <input
-                    name="currentPassword"
-                    value={formData.mobile}
+                    name="oldPassword"
+                    value={formData.oldPassword}
                     onChange={handleFormChange}
                     type="password"
+                    placeholder="Old Password"
                   />
-                  <p>New password</p>
                   <input
                     name="newPassword"
-                    value={formData.mobile}
-                    onChange={handleFormChange}
                     type="password"
+                    value={formData.newPassword}
+                    onChange={handleFormChange}
+                    placeholder="New Password"
+                  />
+                  <input
+                    name="confirmNewPassword"
+                    type="password"
+                    value={formData.confirmNewPassword}
+                    onChange={handleFormChange}
+                    placeholder="Confirm New Password"
                   />
                 </form>
               </Modal>
@@ -158,20 +202,20 @@ const Admin_Profile = () => {
                 </h2>
                 <div className="singleitemdiv">
                   <BsGenderAmbiguous className="singledivicons" />
-                  <p>{data?.user?.gender}</p>
+                  <p>{admin.gender}</p>
                 </div>
                 <div className="singleitemdiv">
-                  <AiFillCalendar className="singledivicons" />
-                  <p>{data?.user[0]?.age}</p>
+                  <GiAges className="singledivicons" />
+                  <p>{admin.age}</p>
                 </div>
 
-                <div className="singleitemdiv">
+                {/* <div className="singleitemdiv">
                   <MdOutlineCastForEducation className="singledivicons" />
                   <p>{data?.user?.education}</p>
-                </div>
+                </div> */}
                 <div className="singleitemdiv">
                   <BsHouseFill className="singledivicons" />
-                  <p>{data?.user?.address}</p>
+                  <p>{admin.address}</p>
                 </div>
               </div>
               {/* ***********  Third Div ******************** */}

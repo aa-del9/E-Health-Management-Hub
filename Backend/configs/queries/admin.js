@@ -11,7 +11,7 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS admins (
 );`;
 
 const countAdminQuery = `SELECT COUNT(*) FROM admins;`;
-const findCredQuery = `SELECT id,password FROM admins WHERE id = $1;`;
+const findCredQuery = `SELECT id,password,email FROM admins WHERE id = $1;`;
 
 const getCredsWithEmailQuery = `SELECT id,password FROM admins WHERE email = $1;`;
 
@@ -23,6 +23,10 @@ const findIfExistsQuery = `SELECT email FROM admins WHERE email = $1;`;
 
 const deleteRow = `DELETE FROM admins WHERE email = $1;`;
 
+const updatePassQuery = ` UPDATE admins SET password = $1 WHERE id = $2;`;
+
+const getAllQuery = `SELECT * FROM admin_details;`;
+
 module.exports = {
   createCredTable,
   findIfExistsQuery,
@@ -31,4 +35,6 @@ module.exports = {
   getCredsWithEmailQuery,
   deleteRow,
   countAdminQuery,
+  updatePassQuery,
+  getAllQuery,
 };

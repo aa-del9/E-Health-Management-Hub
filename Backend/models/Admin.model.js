@@ -9,6 +9,8 @@ const {
   getCredsWithEmailQuery,
   deleteRow,
   countAdminQuery,
+  updatePassQuery,
+  getAllQuery,
 } = require("../configs/queries/admin");
 // const knex = require("knex")({
 //   client: "pg",
@@ -83,6 +85,13 @@ const AdminCredModel = {
   password: "",
 };
 
+const getAllAdmins = () => {
+  return dbhelper.query(getAllQuery).then((result) => {
+    // console.log("in db helper", result);
+    return result;
+  });
+};
+
 const createTables = () => {
   dbhelper.query(createCredTable, [], (err, result) => {
     if (err) {
@@ -99,6 +108,13 @@ const findCred = (ID) => {
   console.log("id received:", ID);
   return dbhelper.query(findCredQuery, [ID]).then((result) => {
     console.log(result, "in db helper");
+    return result;
+  });
+};
+
+const updatePass = (password, id) => {
+  return dbhelper.query(updatePassQuery, [password, id]).then((result) => {
+    console.log("in db helper", result);
     return result;
   });
 };
@@ -153,4 +169,6 @@ module.exports = {
   getAdminCredsFromEmail,
   deleteAdmin,
   countAdmin,
+  updatePass,
+  getAllAdmins,
 };
