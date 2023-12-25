@@ -135,7 +135,7 @@ router.post("/verification", async (req, res) => {
   var mailOptions = {
     from: process.env.SMTP_MAIL,
     to: req.body.email,
-    subject: "Account ID and Password",
+    subject: "Verification Code",
     text: `Your verification code is: ${verificationCode} .`,
   };
 

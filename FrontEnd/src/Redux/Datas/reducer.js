@@ -62,7 +62,7 @@ export default function dataReducer(state = initialState, { type, payload }) {
       return {
         ...state,
         loading: false,
-        Appointments: payload,
+        appointments: payload,
       };
 
     default:

@@ -51,7 +51,7 @@ router.post("/login", async (req, res) => {
       });
       res.send({
         message: "Successful",
-        user: { ...patient, userType: "patient" },
+        user: { ...patient[0], userType: "patient" },
         token: token,
       });
     } else {

@@ -27,7 +27,6 @@ router.get("/", async (req, res) => {
       doctor: doctors.count,
       appointment: appointments.count,
     };
-    console.log(data);
     res.status(200).send({ data });
   } catch (error) {
     console.log(error);

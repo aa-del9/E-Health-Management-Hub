@@ -15,7 +15,7 @@ const createTableQuery = `CREATE TABLE IF NOT EXISTS patients (
   FOREIGN KEY (docID) REFERENCES doctors(id)
 );`;
 
-const findCredQuery = `SELECT id,password FROM patients WHERE id = $1;`;
+const findCredQuery = `SELECT id,password,email FROM patients WHERE id = $1;`;
 const getCredsWithEmailQuery = `SELECT id,password FROM patients WHERE email = $1;`;
 const addQuery = `INSERT INTO patients (
     name,
