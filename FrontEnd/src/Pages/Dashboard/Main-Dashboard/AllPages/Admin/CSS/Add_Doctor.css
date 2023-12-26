@@ -58,7 +58,7 @@ input::-webkit-inner-spin-button {
 .formsubmitbutton {
   text-align: center;
   width: 15%;
-  height: 2.8rem;
+  height: 3.3rem;
   font-size: 1.3rem;
   border-radius: 5px;
   border: none;
@@ -66,6 +66,26 @@ input::-webkit-inner-spin-button {
   display: block;
   margin: auto;
   margin-top: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+.addbutton {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  width: 15%;
+  height: 2.8rem;
+  font-size: 1.3rem;
+  border-radius: 5px;
+  border: none;
+  background: #ffb195;
+  padding: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  display: block;
+  margin: auto;
   font-weight: bold;
   cursor: pointer;
   transition: 0.4s;

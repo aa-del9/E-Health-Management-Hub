@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const dbhelper = require("../configs/dbhelper");
-const { countReportQuery } = require("../configs/queries/report");
+const {
+  countReportQuery,
+  createReportQuery,
+  getLastReportIdQuery,
+} = require("../configs/queries/report");
 
 const reportSchema = mongoose.Schema({
   docName: {
@@ -102,4 +106,19 @@ const countReport = () => {
     return result[0];
   });
 };
-module.exports = { ReportModel, countReport };
+
+const createReport = (data) => {
+  const array = Object.values(data);
+  return dbhelper.query(createReportQuery, array).then((result) => {
+    console.log(result, "in db helper");
+    return result[0];
+  });
+};
+
+const getLastReportId = () => {
+  return dbhelper.query(getLastReportIdQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result[0];
+  });
+};
+module.exports = { ReportModel, countReport, createReport, getLastReportId };

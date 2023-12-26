@@ -5,10 +5,7 @@ import axios from "axios";
 export const CreateReport = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.CREATE_REPORT_REQUEST });
-    const res = await axios.post(
-      "https://zany-gray-clam-gear.cyclic.app/reports/create",
-      data
-    );
+    const res = await axios.post("http://127.0.0.1:3001/reports/create", data);
     console.log(res);
     return res.data;
     // dispatch({

@@ -1,6 +1,10 @@
 const express = require("express");
-const { ReportModel } = require("../models/Report.model");
-
+const {
+  ReportModel,
+  createReport,
+  getLastReportId,
+} = require("../models/Report.model");
+const { createMedicine } = require("../models/Prescription.model");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -16,12 +20,22 @@ router.get("/", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   const payload = req.body;
+  console.log(payload);
   try {
-    const report = new ReportModel(payload);
-    await report.save();
-    res.send({ message: "Report successfully created", report });
+    const data = { ...req.body };
+    delete data.medicines;
+    await createReport(data);
+    const reportId = await getLastReportId();
+    const med = { rows: payload.medicines, reportid: reportId.id };
+    med.rows.map(async (row) => {
+      const array = Object.values(row);
+      array.push(med.reportid);
+      console.log(array);
+      await createMedicine(array);
+    });
+    +res.send({ message: "successful" });
   } catch (error) {
-    res.send(error);
+    res.send({ message: "error" });
   }
 });
 
