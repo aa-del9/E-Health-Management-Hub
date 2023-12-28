@@ -1,22 +1,27 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
-import { CreatePayment, CreateReport } from "../../../../../Redux/Datas/action";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import {
+  DeleteAppointment,
+  CreateReport,
+} from "../../../../../Redux/Datas/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 const notify = (text) => toast(text);
 
 const Discharge_and_Create_Slip = () => {
+  const navigate = useNavigate();
   const { data } = useSelector((store) => store.auth);
   const [loading, setLoading] = useState(false);
-
+  const location = useLocation();
+  const creds = location.state;
   const dispatch = useDispatch();
   const initmed = {
     name: "",
     dosage: "",
-    duration: "",
     frequency: "",
+    duration: "",
   };
   const [med, setMed] = useState(initmed);
 
@@ -26,8 +31,8 @@ const Discharge_and_Create_Slip = () => {
     setMed({ ...med, [e.target.name]: e.target.value });
   };
   const InitData = {
-    patientid: 1,
-    doctorid: 1,
+    patientid: creds?.patientid,
+    doctorid: creds?.doctorid,
     date: "",
     time: "",
     disease: "",
@@ -39,10 +44,10 @@ const Discharge_and_Create_Slip = () => {
     medicines: [],
   };
 
-  const [ReportValue, setReportValue] = useState(InitData);
-
+  const [reportValue, setReportValue] = useState(InitData);
+  console.log(reportValue);
   const HandleReportChange = (e) => {
-    setReportValue({ ...ReportValue, [e.target.name]: e.target.value });
+    setReportValue({ ...reportValue, [e.target.name]: e.target.value });
   };
 
   const HandleMedAdd = (e) => {
@@ -56,15 +61,24 @@ const Discharge_and_Create_Slip = () => {
   const HandleReportSubmit = (e) => {
     e.preventDefault();
     let data = {
-      ...ReportValue,
+      ...reportValue,
       medicines,
+      appointmentid: creds?.id,
     };
+    console.log(data);
     try {
       console.log("reports", data);
       setLoading(true);
       dispatch(CreateReport(data)).then((res) => {
         if (res.message === "successful") {
-          notify("Report Created Sucessfully");
+          dispatch(DeleteAppointment(creds?.id)).then((res) => {
+            if (res.message === "successful") {
+              notify("Report Created Sucessfully");
+              setTimeout(() => {
+                return navigate("/checkappointment");
+              }, 2000);
+            }
+          });
           setLoading(false);
           setReportValue(InitData);
         } else {
@@ -100,7 +114,7 @@ const Discharge_and_Create_Slip = () => {
                     type="date"
                     placeholder="dd-mm-yyyy"
                     name="date"
-                    value={ReportValue.date}
+                    value={reportValue.date}
                     onChange={HandleReportChange}
                   />
                 </div>
@@ -111,7 +125,7 @@ const Discharge_and_Create_Slip = () => {
                   <input
                     type="time"
                     name="time"
-                    value={ReportValue.time}
+                    value={reportValue.time}
                     onChange={HandleReportChange}
                   />
                 </div>
@@ -124,7 +138,7 @@ const Discharge_and_Create_Slip = () => {
                     type="text"
                     placeholder="Disease"
                     name="disease"
-                    value={ReportValue.disease}
+                    value={reportValue.disease}
                     onChange={HandleReportChange}
                     required
                   />
@@ -137,7 +151,7 @@ const Discharge_and_Create_Slip = () => {
                     type="number"
                     placeholder="99^F"
                     name="temperature"
-                    value={ReportValue.temperature}
+                    value={reportValue.temperature}
                     onChange={HandleReportChange}
                   />
                 </div>
@@ -150,7 +164,7 @@ const Discharge_and_Create_Slip = () => {
                     type="number"
                     placeholder="75 KG"
                     name="weight"
-                    value={ReportValue.weight}
+                    value={reportValue.weight}
                     onChange={HandleReportChange}
                   />
                 </div>
@@ -162,7 +176,7 @@ const Discharge_and_Create_Slip = () => {
                     type="text"
                     placeholder="140/90 mmHg"
                     name="BP"
-                    value={ReportValue.BP}
+                    value={reportValue.BP}
                     onChange={HandleReportChange}
                   />
                 </div>
@@ -174,7 +188,7 @@ const Discharge_and_Create_Slip = () => {
                     type="number"
                     placeholder="99 mg/dL"
                     name="glucose"
-                    value={ReportValue.glucose}
+                    value={reportValue.glucose}
                     onChange={HandleReportChange}
                   />
                 </div>
@@ -186,7 +200,7 @@ const Discharge_and_Create_Slip = () => {
                     type="text"
                     placeholder="Info"
                     name="info"
-                    value={ReportValue.info}
+                    value={reportValue.info}
                     onChange={HandleReportChange}
                   />
                 </div>

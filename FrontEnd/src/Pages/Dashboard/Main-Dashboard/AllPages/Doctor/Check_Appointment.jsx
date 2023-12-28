@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import CollapsibleTable from "../../../../../Components/Table/CollapsibleTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -34,7 +34,7 @@ const Check_Appointment = () => {
       : doctors.find((doctor) => doctor.id === data.user.id);
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const createData = (
     id,
     name,
@@ -98,7 +98,8 @@ const Check_Appointment = () => {
           "Generate Report"
         );
   });
-  const click = (index) => {
+  const clicked = (index) => {
+    let appointment;
     data.user.userType === "patient"
       ? dispatch(DeleteAppointment(index)).then((res) => {
           console.log(res);
@@ -106,7 +107,13 @@ const Check_Appointment = () => {
             notify("Appointment Cancelled");
           }
         })
-      : console.log("Generate Report");
+      : (appointment = appointments.find(
+          (appointment) => appointment.id === index
+        ));
+    console.log(appointment);
+    if (appointment !== undefined) {
+      return navigate("/createslip", { state: appointment });
+    }
   };
   const DeleteAppoint = (id) => {
     dispatch(DeleteAppointment(id));
@@ -135,7 +142,7 @@ const Check_Appointment = () => {
               <CollapsibleTable
                 data={datas}
                 columns={columns}
-                onDelete={click}
+                onDelete={clicked}
               />
             </div>
           </div>
