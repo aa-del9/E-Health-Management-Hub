@@ -174,7 +174,7 @@ const Sidebar = () => {
                   </div>
                 </Link>
 
-                <Link
+                {/* <Link
                   className="link"
                   activeclassname="active"
                   to={"/createslip"}
@@ -188,7 +188,7 @@ const Sidebar = () => {
                   >
                     Create Report
                   </div>
-                </Link>
+                </Link> */}
                 <Link
                   className="link"
                   activeclassname="active"

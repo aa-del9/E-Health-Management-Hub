@@ -24,7 +24,10 @@ router.post("/create", async (req, res) => {
   try {
     const data = { ...req.body };
     delete data.medicines;
+    delete data.appointmentid;
+    console.log(data);
     await createReport(data);
+    //add medicines to medication table
     const reportId = await getLastReportId();
     const med = { rows: payload.medicines, reportid: reportId.id };
     med.rows.map(async (row) => {
@@ -33,7 +36,7 @@ router.post("/create", async (req, res) => {
       console.log(array);
       await createMedicine(array);
     });
-    +res.send({ message: "successful" });
+    res.send({ message: "successful" });
   } catch (error) {
     res.send({ message: "error" });
   }
