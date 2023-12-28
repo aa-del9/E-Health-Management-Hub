@@ -12,5 +12,8 @@ VALUES (
     $4,
     $5
   );`;
+const getAllQuery = `SELECT * FROM medication;`;
 
-module.exports = { createMedicineQuery };
+const getMedFromPatientId = `select * from medication where reportid in (select id from reports where patientid = $1)`;
+
+module.exports = { createMedicineQuery, getAllQuery, getMedFromPatientId };

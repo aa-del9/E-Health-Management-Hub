@@ -65,6 +65,25 @@ export const GetAdminDetails = () => async (dispatch) => {
   }
 };
 
+export const GetMedicineDetails = (patientid) => async (dispatch) => {
+  try {
+    dispatch({ type: types.GET_MEDICINE_REQUEST });
+    const res = await axios.post(
+      "http://127.0.0.1:3001/prescriptions/",
+      patientid
+    );
+    //axios.post
+    console.log(res.data);
+    const medicines = { medicines: res.data };
+    dispatch({
+      type: types.GET_MEDICINE_SUCCESS,
+      payload: medicines,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // GET DOCTOR DETAILS
 // export const GetAdminDetails = () => async (dispatch) => {
 //   try {

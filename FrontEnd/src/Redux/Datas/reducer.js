@@ -7,6 +7,7 @@ const initialState = {
   beds: [],
   doctors: [],
   patients: [],
+  medicines: [],
   nurses: [],
   dashboard: [],
   Appointments: [],
@@ -46,6 +47,13 @@ export default function dataReducer(state = initialState, { type, payload }) {
         ...state,
         loading: false,
         admins: payload,
+      };
+
+    case types.GET_MEDICINE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        medicines: payload,
       };
 
     case types.GET_ALLDATA_SUCCESS:

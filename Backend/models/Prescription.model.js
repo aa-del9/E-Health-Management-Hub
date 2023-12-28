@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const dbhelper = require("../configs/dbhelper");
-const { createMedicineQuery } = require("../configs/queries/medicine");
+const {
+  createMedicineQuery,
+  getMedFromPatientId,
+} = require("../configs/queries/medicine");
 const prescriptionSchema = mongoose.Schema({
   docName: {
     type: String,
@@ -86,4 +89,16 @@ const createMedicine = (array) => {
   });
 };
 
-module.exports = { createMedicine, PrescriptionModel, prescriptionSchema };
+const getPatientMedicine = (id) => {
+  return dbhelper.query(getMedFromPatientId, [id]).then((result) => {
+    // console.log("in db helper", result);
+    return result;
+  });
+};
+
+module.exports = {
+  createMedicine,
+  getPatientMedicine,
+  PrescriptionModel,
+  prescriptionSchema,
+};

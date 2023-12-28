@@ -16,9 +16,12 @@ import {
   GetAllData,
   GetPatients,
   GetDoctorDetails,
+  GetMedicineDetails,
 } from "../../../../Redux/Datas/action";
 
 const FrontPage = () => {
+  const dispatch = useDispatch();
+
   const patientColumns = [
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Age", dataIndex: "age", key: "age" },
@@ -36,14 +39,24 @@ const FrontPage = () => {
     { title: "Department", dataIndex: "department", key: "department" },
     { title: "Email", dataIndex: "email", key: "email" },
   ];
+
+  const patientMedication = [
+    { title: "Name", dataIndex: "name", key: "name" },
+    { title: "Dosage", dataIndex: "dosage", key: "dosaage" },
+    { title: "Frequency", dataIndex: "frequency", key: "frequency" },
+    { title: "Duration", dataIndex: "duration", key: "duration" },
+  ];
+
   useEffect(() => {
     dispatch(GetPatients());
     dispatch(GetDoctorDetails());
     dispatch(GetAllData());
+    dispatch(GetMedicineDetails(user.id));
   }, []);
 
   const { patients } = useSelector((store) => store.data.patients);
   const { doctors } = useSelector((store) => store.data.doctors);
+  const { medicines } = useSelector((store) => store.data.medicines);
   const {
     dashboard: { data },
   } = useSelector((store) => store.data);
@@ -51,11 +64,13 @@ const FrontPage = () => {
   console.log(data);
   console.log("patients", patients);
   console.log("doctors", doctors);
-  const dispatch = useDispatch();
+  console.log("medicies", medicines);
+
   const {
     data: { user },
   } = useSelector((state) => state.auth);
   console.log(user);
+  console.log(user.id);
   console.log("userType", user?.userType);
   //user?.isAuthenticated === false ? <Navigate to={"/"} /> : null;
   return (
@@ -71,6 +86,7 @@ const FrontPage = () => {
             </div>
             <RiEmpathizeLine className="overviewIcon" />
           </div> */}
+
           {user?.userType !== "patient" ? (
             <>
               <div className="one commondiv">
@@ -137,7 +153,16 @@ const FrontPage = () => {
           </div> */}
         </div>
         {/* ************************************* */}
-
+        {user?.userType == "patient" ? (
+          <div>
+            <div className="patientDetails">
+              <h1>Medication</h1>
+              <div className="patientBox">
+                <Table columns={patientMedication} dataSource={medicines} />
+              </div>
+            </div>
+          </div>
+        ) : null}
         <div>
           {user?.userType === "admin" ? (
             <div className="patientDetails">
