@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../Doctor/CSS/Doctor_Profile.css";
 import { BiMoney, BiTime } from "react-icons/bi";
 import { GiMeditation } from "react-icons/gi";
-import { AiFillCalendar, AiFillClockCircle, AiFillEdit } from "react-icons/ai";
+import { AiFillCalendar, AiFillClockCircle } from "react-icons/ai";
 import { MdBloodtype, MdCastForEducation, MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { BsHouseFill, BsGenderAmbiguous } from "react-icons/bs";

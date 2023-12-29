@@ -1,10 +1,9 @@
-import { Table } from "antd";
+import { Table, Descriptions } from "antd";
 import React from "react";
 import { MdPersonAdd } from "react-icons/md";
 import { FaUserNurse } from "react-icons/fa";
-import { RiEmpathizeLine } from "react-icons/ri";
-import { FaBed } from "react-icons/fa";
-import { MdOutlineBedroomParent } from "react-icons/md";
+import patient from "../../../../img/patient.png";
+import { useNavigate } from "react-router-dom";
 import { FaAmbulance } from "react-icons/fa";
 import { BsFillBookmarkCheckFill } from "react-icons/bs";
 import { MdPayment } from "react-icons/md";
@@ -17,10 +16,13 @@ import {
   GetPatients,
   GetDoctorDetails,
   GetMedicineDetails,
+  GetAppointments,
+  GetAdminDetails,
 } from "../../../../Redux/Datas/action";
 
 const FrontPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const patientColumns = [
     { title: "Name", dataIndex: "name", key: "name" },
@@ -51,8 +53,17 @@ const FrontPage = () => {
     dispatch(GetPatients());
     dispatch(GetDoctorDetails());
     dispatch(GetAllData());
-    dispatch(GetMedicineDetails(user.id));
+    if (user?.userType !== "admin") {
+      dispatch(GetMedicineDetails(user?.id));
+      dispatch(GetAppointments(user?.userType, user?.id));
+    } else {
+      dispatch(GetAdminDetails());
+    }
+    user?.userType === undefined ? navigate("/") : console.log("logged in");
   }, []);
+  const {
+    data: { user },
+  } = useSelector((state) => state.auth);
 
   const { patients } = useSelector((store) => store.data.patients);
   const { doctors } = useSelector((store) => store.data.doctors);
@@ -66,27 +77,19 @@ const FrontPage = () => {
   console.log("doctors", doctors);
   console.log("medicies", medicines);
 
-  const {
-    data: { user },
-  } = useSelector((state) => state.auth);
   console.log(user);
-  console.log(user.id);
+  console.log(user?.id);
   console.log("userType", user?.userType);
-  //user?.isAuthenticated === false ? <Navigate to={"/"} /> : null;
+  const details = patients?.find((patient) => {
+    return patient.id === user?.id;
+  });
+
   return (
     <div className="container">
       <Sidebar />
       <div className="AfterSideBar">
         <h1 style={{ color: "rgb(184 191 234)" }}>Overview</h1>
         <div className="maindiv">
-          {/* <div className="three commondiv">
-            <div>
-              <h1>{data?.patient}</h1>
-              <p>Patient</p>
-            </div>
-            <RiEmpathizeLine className="overviewIcon" />
-          </div> */}
-
           {user?.userType !== "patient" ? (
             <>
               <div className="one commondiv">
@@ -142,27 +145,54 @@ const FrontPage = () => {
               ) : null}
             </>
           ) : null}
-
-          {/* <div className="four commondiv">
-            {" "}
-            <div>
-              <h1>{data?.bed}</h1>
-              <p>Beds</p>
-            </div>
-            <FaBed className="overviewIcon" />
-          </div> */}
         </div>
+
         {/* ************************************* */}
-        {user?.userType == "patient" ? (
-          <div>
-            <div className="patientDetails">
-              <h1>Medication</h1>
-              <div className="patientBox">
-                <Table columns={patientMedication} dataSource={medicines} />
+        {user?.userType === "patient" ? (
+          <>
+            <h2 style={{ color: "rgb(184 191 234)", margin: "1.5rem" }}>
+              User Info
+            </h2>
+            <div className="profileContainer">
+              <div className="profileImageContainer">
+                <img
+                  style={{ width: "9pc", height: "9pc" }}
+                  src={patient}
+                ></img>
+              </div>
+
+              <Descriptions
+                layout="vertical"
+                bordered
+                style={{ width: "100%" }}
+                labelStyle={{ fontSize: "1rem", fontWeight: "bolder" }}
+              >
+                <Descriptions.Item label="Name">
+                  {details?.name}
+                </Descriptions.Item>
+                <Descriptions.Item label="Telephone">
+                  {details?.phonenum}
+                </Descriptions.Item>
+                <Descriptions.Item label="Address">
+                  {details?.address}
+                </Descriptions.Item>
+                <Descriptions.Item label="Total Reports">10</Descriptions.Item>
+                <Descriptions.Item label="Medicines Prescribed">
+                  {medicines?.length}
+                </Descriptions.Item>
+              </Descriptions>
+            </div>
+            <div>
+              <div className="patientDetails">
+                <h1>My Medication</h1>
+                <div className="patientBox">
+                  <Table columns={patientMedication} dataSource={medicines} />
+                </div>
               </div>
             </div>
-          </div>
+          </>
         ) : null}
+
         <div>
           {user?.userType === "admin" ? (
             <div className="patientDetails">
