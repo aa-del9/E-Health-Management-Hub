@@ -69,8 +69,7 @@ export const GetMedicineDetails = (patientid) => async (dispatch) => {
   try {
     dispatch({ type: types.GET_MEDICINE_REQUEST });
     const res = await axios.post(
-      "http://127.0.0.1:3001/prescriptions/",
-      patientid
+      `http://127.0.0.1:3001/prescriptions/${patientid}`
     );
     //axios.post
     console.log(res.data);
