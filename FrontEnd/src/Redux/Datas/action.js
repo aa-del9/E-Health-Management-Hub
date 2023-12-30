@@ -422,12 +422,12 @@ export const GetAllReports = (userType, id) => async (dispatch) => {
       `http://127.0.0.1:3001/reports/${userType}/${id}`
     );
     console.log("res", res.data);
-    return res.data;
     const reports = { reports: res.data.data };
     dispatch({
       type: types.GET_REPORTS_SUCCESS,
       payload: reports,
     });
+    return res.data;
   } catch (error) {
     console.log(error);
   }

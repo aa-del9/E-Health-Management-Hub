@@ -59,6 +59,7 @@ const FrontPage = () => {
       dispatch(GetAllReports(user?.userType, user.id));
       dispatch(GetMedicineDetails(user?.id));
       dispatch(GetAppointments(user?.userType, user?.id));
+      dispatch(GetAllReports(user?.userType, user?.id));
     } else {
       dispatch(GetAdminDetails());
     }
@@ -71,6 +72,8 @@ const FrontPage = () => {
   const { patients } = useSelector((store) => store.data.patients);
   const { doctors } = useSelector((store) => store.data.doctors);
   const { medicines } = useSelector((store) => store.data.medicines);
+  const reportCount = useSelector((store) => store.data.reports)?.reports
+    ?.length;
   const {
     dashboard: { data },
   } = useSelector((store) => store.data);
@@ -79,7 +82,7 @@ const FrontPage = () => {
   console.log("patients", patients);
   console.log("doctors", doctors);
   console.log("medicies", medicines);
-
+  console.log("reports Count", reportCount);
   console.log(user);
   console.log(user?.id);
   console.log("userType", user?.userType);
@@ -179,7 +182,9 @@ const FrontPage = () => {
                 <Descriptions.Item label="Address">
                   {details?.address}
                 </Descriptions.Item>
-                <Descriptions.Item label="Total Reports">10</Descriptions.Item>
+                <Descriptions.Item label="Total Reports">
+                  {reportCount}
+                </Descriptions.Item>
                 <Descriptions.Item label="Medicines Prescribed">
                   {medicines?.length}
                 </Descriptions.Item>
