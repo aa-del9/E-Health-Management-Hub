@@ -4,6 +4,8 @@ const {
   countReportQuery,
   createReportQuery,
   getLastReportIdQuery,
+  getDoctorReportQuery,
+  getPatientReportQuery,
 } = require("../configs/queries/report");
 
 const reportSchema = mongoose.Schema({
@@ -121,4 +123,26 @@ const getLastReportId = () => {
     return result[0];
   });
 };
-module.exports = { ReportModel, countReport, createReport, getLastReportId };
+
+const getDoctorReports = (id) => {
+  return dbhelper.query(getDoctorReportQuery, [id]).then((result) => {
+    // console.log(result, "in db helper");
+    return result;
+  });
+};
+
+const getPatientReports = (id) => {
+  return dbhelper.query(getPatientReportQuery, [id]).then((result) => {
+    //console.log(result, "in db helper");
+    return result;
+  });
+};
+
+module.exports = {
+  ReportModel,
+  countReport,
+  createReport,
+  getLastReportId,
+  getDoctorReports,
+  getPatientReports,
+};

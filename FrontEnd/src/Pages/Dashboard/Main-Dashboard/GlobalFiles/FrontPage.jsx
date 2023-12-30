@@ -18,6 +18,7 @@ import {
   GetMedicineDetails,
   GetAppointments,
   GetAdminDetails,
+  GetAllReports,
 } from "../../../../Redux/Datas/action";
 
 const FrontPage = () => {
@@ -47,6 +48,7 @@ const FrontPage = () => {
     { title: "Dosage", dataIndex: "dosage", key: "dosaage" },
     { title: "Frequency", dataIndex: "frequency", key: "frequency" },
     { title: "Duration", dataIndex: "duration", key: "duration" },
+    { title: "Report Date&Time", dataIndex: "datetime", key: "dateTime" },
   ];
 
   useEffect(() => {
@@ -54,6 +56,7 @@ const FrontPage = () => {
     dispatch(GetDoctorDetails());
     dispatch(GetAllData());
     if (user?.userType !== "admin") {
+      dispatch(GetAllReports(user?.userType, user.id));
       dispatch(GetMedicineDetails(user?.id));
       dispatch(GetAppointments(user?.userType, user?.id));
     } else {

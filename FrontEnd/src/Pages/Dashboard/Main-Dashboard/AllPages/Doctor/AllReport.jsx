@@ -1,44 +1,62 @@
+import { Table } from "antd";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAllReports } from "../../../../../Redux/Datas/action";
 import Sidebar from "../../GlobalFiles/Sidebar";
+import {
+  GetAllData,
+  GetPatients,
+  GetDoctorDetails,
+  GetAllReports,
+} from "../../../../../Redux/Datas/action";
 
 const AllReport = () => {
   const dispatch = useDispatch();
-  const [Report, setReport] = useState();
-  const { user } = useSelector((state) => state.auth);
-  console.log(user);
-  // useEffect(() => {
-
-  //   dispatch(GetAllReports()).then((res) => {
-  //     setReport(res);
-  //   });
-  // }, []);
 
   useEffect(() => {
-    const fetchReports = () => {
-      let fetchedReports;
+    dispatch(GetPatients());
+    dispatch(GetDoctorDetails());
+    dispatch(GetAllData());
+    dispatch(GetAllReports(user?.userType, user.id));
+  }, []);
 
-      try {
-        if (user?.userType === "doctor") {
-          dispatch(GetAllReports()).then((res) => {
-            fetchedReports = res;
-            setReport(fetchedReports);
-          });
-        } else if (user?.userType === "Patient" && user && user.email) {
-          dispatch(GetAllReports({ patientEmail: user.email })).then((res) => {
-            fetchedReports = res;
-            setReport(fetchedReports);
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching reports:", error);
-      }
-    };
+  const { patients } = useSelector((store) => store.data.patients);
+  const { doctors } = useSelector((store) => store.data.doctors);
+  const { reports } = useSelector((store) => store.data.reports);
+  const {
+    dashboard: { data },
+  } = useSelector((store) => store.data);
+  const {
+    data: { user },
+  } = useSelector((state) => state.auth);
 
-    fetchReports();
-  }, [user, dispatch, user?.email, user?.userType]);
+  console.log(data);
+  console.log("patients", patients);
+  console.log("doctors", doctors);
+  console.log("reports", reports);
+
+  console.log("report a gai ha", user);
+  console.log(user.id);
+  console.log(user.name);
+  console.log("userType", user?.userType);
+
+  let Name;
+  if (user?.userType === "patient") {
+    Name = "Doctor Name";
+  } else {
+    Name = "Patient Name";
+  }
+
+  const reportColumns = [
+    { title: Name, dataIndex: "name", key: "name" },
+    { title: "Date", dataIndex: "date", key: "date" },
+    { title: "time", dataIndex: "time", key: "time" },
+    { title: "Disease", dataIndex: "disease", key: "disease" },
+    { title: "Temperature(F^0)", dataIndex: "temperature", key: "temperature" },
+    { title: "Weight(kg)", dataIndex: "weight", key: "weight" },
+    { title: "Bloodpressure(mmHg)", dataIndex: "bp", key: "bp" },
+    { title: "Glucose", dataIndex: "glucose", key: "glucose" },
+  ];
 
   return (
     <>
@@ -48,36 +66,15 @@ const AllReport = () => {
         {/* ************************************ */}
 
         <div className="AfterSideBar">
-          <div className="Payment_Page">
-            <h1 style={{ marginBottom: "2rem" }}>All Reports</h1>
-            <div className="patientBox">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Patient Name</th>
-                    <th>Department</th>
-                    <th>Doctor Name</th>
-                    <th>Patient Mobile</th>
-                    <th>Patient Age</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Report?.map((ele) => {
-                    return (
-                      <tr>
-                        <td>{ele.patientName}</td>
-                        <td>{ele.docDepartment}</td>
-                        <td>{ele.docName}</td>
-                        <td>{ele.patientMobile}</td>
-                        <td>{ele.patientAge}</td>
-                        <td>{ele.date}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
+          <h1 style={{ color: "rgb(184 191 234)" }}>Reports</h1>
+          <div>
+            {user?.userType !== "admin" ? (
+              <div className="patientDetails">
+                <div className="patientBox">
+                  <Table columns={reportColumns} dataSource={reports} />
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

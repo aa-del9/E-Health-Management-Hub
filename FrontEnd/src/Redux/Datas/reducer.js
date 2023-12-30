@@ -81,6 +81,12 @@ export default function dataReducer(state = initialState, { type, payload }) {
         loading: false,
         appointments: payload,
       };
+    case types.GET_REPORTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        reports: payload,
+      };
 
     default:
       return state;

@@ -414,19 +414,20 @@ export const DeleteAppointment = (id) => async (dispatch) => {
   }
 };
 
-// GET ALL REPORTS
-export const GetAllReports = () => async (dispatch) => {
+export const GetAllReports = (userType, id) => async (dispatch) => {
   try {
+    console.log("action :", userType, id);
     dispatch({ type: types.GET_REPORTS_REQUEST });
     const res = await axios.get(
-      `https://zany-gray-clam-gear.cyclic.app/reports`
+      `http://127.0.0.1:3001/reports/${userType}/${id}`
     );
-    // console.log(res.data);
+    console.log("res", res.data);
     return res.data;
-    // dispatch({
-    //   type: types.DELETE_APPOINTMENT_SUCCESS,
-    //   payload: id,
-    // });
+    const reports = { reports: res.data.data };
+    dispatch({
+      type: types.GET_REPORTS_SUCCESS,
+      payload: reports,
+    });
   } catch (error) {
     console.log(error);
   }

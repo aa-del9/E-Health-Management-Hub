@@ -14,6 +14,9 @@ VALUES (
   );`;
 const getAllQuery = `SELECT * FROM medication;`;
 
-const getMedFromPatientId = `select * from medication where reportid in (select id from reports where patientid = $1)`;
-
+const getMedFromPatientId = `select medication.*,
+reports.date || ' ' || reports.time AS dateTime
+from medication,
+reports
+where (medication.reportid=reports.id and reports.patientid = $1)`;
 module.exports = { createMedicineQuery, getAllQuery, getMedFromPatientId };

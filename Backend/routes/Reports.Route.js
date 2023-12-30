@@ -3,18 +3,27 @@ const {
   ReportModel,
   createReport,
   getLastReportId,
+  getDoctorReports,
+  getPatientReports,
 } = require("../models/Report.model");
 const { createMedicine } = require("../models/Prescription.model");
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  let query = req.query;
+router.get("/:userType/:id", async (req, res) => {
+  const id = req.params.id;
+  const userType = req.params.userType;
+  console.log("route :", userType, id);
+
   try {
-    const reports = await ReportModel.find(query);
-    res.status(200).send(reports);
+    const reports =
+      userType === "doctor"
+        ? await getDoctorReports(id)
+        : await getPatientReports(id);
+    res.status(200).send({ message: "Successful", data: reports });
+    console.log("router reports", reports);
   } catch (error) {
     console.log(error);
-    res.status(400).send({ error: "Something went wrong" });
+    res.status(400).send({ message: "Error" });
   }
 });
 
@@ -39,35 +48,6 @@ router.post("/create", async (req, res) => {
     res.send({ message: "successful" });
   } catch (error) {
     res.send({ message: "error" });
-  }
-});
-
-router.patch("/:reportId", async (req, res) => {
-  const id = req.params.reportId;
-  const payload = req.body;
-  try {
-    const report = await ReportModel.findByIdAndUpdate({ _id: id }, payload);
-    if (!report) {
-      res.status(404).send({ msg: `Report with id ${id} not found` });
-    }
-    res.status(200).send(`Report with id ${id} updated`);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "Something went wrong, unable to Update." });
-  }
-});
-
-router.delete("/:reportId", async (req, res) => {
-  const id = req.params.reportId;
-  try {
-    const report = await ReportModel.findByIdAndDelete({ _id: id });
-    if (!report) {
-      res.status(404).send({ msg: `Report with id ${id} not found` });
-    }
-    res.status(200).send(`Report with id ${id} deleted`);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "Something went wrong, unable to Delete." });
   }
 });
 
