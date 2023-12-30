@@ -1,93 +1,97 @@
 const express = require("express");
-const { PatientModel } = require("../models/Patient.model");
+const {
+  addPatient,
+  getAllPatients,
+  createTable,
+  findCred,
+  findIfExists,
+  updatePass,
+} = require("../models/Patient.model");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const { ReportModel } = require("../models/Report.model");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const patients = await PatientModel.find();
-    res.status(200).send({ patients });
+    await createTable();
+    const patients = await getAllPatients();
+    res.status(200).send(patients);
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Something went wrong" });
   }
 });
 
-// This register route will be used when adding a patient via patient or doctor or admin
-router.post("/register", async (req, res) => {
-  const { email } = req.body;
+router.post("/signup", async (req, res) => {
+  console.log(req.body);
   try {
-    const patient = await PatientModel.findOne({ email });
-    if (patient) {
-      return res.send({
-        message: "Patient already exists",
-        id: patient.patientID,
-      });
-    }
-    const newPatient = new PatientModel(req.body);
-    await newPatient.save();
-    res.send({ id: newPatient.patientID });
+    await addPatient(req.body);
+    return res.send({
+      message: "Registered",
+    });
   } catch (error) {
-    res.send({ error });
+    res.send({ message: "error" });
   }
 });
 
 router.post("/login", async (req, res) => {
-  const { patientID, password } = req.body;
+  const { ID, password } = req.body;
   try {
-    const patient = await PatientModel.findOne({ patientID, password });
-
-    if (patient) {
-      const token = jwt.sign({ foo: "bar" }, process.env.key, {
+    const patient = await findCred(ID);
+    if (ID == patient[0].id && password == patient[0].password) {
+      const token = jwt.sign({ foo: "bar" }, process.env.KEY, {
         expiresIn: "24h",
       });
-      let email = patient.email;
-      let report = await ReportModel.find({ email });
       res.send({
-        message: "Login Successful.",
-        user: patient,
+        message: "Successful",
+        user: { ...patient[0], userType: "patient" },
         token: token,
-        report,
       });
     } else {
-      res.send({ message: "Wrong credentials, Please try again." });
+      res.send({ message: "Wrong credentials" });
     }
   } catch (error) {
-    console.log({ message: "Error occurred, unable to Login." });
+    console.log({ message: "Error" });
     console.log(error);
   }
 });
 
-// Only Admin should be able to update or delete patient
+router.post("/check", async (req, res) => {
+  try {
+    const patient = await findIfExists(req.body.email);
+    console.log(patient);
+    if (patient.length > 0) {
+      return res.send({
+        message: "Patient already exists",
+      });
+    } else {
+      return res.send({
+        message: "Patient does not exist",
+      });
+    }
+  } catch (error) {
+    res.send({ message: "error" });
+  }
+});
+
 router.patch("/:patientId", async (req, res) => {
   const id = req.params.patientId;
-  const payload = req.body;
+  const password = req.body.password;
   try {
-    const patient = await PatientModel.findByIdAndUpdate({ _id: id }, payload);
-    if (!patient) {
-      res.status(404).send({ msg: `Patient with id ${id} not found` });
+    await updatePass(password, id);
+    const patient = await findCred(id);
+    if (patient[0].password === password) {
+      return res.status(200).send({
+        message: "password updated",
+        user: { ...patient[0], userType: "patient" },
+      });
+    } else {
+      return res.status(404).send({ message: `password not updated` });
     }
-    res.status(200).send(`Patient with id ${id} updated`);
   } catch (error) {
     console.log(error);
-    res.status(400).send({ error: "Something went wrong, unable to Update." });
-  }
-});
-
-router.delete("/:patientId", async (req, res) => {
-  const id = req.params.patientId;
-  try {
-    const patient = await PatientModel.findByIdAndDelete({ _id: id });
-    if (!patient) {
-      res.status(404).send({ msg: `Patient with id ${id} not found` });
-    }
-    res.status(200).send(`Patient with id ${id} deleted`);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "Something went wrong, unable to Delete." });
+    res.status(400).send({ error: "Serror" });
   }
 });
 

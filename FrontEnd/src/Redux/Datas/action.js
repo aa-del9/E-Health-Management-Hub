@@ -157,31 +157,6 @@ export const CreateBeds = (data) => async (dispatch) => {
   }
 };
 
-//create payment
-export const CreatePayment = (data) => async (dispatch) => {
-  try {
-    dispatch({ type: types.CREATE_PAYMENT_REQUEST });
-    const res = await axios.post(
-      "https://zany-gray-clam-gear.cyclic.app/payments/add",
-      data
-    );
-    console.log(res.data);
-    // dispatch({
-    //   type: types.CREATE_PAYMENT_SUCCESS,
-    //   payload: {
-    //
-    //   },
-    // });
-  } catch (error) {
-    dispatch({
-      type: types.CREATE_PAYMENT_ERROR,
-      payload: {
-        message: error,
-      },
-    });
-  }
-};
-
 //GET BEDS
 export const GetBeds = () => async (dispatch) => {
   try {
@@ -329,7 +304,7 @@ export const dischargePatient = (data) => async (dispatch) => {
 export const GetPatients = () => async (dispatch) => {
   try {
     dispatch({ type: types.GET_PATIENT_REQUEST });
-    const res = await axios.get(`http://127.0.0.1:3001/nurses`);
+    const res = await axios.get(`http://127.0.0.1:3001/patients`);
     console.log("pats", res);
     const patients = { patients: res.data };
     dispatch({

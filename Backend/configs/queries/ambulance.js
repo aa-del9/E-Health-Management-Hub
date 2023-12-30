@@ -7,8 +7,11 @@ const createTableQuery = `CREATE TABLE IF NOT EXISTS ambulance(
 );`;
 
 const findIfExistsQuery = `SELECT numplate FROM ambulance WHERE numplate = $1;`;
+
 const countAmbulanceQuery = `SELECT COUNT(*) FROM ambulance;`;
+
 const addQuery = `INSERT INTO ambulance VALUES ($1, $2, $3, $4, $5);`;
+
 module.exports = {
   createTableQuery,
   countAmbulanceQuery,

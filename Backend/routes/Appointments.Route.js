@@ -1,27 +1,13 @@
 const express = require("express");
 const {
-  AppointmentModel,
   createAppointment,
   getAppointmentFromPatient,
   getAppointmentFromDoctor,
   deleteAppointment,
   findById,
 } = require("../models/Appointment.model");
-
 const { getDoctorCredFromEmail } = require("../models/Doctor.model");
-
 const router = express.Router();
-
-router.get("/", async (req, res) => {
-  let query = req.query;
-  try {
-    const appointments = await AppointmentModel.find(query);
-    res.status(200).send(appointments);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "Something went wrong" });
-  }
-});
 
 router.get("/:userType/:id", async (req, res) => {
   const id = req.params.id;
@@ -52,24 +38,6 @@ router.post("/create", async (req, res) => {
     }
   } catch (error) {
     res.send(error);
-  }
-});
-
-router.patch("/:appointmentId", async (req, res) => {
-  const id = req.params.appointmentId;
-  const payload = req.body;
-  try {
-    const appointment = await AppointmentModel.findByIdAndUpdate(
-      { _id: id },
-      payload
-    );
-    if (!appointment) {
-      res.status(404).send({ msg: `Appointment with id ${id} not found` });
-    }
-    res.status(200).send(`Appointment with id ${id} updated`);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error: "Something went wrong, unable to Update." });
   }
 });
 

@@ -6,8 +6,8 @@ const authenticate = (req, res, next) => {
   if (token) {
     const decoded = jwt.verify(token, process.env.key);
     if (decoded) {
-      const patientID = decoded.patientID;
-      req.body.patientID = patientID;
+      const nurseID = decoded.nurseID;
+      req.body.nurseID = nurseID;
       next();
     } else {
       res.send("You cannot edit this token.");

@@ -11,6 +11,7 @@ const createCredTable = `CREATE TABLE IF NOT EXISTS admins (
 );`;
 
 const countAdminQuery = `SELECT COUNT(*) FROM admins;`;
+
 const findCredQuery = `SELECT id,password,email FROM admins WHERE id = $1;`;
 
 const getCredsWithEmailQuery = `SELECT id,password FROM admins WHERE email = $1;`;

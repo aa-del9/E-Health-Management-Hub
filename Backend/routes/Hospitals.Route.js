@@ -1,12 +1,10 @@
 const express = require("express");
 const { countAdmin } = require("../models/Admin.model");
 const { countDoctor } = require("../models/Doctor.model");
-const { countPatient } = require("../models/Nurse.model");
+const { countPatient } = require("../models/Patient.model");
 const { countAmbulance } = require("../models/Ambulance.model");
 const { countReport } = require("../models/Report.model");
 const { countAppointment } = require("../models/Appointment.model");
-const { AppointmentModel } = require("../models/Appointment.model");
-const { ReportModel } = require("../models/Report.model");
 
 const router = express.Router();
 

@@ -6,7 +6,7 @@ export const NurseLogin = (data) => async (dispatch) => {
   try {
     console.log("this is data given by redux", data);
     dispatch({ type: types.LOGIN_NURSE_REQUEST });
-    const res = await axios.post("http://127.0.0.1:3001/nurses/login", data);
+    const res = await axios.post("http://127.0.0.1:3001/patients/login", data);
     dispatch({
       type: types.LOGIN_NURSE_SUCCESS,
       payload: {
@@ -28,7 +28,7 @@ export const NurseLogin = (data) => async (dispatch) => {
 
 export const CheckPatientExists = (data) => async (dispatch) => {
   try {
-    const res = await axios.post("http://127.0.0.1:3001/nurses/check", data);
+    const res = await axios.post("http://127.0.0.1:3001/patients/check", data);
     dispatch({
       type: types.LOGIN_NURSE_SUCCESS,
       payload: {
@@ -48,7 +48,7 @@ export const CheckPatientExists = (data) => async (dispatch) => {
 export const PatientSignup = (data) => async (dispatch) => {
   try {
     console.log("data given by redux", data);
-    const res = await axios.post("http://127.0.0.1:3001/nurses/signup", data);
+    const res = await axios.post("http://127.0.0.1:3001/patients/signup", data);
     dispatch({
       type: types.LOGIN_NURSE_SUCCESS,
       payload: {
@@ -152,7 +152,10 @@ export const DoctorRegister = (data) => async (dispatch) => {
 export const NurseRegister = (data) => async (dispatch) => {
   try {
     dispatch({ type: types.REGISTER_NURSE_REQUEST });
-    const res = await axios.post("http://127.0.0.1:3001/nurses/register", data);
+    const res = await axios.post(
+      "http://127.0.0.1:3001/patients/register",
+      data
+    );
     // console.log(res);
     return res.data;
     // dispatch({
@@ -264,7 +267,7 @@ export const authLogout = () => async (dispatch) => {
 //update nurse
 export const updatePatient = (id, data, token) => async (dispatch) => {
   try {
-    const res = await axios.patch(`http://127.0.0.1:3001/nurses/${id}`, data);
+    const res = await axios.patch(`http://127.0.0.1:3001/patients/${id}`, data);
     res.status === 200
       ? dispatch({ type: types.EDIT_PATIENT_REQUEST, payload: { token } })
       : console.log("passing");

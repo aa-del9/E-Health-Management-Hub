@@ -15,6 +15,7 @@ const createReportQuery = `INSERT INTO reports (
 VALUES (
     $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
   )`;
+
 const getLastReportIdQuery = `SELECT id
 from reports
 ORDER BY id DESC

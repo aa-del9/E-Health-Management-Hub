@@ -1,90 +1,81 @@
-const mongoose = require("mongoose");
+const dbhelper = require("../configs/dbhelper");
+const {
+  createTableQuery,
+  findCredQuery,
+  getAllQuery,
+  addQuery,
+  findIfExistsQuery,
+  getCredsWithEmailQuery,
+  countPatientQuery,
+  updatePassQuery,
+} = require("../configs/queries/patient");
 
-const patientSchema = mongoose.Schema({
-  userType: {
-    type: String,
-    default: "patient",
-  },
+const createTable = () => {
+  return dbhelper.query(createTableQuery, []).then((err, result) => {
+    console.log("patient table created or exists");
+  });
+};
 
-  patientID: {
-    type: Number,
-    required: true,
-  },
+const countPatient = () => {
+  return dbhelper.query(countPatientQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result[0];
+  });
+};
 
-  patientName: {
-    type: String,
-  },
+const findCred = (ID) => {
+  console.log("id received:", ID);
+  return dbhelper.query(findCredQuery, [ID]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+const getPatientCredFromEmail = (email) => {
+  console.log("email received:", email);
+  return dbhelper.query(getCredsWithEmailQuery, [email]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
+const getAllPatients = () => {
+  return dbhelper.query(getAllQuery).then((result) => {
+    //console.log("in db helper", result);
+    return result;
+  });
+};
 
-  mobile: {
-    type: Number,
-    minlength: 10,
-  },
+const findIfExists = (email) => {
+  console.log("email received to db:", email);
+  return dbhelper.query(findIfExistsQuery, [email]).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
 
-  email: {
-    type: String,
-  },
+const addPatient = (patient) => {
+  console.log("patient received:", patient);
+  const array = Object.values(patient);
+  console.log(array);
+  return dbhelper.query(addQuery, array).then((result) => {
+    console.log(result, "in db helper");
+    return result;
+  });
+};
 
-  password: {
-    type: String,
-    default: "password",
-  },
+const updatePass = (password, id) => {
+  return dbhelper.query(updatePassQuery, [password, id]).then((result) => {
+    console.log("in db helper", result);
+    return result;
+  });
+};
 
-  age: {
-    type: Number,
-  },
-
-  department: {
-    type: String,
-  },
-
-  gender: {
-    type: String,
-  },
-
-  bloodGroup: {
-    type: String,
-  },
-
-  DOB: {
-    type: String,
-  },
-
-  address: {
-    type: String,
-  },
-
-  image: {
-    type: String,
-  },
-
-  disease: {
-    type: String,
-  },
-
-  details: {
-    type: String,
-  },
-
-  admitted: {
-    type: Boolean,
-    default: true,
-  },
-
-  date: {
-    type: Date,
-  },
-
-  docID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "doctor",
-  },
-
-  nurseID: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "nurse",
-  },
-});
-
-const PatientModel = mongoose.model("patient", patientSchema);
-
-module.exports = { PatientModel };
+module.exports = {
+  addPatient,
+  getAllPatients,
+  createTable,
+  findCred,
+  findIfExists,
+  getPatientCredFromEmail,
+  countPatient,
+  updatePass,
+};

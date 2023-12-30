@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-const db = require("../configs/db");
 const dbhelper = require("../configs/dbhelper");
 const {
   createTableQuery,
@@ -7,43 +5,11 @@ const {
   findIfExistsQuery,
   countAmbulanceQuery,
 } = require("../configs/queries/ambulance");
-const ambulanceSchema = mongoose.Schema({
-  type: {
-    type: String,
-    required: true,
-  },
-
-  charges: {
-    type: Number,
-    required: true,
-  },
-
-  ambulanceID: {
-    type: Number,
-    required: true,
-  },
-
-  ambulanceDriver: {
-    type: String,
-    required: true,
-  },
-
-  number: {
-    type: Number,
-    required: true,
-  },
-});
-
-const AmbulanceModel = mongoose.model("ambulance", ambulanceSchema);
 
 const createTable = () => {
-  console.log("here first");
-  dbhelper.query(createTableQuery, [], (err, result) => {
-    if (err) {
-      console.error("Error: ", err);
-    } else {
-      console.log("Query result:", result.rows);
-    }
+  return dbhelper.query(createTableQuery, []).then((result) => {
+    console.log(result, "in db helper");
+    return result;
   });
 };
 
@@ -72,7 +38,6 @@ const addAmbulance = (ambulance) => {
   });
 };
 module.exports = {
-  AmbulanceModel,
   findIfExists,
   addAmbulance,
   createTable,
