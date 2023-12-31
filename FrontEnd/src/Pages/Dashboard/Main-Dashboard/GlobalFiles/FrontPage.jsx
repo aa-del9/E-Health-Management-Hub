@@ -54,15 +54,16 @@ const FrontPage = () => {
     dispatch(GetPatients());
     dispatch(GetDoctorDetails());
     dispatch(GetAllData());
+    user?.userType === undefined ? navigate("/") : console.log("logged in");
     if (user?.userType !== "admin") {
-      dispatch(GetAllReports(user?.userType, user.id));
+      dispatch(GetAllReports(user?.userType, user?.id));
       dispatch(GetMedicineDetails(user?.id));
       dispatch(GetAppointments(user?.userType, user?.id));
       dispatch(GetAllReports(user?.userType, user?.id));
     } else {
       dispatch(GetAdminDetails());
     }
-    user?.userType === undefined ? navigate("/") : console.log("logged in");
+    // eslint-disable-next-line
   }, []);
   const {
     data: { user },
@@ -163,6 +164,7 @@ const FrontPage = () => {
                 <img
                   style={{ width: "9pc", height: "9pc" }}
                   src={patient}
+                  alt="patient"
                 ></img>
               </div>
 

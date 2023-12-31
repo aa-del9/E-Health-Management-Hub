@@ -127,17 +127,7 @@ export const DoctorRegister = (data) => async (dispatch) => {
       "http://127.0.0.1:3001/doctors/register",
       data
     );
-    // console.log(res);
     return res.data;
-    // dispatch({
-    //   type: types.REGISTER_DOCTOR_SUCCESS,
-    //   payload: {
-    //     message: res.data.message,
-    //     user: res.data.user,
-    //     // token: res.data.token,
-    //     report: res.data.report,
-    //   },
-    // });
   } catch (error) {
     dispatch({
       type: types.REGISTER_DOCTOR_ERROR,
@@ -154,17 +144,6 @@ export const AdminRegister = (data) => async (dispatch) => {
     console.log(data);
     dispatch({ type: types.REGISTER_ADMIN_REQUEST });
     const res = await axios.post("http://127.0.0.1:3001/admin/register", data);
-    // console.log(res);
-
-    dispatch({
-      type: types.REGISTER_ADMIN_SUCCESS,
-      payload: {
-        message: res.data.message,
-        user: res.data.user,
-        // token: res.data.token,
-        report: res.data.report,
-      },
-    });
     return res.data;
   } catch (error) {
     dispatch({
@@ -184,15 +163,6 @@ export const AmbulanceRegister = (data) => async (dispatch) => {
     const res = await axios.post("http://127.0.0.1:3001/ambulances/add", data);
     console.log(res);
     return res.data;
-    // dispatch({
-    //   type: types.REGISTER_AMBULANCE_SUCCESS,
-    //   payload: {
-    //     message: res.data.message,
-    //     user: res.data.user,
-    //     // token: res.data.token,
-    //     report: res.data.report,
-    //   },
-    // });
   } catch (error) {
     dispatch({
       type: types.REGISTER_AMBULANCE_ERROR,

@@ -11,6 +11,7 @@ import { FiLogOut } from "react-icons/fi";
 import { RiAdminLine } from "react-icons/ri";
 import { MdDashboardCustomize } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { authLogout } from "../../../../Redux/auth/action";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -221,7 +222,7 @@ const Sidebar = () => {
             <Link
               className="LogOutPath link"
               onClick={() => {
-                dispatch({ type: "AUTH_LOGOUT" });
+                dispatch(authLogout());
               }}
               to={"/"}
             >

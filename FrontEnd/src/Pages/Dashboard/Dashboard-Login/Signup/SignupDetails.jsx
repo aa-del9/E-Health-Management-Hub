@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-//import "./DSignup.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./DSignup.css";
@@ -41,7 +40,6 @@ const SignupDetails = () => {
       } else if (res.message === "Registered") {
         notify("Your signup is complete. Sending login Credentials...");
         let data = { email: formValue.email, userType: "patient" };
-        //todo: send email
         dispatch(mailCreds(data)).then((res) => {
           console.log("res", res);
           if (res.message === "successful") {
