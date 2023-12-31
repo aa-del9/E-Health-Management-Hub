@@ -29,7 +29,7 @@ const Check_Appointment = () => {
   const doctor =
     data.user.userType === "patient"
       ? appointments.map((appointment) => {
-          return doctors.find((doctor) => doctor.id == appointment.doctorid);
+          return doctors.find((doctor) => doctor.id === appointment.doctorid);
         })
       : doctors.find((doctor) => doctor.id === data.user.id);
 
@@ -112,11 +112,8 @@ const Check_Appointment = () => {
         ));
     console.log(appointment);
     if (appointment !== undefined) {
-      return navigate("/createslip", { state: appointment });
+      return navigate("/createreport", { state: appointment });
     }
-  };
-  const DeleteAppoint = (id) => {
-    dispatch(DeleteAppointment(id));
   };
   useEffect(() => {
     dispatch(GetAppointments(data.user.userType, data.user.id));

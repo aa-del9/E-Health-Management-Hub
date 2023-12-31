@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { CommonProblem } from "./MixedObjectData";
 import "./CSS/Book_appointment.css";
 import { useDispatch, useSelector } from "react-redux";
 import {

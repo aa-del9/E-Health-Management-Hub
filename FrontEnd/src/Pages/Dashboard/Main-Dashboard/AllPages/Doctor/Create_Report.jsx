@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 const notify = (text) => toast(text);
 
-const Discharge_and_Create_Slip = () => {
+const Create_Report = () => {
   const navigate = useNavigate();
   const { data } = useSelector((store) => store.auth);
   const [loading, setLoading] = useState(false);
@@ -263,4 +263,4 @@ const Discharge_and_Create_Slip = () => {
   );
 };
 
-export default Discharge_and_Create_Slip;
+export default Create_Report;

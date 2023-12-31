@@ -170,14 +170,14 @@ router.post("/forgot", async (req, res) => {
   // let user;
   // let userId;
   // let password;
-  // if (type == "nurse") {
-  //   user = await NurseModel.find({ email });
-  //   userId = user[0]?.nurseID;
+  // if (type == "patient") {
+  //   user = await patientModel.find({ email });
+  //   userId = user[0]?.patientID;
   //   password = user[0]?.password;
   // }
   // if (type == "patient") {
   //   user = await PatientModel.find({ email });
-  //   userId = user[0]?.nurseID;
+  //   userId = user[0]?.patientID;
   //   password = user[0]?.password;
   // }
   // if (type == "admin") {

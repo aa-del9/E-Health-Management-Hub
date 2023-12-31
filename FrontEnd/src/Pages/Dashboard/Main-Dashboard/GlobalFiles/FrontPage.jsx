@@ -1,7 +1,6 @@
 import { Table, Descriptions } from "antd";
 import React from "react";
-import { MdPersonAdd } from "react-icons/md";
-import { FaUserNurse } from "react-icons/fa";
+import { FaUserPlus, FaUserMd } from "react-icons/fa";
 import patient from "../../../../img/patient.png";
 import { useNavigate } from "react-router-dom";
 import { FaAmbulance } from "react-icons/fa";
@@ -103,7 +102,7 @@ const FrontPage = () => {
                   <h1>{data?.doctor}</h1>
                   <p>Doctor</p>
                 </div>
-                <MdPersonAdd className="overviewIcon" />
+                <FaUserMd className="overviewIcon" />
               </div>
               <div className="two commondiv">
                 {" "}
@@ -111,7 +110,7 @@ const FrontPage = () => {
                   <h1>{data?.patient}</h1>
                   <p>Patient</p>
                 </div>
-                <FaUserNurse className="overviewIcon" />
+                <FaUserPlus className="overviewIcon" />
               </div>
               <div className="six commondiv">
                 {" "}

@@ -1,22 +1,14 @@
 import React, { useState } from "react";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { FaAmbulance } from "react-icons/fa";
-import { GiNurseFemale } from "react-icons/gi";
-import { RiSecurePaymentLine } from "react-icons/ri";
 import { FaUsers } from "react-icons/fa";
-import { SlUserFollow } from "react-icons/sl";
 import { BsBookmarkPlus, BsFillBookmarkCheckFill } from "react-icons/bs";
-import { BiDetail } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { FaHospitalUser } from "react-icons/fa";
-
 import { TbReportMedical } from "react-icons/tb";
-import { MdBedroomChild } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { ImMenu } from "react-icons/im";
 import { FiLogOut } from "react-icons/fi";
 import { RiAdminLine } from "react-icons/ri";
-import { TbBed } from "react-icons/tb";
 import { MdDashboardCustomize } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -64,7 +56,7 @@ const Sidebar = () => {
                 <Link
                   className="link"
                   activeclassname="active"
-                  to={"/nurseprofile"}
+                  to={"/patientprofile"}
                 >
                   <div className="icon">
                     <CgProfile className="mainIcon" />
@@ -110,7 +102,11 @@ const Sidebar = () => {
                     Add Doctor
                   </div>
                 </Link>
-                <Link className="link" activeclassname="active" to={"/admin"}>
+                <Link
+                  className="link"
+                  activeclassname="active"
+                  to={"/addadmin"}
+                >
                   <div className="icon">
                     <RiAdminLine
                       className="mainIcon"
@@ -145,7 +141,7 @@ const Sidebar = () => {
                   to={"/adminprofile"}
                 >
                   <div className="icon">
-                    <SlUserFollow className="mainIcon" />
+                    <CgProfile className="mainIcon" />
                   </div>
                   <div
                     style={{ display: isOpen ? "block" : "none" }}
@@ -164,7 +160,7 @@ const Sidebar = () => {
                   to={"/doctorprofile"}
                 >
                   <div className="icon">
-                    <SlUserFollow className="mainIcon" />
+                    <CgProfile className="mainIcon" />
                   </div>
                   <div
                     style={{ display: isOpen ? "block" : "none" }}
@@ -173,22 +169,6 @@ const Sidebar = () => {
                     Profile
                   </div>
                 </Link>
-
-                {/* <Link
-                  className="link"
-                  activeclassname="active"
-                  to={"/createslip"}
-                >
-                  <div className="icon">
-                    <BiDetail className="mainIcon" />
-                  </div>
-                  <div
-                    style={{ display: isOpen ? "block" : "none" }}
-                    className="link_text"
-                  >
-                    Create Report
-                  </div>
-                </Link> */}
                 <Link
                   className="link"
                   activeclassname="active"

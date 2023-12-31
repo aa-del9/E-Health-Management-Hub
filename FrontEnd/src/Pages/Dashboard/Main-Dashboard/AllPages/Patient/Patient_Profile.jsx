@@ -1,31 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import "../Doctor/CSS/Doctor_Profile.css";
-import { BiDetail, BiTime } from "react-icons/bi";
+import { BiTime } from "react-icons/bi";
 import { GiAges, GiMeditation } from "react-icons/gi";
-import { AiFillCalendar, AiFillEdit } from "react-icons/ai";
 import { MdBloodtype, MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
-import { BsHouseFill, BsGenderAmbiguous } from "react-icons/bs";
-import { MdOutlineCastForEducation } from "react-icons/md";
-import {
-  FaRegHospital,
-  FaMapMarkedAlt,
-  FaBirthdayCake,
-  FaClinicMedical,
-} from "react-icons/fa";
+import { BsHouseFill } from "react-icons/bs";
+import { FaRegHospital, FaMapMarkedAlt, FaBirthdayCake } from "react-icons/fa";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { message, Modal } from "antd";
 import { updatePatient } from "../../../../../Redux/auth/action";
 import "./CSS/Profiles.css";
-import {
-  GetPatientDetails,
-  GetPatients,
-} from "../../../../../Redux/Datas/action";
+import { GetPatients } from "../../../../../Redux/Datas/action";
 import { TbGenderBigender } from "react-icons/tb";
 
-const Nurse_Profile = () => {
+const Patient_Profile = () => {
   const { data } = useSelector((store) => store.auth);
 
   console.log("PATIENT DATA JANAB ", data);
@@ -244,4 +234,4 @@ const Nurse_Profile = () => {
   );
 };
 
-export default Nurse_Profile;
+export default Patient_Profile;

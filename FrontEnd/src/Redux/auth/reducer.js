@@ -11,14 +11,14 @@ const initialState = {
 };
 export default function authReducer(state = initialState, { type, payload }) {
   switch (type) {
-    case types.LOGIN_NURSE_REQUEST ||
+    case types.LOGIN_PATIENT_REQUEST ||
       types.LOGIN_ADMIN_REQUEST ||
       types.LOGIN_DOCTOR_REQUEST:
       return {
         ...state,
         userLogin: { loading: true, error: false },
       };
-    case types.LOGIN_NURSE_SUCCESS ||
+    case types.LOGIN_PATIENT_SUCCESS ||
       types.LOGIN_ADMIN_SUCCESS ||
       types.LOGIN_DOCTOR_SUCCESS:
       localStorage.setItem("token", payload.token);
@@ -58,7 +58,7 @@ export default function authReducer(state = initialState, { type, payload }) {
           user: null,
         },
       };
-    case types.LOGIN_NURSE_ERROR ||
+    case types.LOGIN_PATIENT_ERROR ||
       types.LOGIN_ADMIN_ERROR ||
       types.LOGIN_DOCTOR_ERROR:
       return {
@@ -100,13 +100,6 @@ export default function authReducer(state = initialState, { type, payload }) {
           isAuthenticated: payload.token ? true : false,
           token: payload.token,
           user: payload.user,
-        },
-      };
-    case types.EDIT_NURSE_SUCCESS:
-      return {
-        ...state,
-        data: {
-          user: payload,
         },
       };
     case types.EDIT_DOCTOR_SUCCESS:

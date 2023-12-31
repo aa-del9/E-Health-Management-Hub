@@ -8,7 +8,6 @@ const initialState = {
   doctors: [],
   patients: [],
   medicines: [],
-  nurses: [],
   dashboard: [],
   Appointments: [],
 };

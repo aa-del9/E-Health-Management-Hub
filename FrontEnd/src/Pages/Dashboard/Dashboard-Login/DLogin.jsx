@@ -9,7 +9,7 @@ import {
   AdminLogin,
   DoctorLogin,
   forgetPassword,
-  NurseLogin,
+  patientLogin,
 } from "../../../Redux/auth/action";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -34,27 +34,22 @@ const DLogin = () => {
   // ************************************************
   const [Loading, setLoading] = useState(false);
   const [placement, setPlacement] = useState("Patient");
-  const [formvalue, setFormvalue] = useState({
+  const [formValue, setFormValue] = useState({
     ID: "",
     password: "",
   });
   const dispatch = useDispatch();
 
   const Handlechange = (e) => {
-    setFormvalue({ ...formvalue, [e.target.name]: e.target.value });
+    setFormValue({ ...formValue, [e.target.name]: e.target.value });
   };
   const navigate = useNavigate();
   const HandleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    if (formvalue.ID !== "" && formvalue.password !== "") {
+    if (formValue.ID !== "" && formValue.password !== "") {
       if (placement === "Patient") {
-        let data = {
-          ...formvalue,
-          nurseID: formvalue.ID,
-        };
-
-        dispatch(NurseLogin(data)).then((res) => {
+        dispatch(patientLogin(formValue)).then((res) => {
           if (res.message === "Successful") {
             notify("Login Successful");
             setLoading(false);
@@ -73,8 +68,8 @@ const DLogin = () => {
         });
       } else if (placement === "Doctor") {
         let data = {
-          ...formvalue,
-          docID: formvalue.ID,
+          ...formValue,
+          docID: formValue.ID,
         };
         console.log(data);
         dispatch(DoctorLogin(data)).then((res) => {
@@ -97,8 +92,8 @@ const DLogin = () => {
         });
       } else if (placement === "Admin") {
         let data = {
-          ...formvalue,
-          adminID: formvalue.ID,
+          ...formValue,
+          adminID: formValue.ID,
         };
         dispatch(AdminLogin(data)).then((res) => {
           if (res.message === "Successful") {
@@ -193,7 +188,7 @@ const DLogin = () => {
               <input
                 type="number"
                 name="ID"
-                value={formvalue.ID}
+                value={formValue.ID}
                 onChange={Handlechange}
                 required
               />
@@ -201,7 +196,7 @@ const DLogin = () => {
               <input
                 type="password"
                 name="password"
-                value={formvalue.password}
+                value={formValue.password}
                 onChange={Handlechange}
                 required
               />
@@ -244,7 +239,7 @@ const DLogin = () => {
                     required
                   >
                     <option value="">User Type</option>
-                    <option value="nurse">Nurse</option>
+                    <option value="patient">Patient</option>
                     <option value="doctor">Doctor</option>
                     <option value="admin">Admin</option>
                   </select>
