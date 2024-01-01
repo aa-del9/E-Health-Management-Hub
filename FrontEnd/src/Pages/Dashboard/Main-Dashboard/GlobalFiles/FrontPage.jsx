@@ -98,13 +98,6 @@ const FrontPage = () => {
         <div className="maindiv">
           {user?.userType !== "patient" ? (
             <>
-              <div className="one commondiv">
-                <div>
-                  <h1>{data?.doctor}</h1>
-                  <p>Doctor</p>
-                </div>
-                <FaUserMd className="overviewIcon" />
-              </div>
               <div className="two commondiv">
                 {" "}
                 <div>
@@ -123,6 +116,13 @@ const FrontPage = () => {
               </div>
               {user?.userType === "admin" ? (
                 <>
+                  <div className="one commondiv">
+                    <div>
+                      <h1>{data?.doctor}</h1>
+                      <p>Doctor</p>
+                    </div>
+                    <FaUserMd className="overviewIcon" />
+                  </div>
                   <div className="six commondiv">
                     {" "}
                     <div>

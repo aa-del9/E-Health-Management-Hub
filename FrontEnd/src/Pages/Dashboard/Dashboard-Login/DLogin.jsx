@@ -201,7 +201,7 @@ const DLogin = () => {
                 required
               />
               <button type="submit">{Loading ? "Loading..." : "Submit"}</button>
-              <p style={{ marginTop: "10px" }}>
+              {/* <p style={{ marginTop: "10px" }}>
                 Forget Password?{" "}
                 <span
                   style={{ color: "blue", cursor: "pointer" }}
@@ -209,9 +209,9 @@ const DLogin = () => {
                 >
                   Get it on Email !
                 </span>
-              </p>
+              </p> */}
               {placement === "Patient" ? (
-                <p style={{}}>
+                <p style={{ marginTop: "10px" }}>
                   New here?{" "}
                   <span
                     style={{ color: "blue", cursor: "pointer" }}

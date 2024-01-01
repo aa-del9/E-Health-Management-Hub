@@ -2,21 +2,15 @@ import React, { useEffect, useState } from "react";
 import "../Doctor/CSS/Doctor_Profile.css";
 import { BiTime } from "react-icons/bi";
 import { GiAges, GiMeditation } from "react-icons/gi";
-import { AiFillCalendar, AiFillEdit } from "react-icons/ai";
-import { MdBloodtype, MdEmail } from "react-icons/md";
+import { MdEmail } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { BsHouseFill, BsGenderAmbiguous } from "react-icons/bs";
-import { MdOutlineCastForEducation } from "react-icons/md";
 import { FaRegHospital, FaMapMarkedAlt, FaBirthdayCake } from "react-icons/fa";
 import Sidebar from "../../GlobalFiles/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, message, Modal } from "antd";
+import { message, Modal } from "antd";
 import { UpdateAdmin } from "../../../../../Redux/auth/action";
-import {
-  GetDoctorDetails,
-  GetAllData,
-  GetAdminDetails,
-} from "../../../../../Redux/Datas/action";
+import { GetAdminDetails } from "../../../../../Redux/Datas/action";
 import { Navigate } from "react-router-dom";
 import "./CSS/Admin_Profile.css";
 
@@ -37,7 +31,7 @@ const Admin_Profile = () => {
 
   useEffect(() => {
     dispatch(GetAdminDetails());
-  }, []);
+  }, [dispatch]);
 
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -228,13 +222,13 @@ const Admin_Profile = () => {
                 </div>
                 <div className="singleitemdiv">
                   <FaRegHospital className="singledivicons" />
-                  <p>Apollo hospitals</p>
+                  <p>Aziz Fatima Hospital</p>
                 </div>
                 <div className="singleitemdiv">
                   <FaMapMarkedAlt className="singledivicons" />
                   <p>
-                    Sri Aurobindo Marg, Ansari Nagar, Ansari Nagar East, New
-                    Delhi.
+                    Faisalabad - Sheikhupura Road, Gulistan Colony Faisalabad,
+                    Punjab
                   </p>
                 </div>
               </div>
